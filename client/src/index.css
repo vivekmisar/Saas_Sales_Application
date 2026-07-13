@@ -17,52 +17,44 @@
   --color-brand-hover:    #4f46e5;
   --color-brand-light:    #e0e7ff;
   --color-accent:         #8b5cf6;
-
-  /* Surfaces */
-  --color-surface:         #ffffff;
-  --color-surface-raised:  #f8fafc;
-  --color-surface-overlay: #f1f5f9;
-
-  /* Text */
-  --color-text-primary:   #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted:     #94a3b8;
-
-  /* Border */
-  --color-border: #e2e8f0;
-
-  /* Sidebar (always dark) */
-  --color-sidebar-bg:     #020617;
-  --color-sidebar-text:   #94a3b8;
-  --color-sidebar-active: #818cf8;
 }
 
-/* ── Base ─────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+  }
 
-body {
-  font-family: var(--font-body);
-  background-color: #ffffff;
-  color: #0f172a;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  min-height: 100vh;
-}
+  body {
+    font-family: var(--font-body);
+    background-color: #f8fafc;
+    color: #0f172a;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    min-height: 100%;
+  }
 
-html.dark body {
-  background-color: #0f172a;
-  color: #f8fafc;
+  html.dark body {
+    background-color: #0f172a;
+    color: #f8fafc;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
 }
 
 /* ── Scrollbar ────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 999px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
 html.dark ::-webkit-scrollbar-thumb { background: #334155; }
 
 /* ── Focus ring ───────────────────────────────────────────────── */
@@ -74,15 +66,17 @@ html.dark ::-webkit-scrollbar-thumb { background: #334155; }
 
 /* ── Toast custom style ─────────────────────────────────────────*/
 .toast-custom {
-  background: #f8fafc !important;
+  background: #ffffff !important;
   color: #0f172a !important;
   border: 1px solid #e2e8f0 !important;
   font-size: 14px !important;
   border-radius: 10px !important;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.08) !important;
 }
 
 html.dark .toast-custom {
   background: #1e293b !important;
   color: #f8fafc !important;
   border: 1px solid #334155 !important;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.3) !important;
 }
