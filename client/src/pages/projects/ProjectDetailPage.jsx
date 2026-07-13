@@ -65,7 +65,7 @@ export default function ProjectDetailPage() {
   const reports = reportData?.reports || [];
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="w-full max-w-5xl">
       <button
         onClick={() => navigate('/projects')}
         className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 mb-5 transition-colors cursor-pointer"
