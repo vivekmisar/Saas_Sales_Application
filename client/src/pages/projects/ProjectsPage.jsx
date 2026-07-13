@@ -47,32 +47,41 @@ export default function ProjectsPage() {
     setDeleteTarget(null);
   };
 
-  const filtered = data?.projects?.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()),
-  ) || [];
+  const filtered =
+    data?.projects?.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase()),
+    ) || [];
 
   if (isLoading) return <Spinner size={32} className="mt-32" />;
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="w-full max-w-5xl">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div className="flex items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50" style={{ fontFamily: 'var(--font-heading)' }}>
+          <h1
+            className="text-2xl font-bold text-slate-900 dark:text-slate-50"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
             Projects
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            {data?.total || 0} project{data?.total !== 1 ? 's' : ''}
+            {data?.total ?? 0} project{data?.total !== 1 ? 's' : ''}
           </p>
         </div>
-        <Button onClick={() => setShowCreate(true)}>
+        <Button onClick={() => setShowCreate(true)} className="shrink-0">
           <Plus size={16} /> New Project
         </Button>
       </div>
 
-      {data?.total > 0 && (
-        <div className="mb-6 max-w-sm">
-          <Input placeholder="Search projects…" icon={Search} value={search} onChange={(e) => setSearch(e.target.value)} />
+      {(data?.total ?? 0) > 0 && (
+        <div className="mb-6 max-w-xs">
+          <Input
+            placeholder="Search projects…"
+            icon={Search}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
       )}
 
@@ -85,52 +94,106 @@ export default function ProjectsPage() {
           onAction={() => setShowCreate(true)}
         />
       ) : filtered.length === 0 ? (
-        <EmptyState icon={Search} title="No results" description={`No projects matching "${search}"`} />
+        <EmptyState
+          icon={Search}
+          title="No results"
+          description={`No projects matching "${search}"`}
+        />
       ) : (
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
           {filtered.map((project) => (
-            <Card key={project._id} hover onClick={() => navigate(`/projects/${project._id}`)}>
-              <div className="flex items-start justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">
-                  <FolderKanban size={20} className="text-indigo-500" />
+            <div key={project._id} className="relative group">
+              <Card
+                hover
+                onClick={() => navigate(`/projects/${project._id}`)}
+                className="h-full"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">
+                    <FolderKanban size={20} className="text-indigo-500" />
+                  </div>
+                  <Badge status={project.status} />
                 </div>
-                <Badge status={project.status} />
-              </div>
 
-              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-1 line-clamp-1" style={{ fontFamily: 'var(--font-heading)' }}>
-                {project.name}
-              </h3>
-              {project.description && (
-                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-3">{project.description}</p>
-              )}
+                <h3
+                  className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-1 line-clamp-1 pr-6"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {project.name}
+                </h3>
+                {project.description && (
+                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-3">
+                    {project.description}
+                  </p>
+                )}
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">
-                <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-                  <FileText size={13} />
-                  <span>{project.reportCount} report{project.reportCount !== 1 ? 's' : ''}</span>
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700 mt-auto">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                    <FileText size={13} />
+                    <span>
+                      {project.reportCount} report
+                      {project.reportCount !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <span className="text-xs text-slate-400 dark:text-slate-500">
+                    {formatRelativeTime(project.createdAt)}
+                  </span>
                 </div>
-                <span className="text-xs text-slate-400 dark:text-slate-500">{formatRelativeTime(project.createdAt)}</span>
-              </div>
+              </Card>
 
+              {/* Delete button overlaid on card */}
               <button
-                onClick={(e) => { e.stopPropagation(); setDeleteTarget(project); }}
-                className="absolute top-3 right-3 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-400 hover:text-red-500 transition-all cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDeleteTarget(project);
+                }}
+                className="absolute top-3 right-3 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 bg-white dark:bg-slate-700 shadow-sm hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-400 hover:text-red-500 transition-all cursor-pointer z-10"
               >
                 <Trash2 size={14} />
               </button>
-            </Card>
+            </div>
           ))}
         </div>
       )}
 
       {/* Create Modal */}
-      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Create Project">
+      <Modal
+        isOpen={showCreate}
+        onClose={() => setShowCreate(false)}
+        title="Create Project"
+      >
         <form onSubmit={handleCreate} className="space-y-4">
-          <Input label="Project Name" placeholder="e.g. Q3 Sales Analysis" value={createForm.name} onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })} required />
-          <Input label="Description (optional)" placeholder="Brief description" value={createForm.description} onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })} />
+          <Input
+            label="Project Name"
+            placeholder="e.g. Q3 Sales Analysis"
+            value={createForm.name}
+            onChange={(e) =>
+              setCreateForm({ ...createForm, name: e.target.value })
+            }
+            required
+          />
+          <Input
+            label="Description (optional)"
+            placeholder="Brief description"
+            value={createForm.description}
+            onChange={(e) =>
+              setCreateForm({ ...createForm, description: e.target.value })
+            }
+          />
           <div className="flex justify-end gap-3 pt-2">
-            <Button variant="secondary" onClick={() => setShowCreate(false)} type="button">Cancel</Button>
-            <Button type="submit" loading={createProject.isPending}>Create</Button>
+            <Button
+              variant="secondary"
+              onClick={() => setShowCreate(false)}
+              type="button"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" loading={createProject.isPending}>
+              Create
+            </Button>
           </div>
         </form>
       </Modal>
