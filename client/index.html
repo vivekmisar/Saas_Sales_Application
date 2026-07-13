@@ -4,7 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
+    <title>SalesIntel — Sales Intelligence Platform</title>
+    <!-- Apply saved theme immediately to avoid flash of wrong colors -->
+    <script>
+      try {
+        const t = localStorage.getItem('theme') || 'dark';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
