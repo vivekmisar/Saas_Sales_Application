@@ -38,7 +38,7 @@ app.use(
       'http://localhost:5173',
       'http://localhost:5174',
     ],
-    credentials: true, // Allow cookies (session) to be sent cross-origin.
+    credentials: true, // Allow cookies to be sent cross-origin.
   }),
 );
 
