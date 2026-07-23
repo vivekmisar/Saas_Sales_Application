@@ -1,0 +1,21 @@
+Date,Product,Region,Sales_Rep,Quantity,Unit_Price,Total_Revenue,Customer_Type,Deal_Stage
+2024-01-05,CRM Pro,North America,Alice Johnson,12,499.99,5999.88,Enterprise,Closed Won
+2024-01-08,Analytics Suite,Europe,Bob Smith,5,899.00,4495.00,Mid-Market,Closed Won
+2024-01-12,CRM Pro,Asia Pacific,Charlie Lee,8,499.99,3999.92,Enterprise,Closed Won
+2024-01-15,Data Connector,North America,Diana Ross,20,149.99,2999.80,SMB,Closed Won
+2024-01-18,Analytics Suite,North America,Alice Johnson,3,899.00,2697.00,Enterprise,Closed Lost
+2024-01-22,CRM Pro,Europe,Eve Martinez,15,499.99,7499.85,Enterprise,Closed Won
+2024-01-25,Data Connector,Asia Pacific,Frank Wilson,10,149.99,1499.90,Mid-Market,Negotiation
+2024-02-01,Analytics Suite,North America,Alice Johnson,7,899.00,6293.00,Enterprise,Closed Won
+2024-02-05,CRM Pro,Europe,Bob Smith,4,499.99,1999.96,SMB,Closed Won
+2024-02-10,Data Connector,North America,Diana Ross,25,149.99,3749.75,Mid-Market,Closed Won
+2024-02-14,CRM Pro,Asia Pacific,Charlie Lee,6,499.99,2999.94,Enterprise,Closed Lost
+2024-02-18,Analytics Suite,Europe,Eve Martinez,9,899.00,8091.00,Enterprise,Closed Won
+2024-02-22,Data Connector,North America,Frank Wilson,30,149.99,4499.70,SMB,Closed Won
+2024-02-28,CRM Pro,North America,Alice Johnson,11,499.99,5499.89,Enterprise,Closed Won
+2024-03-03,Analytics Suite,Asia Pacific,Bob Smith,2,899.00,1798.00,Mid-Market,Proposal
+2024-03-07,CRM Pro,Europe,Charlie Lee,18,499.99,8999.82,Enterprise,Closed Won
+2024-03-12,Data Connector,North America,Diana Ross,15,149.99,2249.85,SMB,Closed Won
+2024-03-15,Analytics Suite,North America,Eve Martinez,6,899.00,5394.00,Enterprise,Closed Won
+2024-03-20,CRM Pro,Asia Pacific,Frank Wilson,9,499.99,4499.91,Mid-Market,Closed Won
+2024-03-25,Data Connector,Europe,Alice Johnson,22,149.99,3299.78,Enterprise,Closed Won
