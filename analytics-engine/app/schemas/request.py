@@ -1,5 +1,6 @@
 from pydantic import BaseModel, field_validator
 from pathlib import Path
+from app.config import settings
 
 
 class AnalyzeRequest(BaseModel):
@@ -22,4 +23,14 @@ class AnalyzeRequest(BaseModel):
             raise ValueError(f"File not found: {v}")
         if path.suffix.lower() != ".csv":
             raise ValueError(f"Only .csv files are accepted, got: {path.suffix}")
-        return str(path.resolve())
+
+        resolved = path.resolve()
+        if settings.UPLOADS_BASE_DIR:
+            base = Path(settings.UPLOADS_BASE_DIR).resolve()
+            try:
+                resolved.relative_to(base)
+            except ValueError:
+                raise ValueError(f"Access denied: file_path is outside allowed uploads directory '{base}'")
+
+        return str(resolved)
+
