@@ -27,8 +27,7 @@ COLUMN_SYNONYMS: dict[str, list[str]] = {
         "region", "territory", "area", "location", "market", "country",
     ],
     "customer": [
-        "customer_id", "customer", "client_id", "client", "account_id",
-        "customer_type",
+        "customer_id", "customer", "client_id", "client", "account_id", "user_id",
     ],
     "quantity": [
         "quantity", "qty", "units", "count", "volume",
@@ -39,13 +38,15 @@ COLUMN_SYNONYMS: dict[str, list[str]] = {
 }
 
 
-def _find_column(df: pd.DataFrame, role: str) -> str | None:
+def _find_column(df: pd.DataFrame, role: str, exclude: set[str] | None = None) -> str | None:
     """
     Return the first DataFrame column that matches a known synonym for `role`.
     Comparison is case-insensitive and ignores leading/trailing whitespace.
     Returns None if no match is found (caller decides whether to raise).
     """
-    normalised = {col.strip().lower(): col for col in df.columns}
+    if exclude is None:
+        exclude = set()
+    normalised = {col.strip().lower(): col for col in df.columns if col not in exclude}
     for synonym in COLUMN_SYNONYMS.get(role, []):
         if synonym in normalised:
             return normalised[synonym]
@@ -81,11 +82,13 @@ def load_and_validate(file_path: str) -> tuple[pd.DataFrame, dict[str, str]]:
     df.columns = df.columns.str.strip()
 
     # Build the column map — revenue is the only hard requirement
+    used_columns: set[str] = set()
     col_map: dict[str, str] = {}
     for role in COLUMN_SYNONYMS:
-        matched = _find_column(df, role)
+        matched = _find_column(df, role, exclude=used_columns)
         if matched:
             col_map[role] = matched
+            used_columns.add(matched)
 
     if "revenue" not in col_map:
         raise HTTPException(
@@ -100,4 +103,11 @@ def load_and_validate(file_path: str) -> tuple[pd.DataFrame, dict[str, str]]:
     # Coerce the revenue column to numeric, replacing unparseable values with NaN
     df[col_map["revenue"]] = pd.to_numeric(df[col_map["revenue"]], errors="coerce")
 
+    if df[col_map["revenue"]].dropna().empty:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Revenue column '{col_map['revenue']}' contains no valid numeric data.",
+        )
+
     return df, col_map
+
