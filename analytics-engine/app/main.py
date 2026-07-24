@@ -24,7 +24,12 @@ def create_app() -> FastAPI:
     # Allow requests from the Express server and local dev client
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:5000", "http://localhost:5173"],
+        allow_origins=[
+            "http://localhost:5000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5000",
+            "http://127.0.0.1:5173",
+        ],
         allow_methods=["POST", "GET"],
         allow_headers=["*"],
     )
