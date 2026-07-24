@@ -6,7 +6,9 @@ export const reportsApi = {
   get: (projectId, reportId) =>
     api.get(`/projects/${projectId}/reports/${reportId}`),
   create: (projectId, data) =>
-    api.post(`/projects/${projectId}/reports`, data),
+    api.post(`/projects/${projectId}/reports`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
   delete: (projectId, reportId) =>
     api.delete(`/projects/${projectId}/reports/${reportId}`),
 };
