@@ -5,23 +5,23 @@ const {
   getReport,
   deleteReport,
 } = require('../controllers/report.controller');
+const upload = require('../middlewares/upload.middleware');
+const validateCsv = require('../middlewares/validateCsv.middleware');
 
 /**
- * Report routes.
+ * Report routes — nested under /api/v1/projects/:projectId/reports
  *
- * Mounted under /api/v1/projects/:projectId/reports
- * (see project.routes.js).
+ * Upload pipeline (order matters):
+ *   1. upload.single('file') — Multer saves the file to disk and populates req.file
+ *   2. validateCsv           — reads first lines, checks structure, populates req.csvMeta
+ *   3. createReport          — persists metadata to MongoDB
  *
- * `mergeParams: true` is critical — it gives this router access
- * to `:projectId` from the parent router.  Without it,
- * `req.params.projectId` would be undefined.
- *
- * Authentication is already applied by the parent project router,
- * so we don't need to repeat `isAuthenticated` here.
+ * Auth is enforced by the parent project router — no need to repeat it here.
+ * mergeParams: true gives access to :projectId from the parent router.
  */
 const router = Router({ mergeParams: true });
 
-router.post('/', createReport);
+router.post('/', upload.single('file'), validateCsv, createReport);
 router.get('/', listReports);
 router.get('/:reportId', getReport);
 router.delete('/:reportId', deleteReport);
