@@ -137,7 +137,7 @@ export default function Hero() {
               <Button variant="primary" size="lg" className="w-full sm:w-auto text-base px-8 py-3.5 shadow-lg shadow-indigo-500/25" onClick={() => navigate('/login')}>
                 Try Now
               </Button>
-              <Button variant="secondary" size="lg" className="w-full sm:w-auto text-base px-8 py-3.5 flex items-center justify-center gap-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50" onClick={() => {}}>
+              <Button variant="secondary" size="lg" className="w-full sm:w-auto text-base px-8 py-3.5 flex items-center justify-center gap-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50" onClick={() => navigate('/login')}>
                 <Play size={18} />
                 Watch Demo
               </Button>
