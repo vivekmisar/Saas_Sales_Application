@@ -7,11 +7,14 @@ import RegisterPage from '../pages/auth/RegisterPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';
 import ProjectsPage from '../pages/projects/ProjectsPage';
 import ProjectDetailPage from '../pages/projects/ProjectDetailPage';
+import ReportDashboardPage from '../pages/reports/ReportDashboardPage';
+import ErrorBoundary from '../components/ErrorBoundary';
 import NotFoundPage from '../pages/NotFoundPage';
 
 export default function AppRouter() {
   return (
-    <BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
@@ -29,11 +32,13 @@ export default function AppRouter() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+          <Route path="/projects/:projectId/reports/:reportId" element={<ReportDashboardPage />} />
         </Route>
 
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
