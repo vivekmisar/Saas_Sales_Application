@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Button from '../../../components/ui/Button';
 
 export default function Cta() {
@@ -43,12 +44,16 @@ export default function Cta() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" className="w-full sm:w-auto shadow-lg shadow-indigo-500/25">
-            Start Free <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white">
-            Try SalesIntel
-          </Button>
+          <Link to="/login" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full shadow-lg shadow-indigo-500/25">
+              Start Free <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+          <Link to="/login" className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="w-full text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white">
+              Try SalesIntel
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
