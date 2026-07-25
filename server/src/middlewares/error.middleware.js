@@ -57,6 +57,17 @@ const errorHandler = (err, req, res, _next) => {
     err.statusCode = 400;
   }
 
+  // Multer file-upload errors — map error codes to human-readable messages
+  if (err.name === 'MulterError') {
+    err.statusCode = 400;
+    const multerMessages = {
+      LIMIT_FILE_SIZE: 'File too large. Maximum allowed size is 10 MB.',
+      LIMIT_FILE_COUNT: 'Only one file may be uploaded at a time.',
+      LIMIT_UNEXPECTED_FILE: err.message || 'Unexpected file field or invalid file type.',
+    };
+    err.message = multerMessages[err.code] || err.message || 'File upload error.';
+  }
+
   // ── Send response ──────────────────────────────────────────
   const response = {
     success: false,
