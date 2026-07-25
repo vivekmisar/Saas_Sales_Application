@@ -30,7 +30,7 @@ const FAQ_DATA = [
 
 export default function Faq() {
   return (
-    <section className="py-32 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+    <section id="faq" className="py-32 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
       <div className="max-w-3xl mx-auto px-6">
         
         <div className="text-center mb-16">
