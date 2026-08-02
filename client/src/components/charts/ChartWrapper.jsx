@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, forwardRef } from 'react';
 import Card from '../ui/Card';
 import { Maximize2, Minimize2, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
@@ -18,12 +18,14 @@ export default function ChartWrapper({ title, subtitle, children, className = ''
     }
   };
 
-  // Sync state with native ESC key fullscreen exit
-  if (typeof document !== 'undefined') {
-    document.onfullscreenchange = () => {
+  // Sync state with native ESC key fullscreen exit via proper useEffect
+  useEffect(() => {
+    const handleChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
-  }
+    document.addEventListener('fullscreenchange', handleChange);
+    return () => document.removeEventListener('fullscreenchange', handleChange);
+  }, []);
 
   const downloadChart = async () => {
     if (!wrapperRef.current) return;
@@ -48,7 +50,7 @@ export default function ChartWrapper({ title, subtitle, children, className = ''
     >
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="text-sm font-heading font-semibold text-text-primary text-slate-800 dark:text-slate-200">
+          <h3 className="text-sm font-heading font-semibold text-slate-800 dark:text-slate-200">
             {title}
           </h3>
           {subtitle && (
