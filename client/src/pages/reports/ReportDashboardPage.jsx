@@ -257,7 +257,7 @@ export default function ReportDashboardPage() {
                   .filter(r => r._id !== reportId && r.status === 'completed')
                   .map(r => (
                     <option key={r._id} value={r._id}>
-                      {r.name || formatDate(r.createdAt)}
+                      {r.originalName || formatDate(r.createdAt)}
                     </option>
                   ))}
               </select>
@@ -277,7 +277,7 @@ export default function ReportDashboardPage() {
       </div>
 
       {/* ── Top Products + Category Distribution (2-col) ───────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div>
           <TopProductsChart 
             data={a.top_products} 
@@ -325,7 +325,7 @@ export default function ReportDashboardPage() {
         </div>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-6">
         <DataTable
           title="Categories Table"
           subtitle="Revenue by category"
