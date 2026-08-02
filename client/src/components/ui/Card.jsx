@@ -1,8 +1,11 @@
-export default function Card({ children, className = '', hover = false, onClick, ...props }) {
+import { forwardRef } from 'react';
+
+const Card = forwardRef(function Card({ children, className = '', hover = false, onClick, ...props }, ref) {
   const Tag = onClick ? 'button' : 'div';
 
   return (
     <Tag
+      ref={ref}
       onClick={onClick}
       className={[
         'relative block w-full text-left',
@@ -22,4 +25,6 @@ export default function Card({ children, className = '', hover = false, onClick,
       {children}
     </Tag>
   );
-}
+});
+
+export default Card;
