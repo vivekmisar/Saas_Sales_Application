@@ -9,7 +9,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
   const categories = [...new Set(analytics.category_revenue.map(c => c.category))].sort();
 
   return (
-    <Card className="mb-6 p-4">
+    <Card className="p-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         
         {/* Filters Group */}
