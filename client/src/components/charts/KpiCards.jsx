@@ -134,7 +134,6 @@ export default function KpiCards({ analytics, compareAnalytics }) {
                 <AnimatedNumber
                   value={value}
                   format={format}
-                  prefix={prefix || (format === formatCurrency ? '$' : '')}
                 />
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 relative z-10">{label}</p>
