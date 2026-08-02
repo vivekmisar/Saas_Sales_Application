@@ -91,7 +91,7 @@ export default function ProjectDetailPage() {
       {/* Back button */}
       <button
         onClick={() => navigate('/projects')}
-        className="flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary mb-4 transition-colors cursor-pointer"
+        className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 mb-4 transition-colors cursor-pointer"
       >
         <ArrowLeft size={16} /> Back to Projects
       </button>
@@ -100,20 +100,20 @@ export default function ProjectDetailPage() {
       <Card className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-brand-light flex items-center justify-center shrink-0">
-              <FileText size={24} className="text-brand" />
+            <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">
+              <FileText size={24} className="text-indigo-500" />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h1 className="text-xl font-heading font-bold text-text-primary">
+                <h1 className="text-xl font-heading font-bold text-slate-900 dark:text-white">
                   {project.name}
                 </h1>
                 <Badge status={project.status} />
               </div>
               {project.description && (
-                <p className="text-sm text-text-muted">{project.description}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{project.description}</p>
               )}
-              <p className="text-xs text-text-muted mt-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                 Created {formatDate(project.createdAt)} · {project.reportCount} report
                 {project.reportCount !== 1 ? 's' : ''}
               </p>
@@ -136,7 +136,7 @@ export default function ProjectDetailPage() {
 
       {/* Reports section */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-heading font-semibold text-text-primary">
+        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">
           Reports
         </h2>
         <Button size="sm" onClick={() => setShowUploadModal(true)}>
@@ -172,10 +172,10 @@ export default function ProjectDetailPage() {
                   <FileSpreadsheet size={20} className="text-emerald-500" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-text-primary">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
                     {report.originalName}
                   </p>
-                  <div className="flex items-center gap-3 text-xs text-text-muted mt-0.5">
+                  <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     <span className="font-mono">{formatFileSize(report.fileSize)}</span>
                     <span>{formatRelativeTime(report.uploadedAt)}</span>
                     {report.status === 'completed' && (
@@ -188,7 +188,7 @@ export default function ProjectDetailPage() {
                 <Badge status={report.status} />
                 <button
                   onClick={(e) => { e.stopPropagation(); setDeleteTarget(report); }}
-                  className="p-1.5 rounded-lg text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
                 >
                   <Trash2 size={14} />
                 </button>
