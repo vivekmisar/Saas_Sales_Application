@@ -82,6 +82,19 @@ html.dark .auth-root {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-brand) 16%, transparent);
 }
 .app-root .ui-badge { border-radius: 999px; letter-spacing: .01em; }
+.app-root .app-page-title { letter-spacing: -.035em; }
+.app-root .app-stat-grid .ui-card { min-height: 138px; padding: 22px; }
+.app-root .app-stat-grid .ui-card > div > div:first-child p:last-child { font-size: 30px; letter-spacing: -.045em; }
+.app-root .app-stat-icon { border-radius: 14px; background: var(--app-brand-soft); }
+.app-root .app-stat-icon svg { color: var(--app-brand); }
+.app-root .app-quick-action {
+  border-color: var(--app-border);
+  background: var(--app-surface-raised);
+}
+.app-root .app-quick-action:hover {
+  border-color: color-mix(in srgb, var(--app-brand) 35%, var(--app-border));
+  background: color-mix(in srgb, var(--app-brand-soft) 45%, var(--app-surface));
+}
 .app-modal-overlay { background: rgba(12, 24, 16, .58); }
 .app-modal-panel {
   color: var(--app-text);

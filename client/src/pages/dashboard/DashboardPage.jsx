@@ -78,11 +78,11 @@ export default function DashboardPage() {
   if (isLoading) return <Spinner size={32} className="mt-32" />;
 
   return (
-    <div className="w-full max-w-5xl">
+    <div className="app-dashboard-page w-full max-w-6xl">
       {/* Page heading */}
-      <div className="mb-8">
+      <div className="app-page-heading mb-8">
         <h1
-          className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-50"
+          className="app-page-title text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-50"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           Good {getGreeting()}, {firstName} 👋
@@ -95,7 +95,7 @@ export default function DashboardPage() {
       {/* Stat cards */}
       <div
         ref={cardsRef}
-        className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
+        className="app-stat-grid grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
       >
         {stats.map(({ label, value, icon: Icon, bg, iconCls }) => (
           <Card key={label}>
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                   {value}
                 </p>
               </div>
-              <div className={`${bg} p-2.5 rounded-xl shrink-0`}>
+              <div className={`app-stat-icon ${bg} p-2.5 rounded-xl shrink-0`}>
                 <Icon size={22} className={iconCls} />
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function DashboardPage() {
             <Link
               key={label}
               to={to}
-              className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition-all duration-200 group"
+              className="app-quick-action flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition-all duration-200 group"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Icon size={20} className={`${color} shrink-0`} />
