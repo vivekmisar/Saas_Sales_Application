@@ -52,7 +52,8 @@
 .landing-root .l-secondary:hover { text-decoration-color: currentColor; }
 .landing-root .l-secondary svg { transition: transform .2s; }
 .landing-root .l-secondary:hover svg { transform: translateX(2px); }
-.landing-root .l-preview-frame { max-width: 1050px; margin: 0 auto; overflow: hidden; border: 1px solid #d9d7d1; border-radius: 20px; background: white; box-shadow: 0 30px 80px -20px rgb(0 0 0 / .15); text-align: left; animation: l-fade-up .8s cubic-bezier(.22,1,.36,1) both; }
+.landing-root .l-preview-frame { position: relative; max-width: 1050px; margin: 0 auto; overflow: hidden; border: 1px solid #d9d7d1; border-radius: 20px; background: white; box-shadow: 0 30px 80px -20px rgb(0 0 0 / .15); text-align: left; animation: l-fade-up .8s cubic-bezier(.22,1,.36,1) both; }
+.landing-root .l-preview-frame::after { position: absolute; right: 0; bottom: 0; left: 0; height: 36px; background: linear-gradient(to bottom, transparent, var(--bg)); content: ''; pointer-events: none; }
 .landing-root .l-preview-image { display: block; width: 100%; height: auto; }
 .landing-root .l-preview-window { color: #252522; font-size: 11px; line-height: 1.4; background: #fff; }
 .landing-root .l-preview-chrome { height: 37px; display: flex; align-items: center; gap: 5px; padding: 0 13px; border-bottom: 1px solid #eee; background: #fafaf9; }
