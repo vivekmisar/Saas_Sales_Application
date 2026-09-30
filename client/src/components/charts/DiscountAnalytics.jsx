@@ -3,6 +3,7 @@ import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
 import { Percent, Tag, Activity } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
+import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 
 /**
  * DiscountAnalytics — Extrapolates Discount metrics based on revenue.
@@ -10,6 +11,7 @@ import AnimatedNumber from '../ui/AnimatedNumber';
  */
 export default function DiscountAnalytics({ analytics }) {
   const { isDark } = useTheme();
+  const theme = getChartTheme(isDark);
   
   if (!analytics) return null;
 
@@ -27,17 +29,17 @@ export default function DiscountAnalytics({ analytics }) {
   // ── Top Discounted Products Chart ─────────────────────────────────
   const productOption = {
     backgroundColor: 'transparent',
-    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    tooltip: { ...getChartTooltip(isDark), trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
     xAxis: {
       type: 'value',
-      axisLabel: { color: isDark ? '#94a3b8' : '#64748b' },
-      splitLine: { lineStyle: { color: isDark ? '#334155' : '#e2e8f0', type: 'dashed' } }
+      axisLabel: { color: theme.muted },
+      splitLine: { lineStyle: { color: theme.axis, type: 'dashed' } }
     },
     yAxis: {
       type: 'category',
       data: productData.map(d => d.name).reverse(),
-      axisLabel: { color: isDark ? '#94a3b8' : '#64748b' },
+      axisLabel: { color: theme.muted },
       axisLine: { show: false },
       axisTick: { show: false }
     },
@@ -46,7 +48,7 @@ export default function DiscountAnalytics({ analytics }) {
         type: 'bar',
         data: productData.map(d => d.value).reverse(),
         itemStyle: {
-          color: '#f43f5e', // rose-500
+          color: chartColors.primarySoft,
           borderRadius: [0, 4, 4, 0]
         }
       }
@@ -57,9 +59,8 @@ export default function DiscountAnalytics({ analytics }) {
     <div className="mt-6 mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
       <div className="flex items-center gap-2 mb-4">
         <Percent className="text-rose-500" size={20} />
-        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">
-          Discount Analytics
-        </h2>
+        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">Discount Analytics</h2>
+        <span className="app-estimate-label">Illustrative estimate · assumed 8.5% rate</span>
       </div>
 
       {/* Mini KPIs */}

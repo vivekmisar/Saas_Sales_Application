@@ -1,8 +1,9 @@
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
-import { TrendingUp, PieChart, BarChart2 } from 'lucide-react';
+import { TrendingUp, BarChart2 } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
+import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 
 /**
  * ProfitAnalytics — Extrapolates Profit metrics based on revenue.
@@ -10,6 +11,7 @@ import AnimatedNumber from '../ui/AnimatedNumber';
  */
 export default function ProfitAnalytics({ analytics, onDrillDown }) {
   const { isDark } = useTheme();
+  const theme = getChartTheme(isDark);
   
   if (!analytics) return null;
 
@@ -34,11 +36,11 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
   // ── Profit by Category Chart ──────────────────────────────────────
   const categoryOption = {
     backgroundColor: 'transparent',
-    tooltip: { trigger: 'item', formatter: '{b}: ${c} ({d}%)' },
+    tooltip: { ...getChartTooltip(isDark), trigger: 'item', formatter: '{b}: ${c} ({d}%)' },
     legend: {
       orient: 'horizontal',
       bottom: 0,
-      textStyle: { color: isDark ? '#94a3b8' : '#64748b' }
+      textStyle: { color: theme.muted }
     },
     series: [
       {
@@ -46,12 +48,12 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
         radius: ['40%', '70%'],
         itemStyle: {
           borderRadius: 8,
-          borderColor: isDark ? '#1e293b' : '#ffffff',
+          borderColor: theme.surface,
           borderWidth: 2
         },
         label: { show: false },
         data: categoryData,
-        color: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899']
+        color: chartColors.palette
       }
     ]
   };
@@ -59,17 +61,17 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
   // ── Profit by Product Chart ───────────────────────────────────────
   const productOption = {
     backgroundColor: 'transparent',
-    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    tooltip: { ...getChartTooltip(isDark), trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
     xAxis: {
       type: 'value',
-      axisLabel: { color: isDark ? '#94a3b8' : '#64748b' },
-      splitLine: { lineStyle: { color: isDark ? '#334155' : '#e2e8f0', type: 'dashed' } }
+      axisLabel: { color: theme.muted },
+      splitLine: { lineStyle: { color: theme.axis, type: 'dashed' } }
     },
     yAxis: {
       type: 'category',
       data: productData.map(d => d.name).reverse(),
-      axisLabel: { color: isDark ? '#94a3b8' : '#64748b' },
+      axisLabel: { color: theme.muted },
       axisLine: { show: false },
       axisTick: { show: false }
     },
@@ -78,7 +80,7 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
         type: 'bar',
         data: productData.map(d => d.value).reverse(),
         itemStyle: {
-          color: '#8b5cf6',
+          color: chartColors.primarySoft,
           borderRadius: [0, 4, 4, 0]
         }
       }
@@ -89,9 +91,8 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
     <div className="mt-8 mb-6 animate-fade-in" style={{ animationDelay: '100ms' }}>
       <div className="flex items-center gap-2 mb-4">
         <TrendingUp className="text-emerald-500" size={20} />
-        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">
-          Profit Analytics
-        </h2>
+        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">Profit Analytics</h2>
+        <span className="app-estimate-label">Illustrative estimate · assumed margins</span>
       </div>
 
       {/* Mini KPIs */}

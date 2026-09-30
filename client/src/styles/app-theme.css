@@ -108,6 +108,37 @@ html.dark .auth-root {
 .app-root .app-project-overview { padding: 24px; }
 .app-root .app-report-row { min-height: 78px; border-radius: 16px; }
 .app-root .app-report-row[data-card-hover="true"]:hover { transform: translateY(-1px); }
+.app-root .app-report-dashboard { padding-bottom: 34px; }
+.app-root .app-report-header { padding-bottom: 19px; border-bottom: 1px solid var(--app-border); }
+.app-root .app-report-header h1 { max-width: min(44vw, 620px); overflow-wrap: anywhere; letter-spacing: -.025em; }
+.app-root .app-filter-bar { padding: 14px 17px; border-radius: 15px; }
+.app-root .app-filter-bar input,
+.app-root .app-filter-bar select,
+.app-root .app-compare-control select { border-color: var(--app-border); background-color: var(--app-surface); color: var(--app-text); border-radius: 10px; }
+.app-root .app-compare-control { border-color: var(--app-border); border-radius: 14px; background: var(--app-surface); }
+.app-root .app-kpi-card { min-height: 142px; padding: 17px; border-color: var(--app-border); border-radius: 17px; background: var(--app-surface); }
+.app-root .app-kpi-card > div > p:first-of-type { font-size: 23px; letter-spacing: -.04em; }
+.app-root .app-kpi-card > div > p:last-of-type { text-transform: uppercase; letter-spacing: .055em; font-size: 10px; font-weight: 650; }
+.app-root .app-kpi-trend { background: var(--app-brand-soft); }
+.app-root .app-chart-card { padding: 21px; border-radius: 18px; }
+.app-root .app-chart-title { font-size: 15px; letter-spacing: -.015em; }
+.app-root .app-chart-actions { opacity: .35; }
+.app-root .app-chart-card:hover .app-chart-actions,
+.app-root .app-chart-actions:focus-within { opacity: 1; }
+.app-root .app-report-dashboard table thead tr { background: var(--app-surface-raised); }
+.app-root .app-report-dashboard table th { color: var(--app-muted); letter-spacing: .07em; }
+.app-root .app-report-dashboard table tbody tr:hover { background: var(--app-brand-soft); }
+.app-root .app-estimate-label {
+  margin-left: auto;
+  padding: 5px 9px;
+  color: var(--app-muted);
+  background: var(--app-surface-raised);
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.3;
+}
 .app-modal-overlay { background: rgba(12, 24, 16, .58); }
 .app-modal-panel {
   color: var(--app-text);
@@ -122,6 +153,10 @@ html.dark .auth-root {
   .app-root .app-sidebar[data-collapsed="true"] { transform: translateX(-100%); }
   .app-root .app-sidebar { transition: transform .24s ease, width .24s ease; }
   .app-root .app-menu-button { display: inline-flex; }
+  .app-root .app-report-header h1 { max-width: 100%; }
+  .app-root .app-chart-card { padding: 17px; }
+  .app-root .app-chart-actions { opacity: 1; }
+  .app-root .app-estimate-label { margin-left: 0; }
 }
 
 .app-root button:focus-visible,

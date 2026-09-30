@@ -2,6 +2,7 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
+import { getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 
 /**
  * ProfitTrendChart — Bar chart comparing monthly revenue.
@@ -14,6 +15,7 @@ import { useTheme } from '../../hooks/useTheme';
  */
 const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfit = 0 }) {
   const { isDark } = useTheme();
+  const theme = getChartTheme(isDark);
 
   if (!data || data.length === 0) return null;
 
@@ -24,9 +26,7 @@ const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfi
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
-      backgroundColor: isDark ? '#1e293b' : '#fff',
-      borderColor: isDark ? '#334155' : '#e2e8f0',
-      textStyle: { color: isDark ? '#f8fafc' : '#0f172a', fontSize: 12 },
+      ...getChartTooltip(isDark),
       formatter: (params) => {
         const p = params[0];
         return `<strong>${p.name}</strong><br/>Revenue: $${p.value.toLocaleString()}`;
@@ -36,14 +36,14 @@ const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfi
     xAxis: {
       type: 'category',
       data: months,
-      axisLine: { lineStyle: { color: isDark ? '#475569' : '#cbd5e1' } },
-      axisLabel: { color: isDark ? '#94a3b8' : '#64748b', fontSize: 11 },
+      axisLine: { lineStyle: { color: theme.axis } },
+      axisLabel: { color: theme.muted, fontSize: 11 },
     },
     yAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: isDark ? '#1e293b' : '#f1f5f9' } },
+      splitLine: { lineStyle: { color: theme.grid } },
       axisLabel: {
-        color: isDark ? '#94a3b8' : '#64748b',
+        color: theme.muted,
         fontSize: 11,
         formatter: (v) => `$${(v / 1000).toFixed(0)}k`,
       },
@@ -59,8 +59,8 @@ const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfi
             type: 'linear',
             x: 0, y: 0, x2: 0, y2: 1,
             colorStops: [
-              { offset: 0, color: '#10b981' },
-              { offset: 1, color: '#059669' },
+              { offset: 0, color: '#27a36a' },
+              { offset: 1, color: '#0f5132' },
             ],
           },
         },

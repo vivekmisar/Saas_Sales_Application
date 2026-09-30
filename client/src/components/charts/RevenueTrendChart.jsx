@@ -2,6 +2,7 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
+import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 
 /**
  * RevenueTrendChart — Area chart showing monthly revenue over time.
@@ -11,6 +12,7 @@ import { useTheme } from '../../hooks/useTheme';
  */
 const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
   const { isDark } = useTheme();
+  const theme = getChartTheme(isDark);
 
   if (!data || data.length === 0) return null;
 
@@ -20,9 +22,7 @@ const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
   const option = {
     tooltip: {
       trigger: 'axis',
-      backgroundColor: isDark ? '#1e293b' : '#fff',
-      borderColor: isDark ? '#334155' : '#e2e8f0',
-      textStyle: { color: isDark ? '#f8fafc' : '#0f172a', fontSize: 12 },
+      ...getChartTooltip(isDark),
       formatter: (params) => {
         const p = params[0];
         return `<strong>${p.name}</strong><br/>Revenue: $${p.value.toLocaleString()}`;
@@ -32,14 +32,14 @@ const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
     xAxis: {
       type: 'category',
       data: months,
-      axisLine: { lineStyle: { color: isDark ? '#475569' : '#cbd5e1' } },
-      axisLabel: { color: isDark ? '#94a3b8' : '#64748b', fontSize: 11 },
+      axisLine: { lineStyle: { color: theme.axis } },
+      axisLabel: { color: theme.muted, fontSize: 11 },
     },
     yAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: isDark ? '#1e293b' : '#f1f5f9' } },
+      splitLine: { lineStyle: { color: theme.grid } },
       axisLabel: {
-        color: isDark ? '#94a3b8' : '#64748b',
+        color: theme.muted,
         fontSize: 11,
         formatter: (v) => `$${(v / 1000).toFixed(0)}k`,
       },
@@ -52,15 +52,15 @@ const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
         smooth: true,
         symbol: 'circle',
         symbolSize: 8,
-        lineStyle: { width: 3, color: '#6366f1' },
-        itemStyle: { color: '#6366f1', borderWidth: 2, borderColor: '#fff' },
+        lineStyle: { width: 3, color: chartColors.primary },
+        itemStyle: { color: chartColors.primary, borderWidth: 2, borderColor: theme.surface },
         areaStyle: {
           color: {
             type: 'linear',
             x: 0, y: 0, x2: 0, y2: 1,
             colorStops: [
-              { offset: 0, color: 'rgba(99, 102, 241, 0.3)' },
-              { offset: 1, color: 'rgba(99, 102, 241, 0.02)' },
+              { offset: 0, color: 'rgba(39, 163, 106, 0.28)' },
+              { offset: 1, color: 'rgba(39, 163, 106, 0.015)' },
             ],
           },
         },

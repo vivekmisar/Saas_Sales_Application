@@ -2,6 +2,7 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
+import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 
 /**
  * CategoryDistributionChart — Donut chart showing revenue by category.
@@ -10,10 +11,11 @@ import { useTheme } from '../../hooks/useTheme';
  * Each entry: { category: "Enterprise", revenue: 60774.08 }
  */
 
-const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#f43f5e'];
+const COLORS = chartColors.palette;
 
 const CategoryDistributionChart = React.memo(function CategoryDistributionChart({ data, onDrillDown }) {
   const { isDark } = useTheme();
+  const theme = getChartTheme(isDark);
 
   if (!data || data.length === 0) return null;
 
@@ -28,9 +30,7 @@ const CategoryDistributionChart = React.memo(function CategoryDistributionChart(
   const option = {
     tooltip: {
       trigger: 'item',
-      backgroundColor: isDark ? '#1e293b' : '#fff',
-      borderColor: isDark ? '#334155' : '#e2e8f0',
-      textStyle: { color: isDark ? '#f8fafc' : '#0f172a', fontSize: 12 },
+      ...getChartTooltip(isDark),
       formatter: (p) =>
         `<strong>${p.name}</strong><br/>$${p.value.toLocaleString()} (${p.percent}%)`,
     },
@@ -38,7 +38,7 @@ const CategoryDistributionChart = React.memo(function CategoryDistributionChart(
       orient: 'vertical',
       right: 10,
       top: 'center',
-      textStyle: { color: isDark ? '#94a3b8' : '#64748b', fontSize: 12 },
+      textStyle: { color: theme.muted, fontSize: 12 },
       icon: 'circle',
       itemWidth: 10,
       itemHeight: 10,
@@ -56,7 +56,7 @@ const CategoryDistributionChart = React.memo(function CategoryDistributionChart(
           formatter: `$${(total / 1000).toFixed(1)}k`,
           fontSize: 18,
           fontWeight: 700,
-          color: isDark ? '#f8fafc' : '#0f172a',
+          color: theme.text,
         },
         emphasis: {
           label: {

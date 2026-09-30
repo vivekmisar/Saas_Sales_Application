@@ -2,6 +2,7 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
+import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 
 /**
  * TopProductsChart — Horizontal bar chart of top products by revenue.
@@ -11,6 +12,7 @@ import { useTheme } from '../../hooks/useTheme';
  */
 const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDown }) {
   const { isDark } = useTheme();
+  const theme = getChartTheme(isDark);
 
   if (!data || data.length === 0) return null;
 
@@ -23,9 +25,7 @@ const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDow
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
-      backgroundColor: isDark ? '#1e293b' : '#fff',
-      borderColor: isDark ? '#334155' : '#e2e8f0',
-      textStyle: { color: isDark ? '#f8fafc' : '#0f172a', fontSize: 12 },
+      ...getChartTooltip(isDark),
       formatter: (params) => {
         const p = params[0];
         const item = sorted[p.dataIndex];
@@ -35,9 +35,9 @@ const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDow
     grid: { top: 10, right: 30, bottom: 20, left: 10, containLabel: true },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: isDark ? '#1e293b' : '#f1f5f9' } },
+      splitLine: { lineStyle: { color: theme.grid } },
       axisLabel: {
-        color: isDark ? '#94a3b8' : '#64748b',
+        color: theme.muted,
         fontSize: 11,
         formatter: (v) => `$${(v / 1000).toFixed(0)}k`,
       },
@@ -48,7 +48,7 @@ const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDow
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
-        color: isDark ? '#cbd5e1' : '#334155',
+        color: theme.text,
         fontSize: 12,
         fontWeight: 500,
       },
@@ -64,8 +64,8 @@ const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDow
             type: 'linear',
             x: 0, y: 0, x2: 1, y2: 0,
             colorStops: [
-              { offset: 0, color: '#6366f1' },
-              { offset: 1, color: '#8b5cf6' },
+              { offset: 0, color: chartColors.primary },
+              { offset: 1, color: chartColors.primarySoft },
             ],
           },
         },

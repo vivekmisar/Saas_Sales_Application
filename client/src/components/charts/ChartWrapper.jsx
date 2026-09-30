@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, forwardRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from '../ui/Card';
 import { Maximize2, Minimize2, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
@@ -45,19 +45,19 @@ export default function ChartWrapper({ title, subtitle, children, className = ''
 
   return (
     <Card 
-      className={`group animate-fade-in ${className} ${isFullscreen ? 'fixed inset-0 z-[100] m-0 rounded-none w-screen h-screen flex flex-col' : ''}`}
+      className={`app-chart-card group animate-fade-in ${className} ${isFullscreen ? 'fixed inset-0 z-[100] m-0 rounded-none w-screen h-screen flex flex-col' : ''}`}
       ref={wrapperRef}
     >
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="text-sm font-heading font-semibold text-slate-800 dark:text-slate-200">
+          <h3 className="app-chart-title text-sm font-heading font-semibold text-slate-800 dark:text-slate-200">
             {title}
           </h3>
           {subtitle && (
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{subtitle}</p>
           )}
         </div>
-        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="app-chart-actions flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={downloadChart}
             className="p-1.5 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-md transition-colors"

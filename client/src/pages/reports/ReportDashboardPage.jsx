@@ -199,9 +199,9 @@ export default function ReportDashboardPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto" id="dashboard-content" ref={dashboardRef}>
+    <div className="app-report-dashboard max-w-7xl mx-auto" id="dashboard-content" ref={dashboardRef}>
       {/* ── Header ─────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+      <div className="app-report-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => navigate(`/projects/${projectId}`)}
@@ -245,7 +245,7 @@ export default function ReportDashboardPage() {
           
           {/* Comparison Dropdown */}
           {reportsData?.reports && reportsData.reports.length > 1 && (
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 h-10 mt-6 sm:mt-0">
+            <div className="app-compare-control flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 h-10 mt-6 sm:mt-0">
               <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Compare:</span>
               <select
                 value={compareReportId}
@@ -267,7 +267,7 @@ export default function ReportDashboardPage() {
       </div>
 
       {/* ── KPI Cards ──────────────────────────────────────────────── */}
-      <div className="mb-6">
+      <div className="app-report-kpis mb-6">
         <KpiCards analytics={a} compareAnalytics={compareReport?.analytics} />
       </div>
 
