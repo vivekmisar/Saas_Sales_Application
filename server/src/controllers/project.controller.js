@@ -25,12 +25,14 @@ const createProject = catchAsync(async (req, res) => {
 
 /**
  * GET /api/v1/projects
- * Query: ?status=active&page=1&limit=10
+ * Query: ?status=active&search=term&sort=-createdAt&page=1&limit=10
  */
 const listProjects = catchAsync(async (req, res) => {
-  const { status, page, limit } = req.query;
+  const { status, search, sort, page, limit } = req.query;
   const result = await projectService.listProjects(req.user.id, {
     status,
+    search,
+    sort,
     page: parseInt(page, 10) || 1,
     limit: parseInt(limit, 10) || 10,
   });

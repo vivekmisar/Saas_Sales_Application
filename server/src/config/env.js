@@ -34,6 +34,8 @@ const env = Object.freeze({
   PORT: parseInt(process.env.PORT, 10) || 5000,
   MONGODB_URI: process.env.MONGODB_URI,
   SESSION_SECRET: process.env.SESSION_SECRET,
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  ANALYTICS_ENGINE_URL: process.env.ANALYTICS_ENGINE_URL || 'http://localhost:8000',
 });
 
 module.exports = env;

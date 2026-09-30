@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Upload, FileSpreadsheet, X, AlertCircle } from 'lucide-react';
+import { formatFileSize } from '../../utils/formatters';
 import Button from './Button';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB — must match server
@@ -32,7 +33,7 @@ export default function FileUploadZone({ onUpload, isUploading = false, onCancel
     const ext = f.name.split('.').pop()?.toLowerCase();
     if (ext !== 'csv') return 'Only .csv files are allowed';
 
-    if (f.size > MAX_FILE_SIZE) return `File size (${formatSize(f.size)}) exceeds the 10MB limit`;
+    if (f.size > MAX_FILE_SIZE) return `File size (${formatFileSize(f.size)}) exceeds the 10MB limit`;
 
     if (f.size === 0) return 'File is empty';
 
@@ -134,7 +135,7 @@ export default function FileUploadZone({ onUpload, isUploading = false, onCancel
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{file.name}</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">{formatSize(file.size)}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{formatFileSize(file.size)}</p>
           </div>
           {!isUploading && (
             <button type="button" onClick={removeFile} className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer">
@@ -169,12 +170,4 @@ export default function FileUploadZone({ onUpload, isUploading = false, onCancel
       </div>
     </form>
   );
-}
-
-function formatSize(bytes) {
-  if (bytes === 0) return '0 B';
-  const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
 }

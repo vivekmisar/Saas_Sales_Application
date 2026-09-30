@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 const passport = require('passport');
 const sessionConfig = require('./config/session');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/error.middleware');
+const { globalLimiter } = require('./middlewares/rateLimiter.middleware');
 const AppError = require('./utils/AppError');
 
 // Initialise Passport strategy (side-effect import).
@@ -41,6 +43,10 @@ app.use(
     credentials: true, // Allow cookies to be sent cross-origin.
   }),
 );
+
+// ── Performance ─────────────────────────────────────────────────
+app.use(compression()); // gzip/brotli all responses
+app.use(globalLimiter); // 100 req / 15 min per IP
 
 // ── Body parsing ────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));

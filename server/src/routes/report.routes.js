@@ -7,6 +7,7 @@ const {
 } = require('../controllers/report.controller');
 const upload = require('../middlewares/upload.middleware');
 const validateCsv = require('../middlewares/validateCsv.middleware');
+const { uploadLimiter } = require('../middlewares/rateLimiter.middleware');
 
 /**
  * Report routes — nested under /api/v1/projects/:projectId/reports
@@ -21,7 +22,7 @@ const validateCsv = require('../middlewares/validateCsv.middleware');
  */
 const router = Router({ mergeParams: true });
 
-router.post('/', upload.single('file'), validateCsv, createReport);
+router.post('/', uploadLimiter, upload.single('file'), validateCsv, createReport);
 router.get('/', listReports);
 router.get('/:reportId', getReport);
 router.delete('/:reportId', deleteReport);

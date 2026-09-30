@@ -1,16 +1,6 @@
-import { createContext, useState, useEffect, useCallback, useContext } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 
 export const ThemeContext = createContext(null);
-
-/**
- * Convenience hook — avoids importing ThemeContext + useContext everywhere.
- * Returns { theme, isDark, toggleTheme }.
- */
-export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
-  return ctx;
-}
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {

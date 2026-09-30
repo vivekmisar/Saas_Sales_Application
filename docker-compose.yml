@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # ── MongoDB ──────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: salesintel-mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI Analytics Engine ─────────────────────────────────────
+  analytics:
+    build: ./analytics-engine
+    container_name: salesintel-analytics
+    ports:
+      - '8000:8000'
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - ALLOWED_ORIGINS=http://localhost:5000,http://localhost:5173
+
+  # ── Express API Server ───────────────────────────────────────────
+  server:
+    build: ./server
+    container_name: salesintel-server
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/sales-platform
+      - SESSION_SECRET=${SESSION_SECRET:-change-me-in-production}
+      - CLIENT_URL=http://localhost
+      - ANALYTICS_ENGINE_URL=http://analytics:8000
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+
+  # ── React Client (Nginx) ────────────────────────────────────────
+  client:
+    build: ./client
+    container_name: salesintel-client
+    ports:
+      - '80:80'
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:
+  uploads:

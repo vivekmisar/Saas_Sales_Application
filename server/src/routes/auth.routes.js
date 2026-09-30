@@ -8,6 +8,7 @@ const {
 } = require('../controllers/auth.controller');
 const { isAuthenticated } = require('../middlewares/auth.middleware');
 const validate = require('../middlewares/validate.middleware');
+const { authLimiter } = require('../middlewares/rateLimiter.middleware');
 const { registerSchema, loginSchema } = require('../validations/auth.validation');
 
 /**
@@ -24,8 +25,8 @@ const { registerSchema, loginSchema } = require('../validations/auth.validation'
 const router = Router();
 
 // ── Public routes (no auth required) ────────────────────────────
-router.post('/register', validate(registerSchema), register);
-router.post('/login', validate(loginSchema), login);
+router.post('/register', authLimiter, validate(registerSchema), register);
+router.post('/login', authLimiter, validate(loginSchema), login);
 router.get('/status', checkAuthStatus);
 
 // ── Protected routes ────────────────────────────────────────────

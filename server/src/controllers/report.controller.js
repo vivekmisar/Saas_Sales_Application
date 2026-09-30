@@ -5,12 +5,9 @@ const catchAsync = require('../utils/catchAsync');
 const ApiResponse = require('../utils/ApiResponse');
 const AppError = require('../utils/AppError');
 const logger = require('../utils/logger');
+const env = require('../config/env');
 
-/**
- * FastAPI analytics engine URL.
- * In production this would come from env vars; hardcoded for local dev.
- */
-const ANALYTICS_ENGINE_URL = process.env.ANALYTICS_ENGINE_URL || 'http://localhost:8000';
+const ANALYTICS_ENGINE_URL = env.ANALYTICS_ENGINE_URL;
 
 /**
  * POST /api/v1/projects/:projectId/reports

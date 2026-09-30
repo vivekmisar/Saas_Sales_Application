@@ -43,14 +43,14 @@ const createProject = async (userId, { name, description }) => {
 /**
  * List all projects for a user.
  *
- * Supports filtering by status and pagination.
+ * Supports filtering by status, search, sort, and pagination.
  * Defaults to active projects, sorted newest first.
  *
  * @param {string} userId
- * @param {Object} options - { status?, page?, limit? }
+ * @param {Object} options - { status?, search?, sort?, page?, limit? }
  * @returns {Object} { projects, total, page, totalPages }
  */
-const listProjects = async (userId, { status, page = 1, limit = 10 } = {}) => {
+const listProjects = async (userId, { status, search, sort, page = 1, limit = 10 } = {}) => {
   const filter = { user: userId };
 
   // Only add status filter if explicitly provided.
@@ -59,10 +59,27 @@ const listProjects = async (userId, { status, page = 1, limit = 10 } = {}) => {
     filter.status = status;
   }
 
+  // Server-side search — case-insensitive regex on project name.
+  if (search) {
+    filter.name = { $regex: search, $options: 'i' };
+  }
+
+  // Dynamic sort — defaults to newest first.
+  // Accepts: 'name', '-name', 'createdAt', '-createdAt', 'reportCount', '-reportCount'
+  let sortOption = { createdAt: -1 };
+  if (sort) {
+    const direction = sort.startsWith('-') ? -1 : 1;
+    const field = sort.replace(/^-/, '');
+    const allowedSortFields = ['name', 'createdAt', 'reportCount'];
+    if (allowedSortFields.includes(field)) {
+      sortOption = { [field]: direction };
+    }
+  }
+
   const skip = (page - 1) * limit;
 
   const [projects, total] = await Promise.all([
-    Project.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    Project.find(filter).sort(sortOption).skip(skip).limit(limit),
     Project.countDocuments(filter),
   ]);
 

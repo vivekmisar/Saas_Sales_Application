@@ -1,149 +1,257 @@
-# Sales Intelligence Platform
+# SalesIntel — Sales Intelligence Platform
 
-A modern, scalable microservice-based architecture for processing and visualizing sales analytics. This platform separates concerns by delegating heavy data processing to a dedicated Python service while maintaining a high-performance Express/Node.js backend and a beautiful React frontend.
+> AI-powered sales analytics dashboard. Upload CSV data, get instant insights with interactive charts, KPIs, and exportable reports.
 
-## 🏗️ Architecture Design
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Node](https://img.shields.io/badge/node-20+-green)
+![Python](https://img.shields.io/badge/python-3.11+-blue)
 
-The core philosophy of this project is strict separation of concerns, ensuring that **Node.js never executes Pandas/data science code**, and **Python never directly handles MongoDB or frontend templates**.
+---
+
+## Architecture
 
 ```mermaid
-graph TD
-    A[React Frontend] -->|REST API Calls| B(Express Node.js Backend)
-    B -->|File Uploads| F[Multer]
-    B -->|Authentication| G[Passport]
-    B -->|Metadata/Auth| H[(MongoDB)]
-    B -->|POST CSV for Analysis| C(FastAPI Python Analytics)
-    C -->|Heavy Processing| D[Pandas & AI]
-    D -->|KPIs, JSON Data| C
-    C -->|Returns JSON| B
-    B -->|Stores Results| H
-    B -->|Returns Analytics| A
-    A -->|Renders via Apache ECharts| E[Interactive Charts]
+graph LR
+    A[React Client<br/>Vite + TailwindCSS] -->|HTTP| B[Express Server<br/>Node.js]
+    B -->|HTTP| C[FastAPI Engine<br/>Python + Pandas]
+    B -->|TCP| D[(MongoDB)]
 ```
 
-## 🚀 Key Features
+| Service | Tech Stack | Port |
+|---------|-----------|------|
+| **Client** | React 19, Tailwind v4, ECharts, TanStack Query | `5173` (dev) / `80` (prod) |
+| **Server** | Express, Passport, Mongoose, Multer, Winston | `5000` |
+| **Analytics** | FastAPI, Pandas, NumPy, Pydantic | `8000` |
+| **Database** | MongoDB 7 | `27017` |
 
-*   **Decoupled Services**: Dedicated Python (FastAPI) layer for all data science operations, communicating with the Express backend purely via JSON.
-*   **Performance First**: The Node.js backend handles authentication, user sessions, and database persistence, avoiding single-threaded event loop blocking that occurs if data processing runs on Node.
-*   **Modern Frontend**: Built with React (Vite) utilizing Tailwind CSS v4, React Query, and GSAP for micro-animations, providing a seamless and highly responsive UI.
-*   **Robust Backend**: Express.js server leveraging Passport for authentication, Mongoose for MongoDB ODM, and Joi for request validation.
-*   **Data Visualization**: Data processed by Pandas is sent to the frontend as raw JSON and rendered client-side, giving complete UI control to the React layer.
+---
 
-## 🛠️ Technology Stack
+## Features
 
-### Frontend (`/client`)
-*   **Framework**: React 19 (via Vite)
-*   **Styling**: Tailwind CSS v4
-*   **State / Data Fetching**: React Query (`@tanstack/react-query`)
-*   **Routing**: React Router DOM v7
-*   **Animations**: GSAP
-*   **Icons**: Lucide React
-*   **HTTP Client**: Axios
+- **Project management** — Create, organize, and manage analytics projects
+- **CSV upload & validation** — Drag-and-drop with client + server validation (10MB limit)
+- **Real-time analytics** — Revenue trends, top products, category breakdowns, regional sales
+- **Interactive dashboard** — Drill-down filters, comparison mode, dark/light theme
+- **Data export** — PDF, Excel, CSV export from any dashboard
+- **Security** — Helmet, rate limiting, session-based auth, input validation
 
-### Backend (`/server`)
-*   **Runtime**: Node.js
-*   **Framework**: Express.js
-*   **Database**: MongoDB (via Mongoose)
-*   **Authentication**: Passport.js (Local Strategy), bcrypt
-*   **Validation & Security**: Joi, Helmet, CORS
-*   **Logging**: Winston
+---
 
-### Analytics (Planned Microservice)
-*   **Framework**: FastAPI (Python)
-*   **Data Processing**: Pandas, NumPy
-*   **Machine Learning**: scikit-learn
+## Prerequisites
 
-## 📁 Project Structure
+- **Node.js** ≥ 20
+- **Python** ≥ 3.11
+- **MongoDB** ≥ 7 (local or Atlas)
+- **Docker** (optional, for containerized setup)
 
-```text
-Major Project/
-├── client/                 # React Frontend Application
-│   ├── public/             # Static assets
-│   ├── src/                # React source code (components, pages, hooks)
-│   ├── package.json        # Frontend dependencies
-│   └── vite.config.js      # Vite configuration
-├── server/                 # Express Node.js Backend
-│   ├── src/                # Backend source code (controllers, routes, models, utils)
-│   ├── logs/               # Winston log outputs
-│   ├── server.js           # Server entry point
-│   └── package.json        # Backend dependencies
-├── Concept.md              # Architectural design principles and guidelines
-└── README.md               # This documentation file
-```
+---
 
-## ⚙️ Prerequisites
-
-Before you begin, ensure you have the following installed:
-*   [Node.js](https://nodejs.org/) (v18+ recommended)
-*   [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas URI)
-*   [Python 3.8+](https://www.python.org/) (For the upcoming Analytics service)
-
-## 💻 Installation & Setup
+## Quick Start — Local Development
 
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
-cd "Major Project"
+git clone https://github.com/vivekmisar/Saas_Sales_Application.git
+cd Saas_Sales_Application
 ```
 
-### 2. Backend Setup (`/server`)
+### 2. Start MongoDB
 
-1. Navigate to the server directory:
-   ```bash
-   cd server
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Environment Configuration:
-   * Copy `.env.example` to `.env` (or create a new `.env` file).
-   * Ensure your `.env` contains your MongoDB connection string and Session Secrets:
-     ```env
-     PORT=5000
-     MONGODB_URI=mongodb://localhost:27017/sales_platform
-     SESSION_SECRET=your_secure_session_secret
-     ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   *The server should now be running on `http://localhost:5000` (or the port specified in `.env`).*
+```bash
+# Using Docker
+docker run -d -p 27017:27017 --name mongo mongo:7
 
-### 3. Frontend Setup (`/client`)
+# Or install locally: https://www.mongodb.com/docs/manual/installation/
+```
 
-1. Open a new terminal window and navigate to the client directory:
-   ```bash
-   cd client
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Environment Configuration:
-   * Create a `.env` file in the client root if it doesn't exist, and set your API URL:
-     ```env
-     VITE_API_URL=http://localhost:5000/api
-     ```
-4. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-   *The frontend should now be running, typically on `http://localhost:5173`.*
+### 3. Express Server
 
-## 📈 Future Implementation: Python Analytics Service
+```bash
+cd server
+cp .env.example .env    # Edit with your values
+npm install
+npm run dev             # Starts on http://localhost:5000
+```
 
-The architecture is explicitly designed to integrate a Python FastAPI service. When implemented, the flow will be:
-1. User uploads a CSV file via React to the Node.js Express server.
-2. Express temporarily saves the file and forwards it to the Python FastAPI service.
-3. Python/Pandas reads the CSV, calculates KPIs, models forecasts, and structures the analytics data.
-4. Python returns only raw JSON (no images or HTML).
-5. Express persists the analytics JSON to MongoDB and returns it to React.
-6. React uses a client-side charting library to visualize the metrics dynamically.
+### 4. FastAPI Analytics Engine
 
-## 🤝 Contributing
-Please read through `Concept.md` to fully understand the architectural patterns and boundaries of this project before submitting Pull Requests.
+```bash
+cd analytics-engine
+python -m venv venv
 
-## 📄 License
-This project is licensed under the MIT License.
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### 5. React Client
+
+```bash
+cd client
+cp .env.example .env    # Edit if needed
+npm install
+npm run dev             # Starts on http://localhost:5173
+```
+
+---
+
+## Quick Start — Docker
+
+```bash
+# From project root
+docker compose up --build
+```
+
+This starts all 4 services:
+- Client → http://localhost
+- Server → http://localhost:5000
+- Analytics → http://localhost:8000
+- MongoDB → localhost:27017
+
+---
+
+## Environment Variables
+
+### Server (`server/.env`)
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `NODE_ENV` | No | `development` | Environment mode |
+| `PORT` | No | `5000` | Server port |
+| `MONGODB_URI` | **Yes** | — | MongoDB connection string |
+| `SESSION_SECRET` | **Yes** | — | Session encryption key |
+| `CLIENT_URL` | No | `http://localhost:5173` | CORS allowed origin |
+| `ANALYTICS_ENGINE_URL` | No | `http://localhost:8000` | FastAPI endpoint |
+
+### Client (`client/.env`)
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `VITE_API_URL` | No | `/api/v1` | API base URL |
+
+---
+
+## API Endpoints
+
+### Auth
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/auth/register` | Create account |
+| `POST` | `/api/v1/auth/login` | Login |
+| `POST` | `/api/v1/auth/logout` | Logout |
+| `GET` | `/api/v1/auth/status` | Check session |
+| `GET` | `/api/v1/auth/me` | Get current user |
+
+### Projects
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/v1/projects?search=&sort=&page=&limit=` | List projects |
+| `POST` | `/api/v1/projects` | Create project |
+| `GET` | `/api/v1/projects/:id` | Get project |
+| `PATCH` | `/api/v1/projects/:id` | Update project |
+| `DELETE` | `/api/v1/projects/:id` | Delete project + reports |
+
+### Reports
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/v1/projects/:id/reports` | List reports |
+| `POST` | `/api/v1/projects/:id/reports` | Upload CSV |
+| `GET` | `/api/v1/projects/:id/reports/:rid` | Get report + analytics |
+| `DELETE` | `/api/v1/projects/:id/reports/:rid` | Delete report |
+
+### Users
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/v1/users/profile` | Get profile |
+| `PATCH` | `/api/v1/users/profile` | Update profile |
+| `PATCH` | `/api/v1/users/password` | Change password |
+
+---
+
+## Folder Structure
+
+```
+├── client/                  # React frontend
+│   ├── src/
+│   │   ├── api/             # Axios API layer
+│   │   ├── components/      # UI components, charts, layout
+│   │   ├── context/         # Theme provider
+│   │   ├── hooks/           # React Query hooks
+│   │   ├── pages/           # Route pages
+│   │   ├── router/          # React Router config
+│   │   └── utils/           # Formatters, helpers
+│   ├── Dockerfile
+│   └── nginx.conf
+│
+├── server/                  # Express backend
+│   ├── src/
+│   │   ├── config/          # DB, env, passport, session
+│   │   ├── controllers/     # HTTP handlers
+│   │   ├── middlewares/     # Auth, rate limit, upload, validation
+│   │   ├── models/          # Mongoose schemas
+│   │   ├── routes/          # Express routers
+│   │   ├── services/        # Business logic
+│   │   ├── utils/           # Logger, error classes, helpers
+│   │   └── validations/     # Joi schemas
+│   └── Dockerfile
+│
+├── analytics-engine/        # FastAPI analytics
+│   ├── app/
+│   │   ├── config/          # Settings
+│   │   ├── routes/          # API endpoints
+│   │   ├── schemas/         # Pydantic models
+│   │   └── services/        # Pandas analytics logic
+│   └── Dockerfile
+│
+├── docker-compose.yml       # One-command deployment
+└── README.md
+```
+
+---
+
+## Deployment
+
+### Railway / Render
+
+1. Create three services (client, server, analytics)
+2. Set environment variables from the tables above
+3. Set build commands:
+   - **Server**: `npm ci` → `node server.js`
+   - **Analytics**: `pip install -r requirements.txt` → `uvicorn app.main:app --host 0.0.0.0`
+   - **Client**: `npm ci && npm run build` → serve `dist/` as static files
+
+### VPS (with Docker)
+
+```bash
+git clone <repo-url>
+cd Saas_Sales_Application
+export SESSION_SECRET=your-production-secret
+docker compose up -d --build
+```
+
+---
+
+## Production Checklist
+
+- [x] Helmet security headers
+- [x] Rate limiting (global + auth + upload tiers)
+- [x] Response compression (gzip)
+- [x] Environment variable validation
+- [x] Error boundary with styled fallback
+- [x] Route-level code splitting (React.lazy)
+- [x] Session-based authentication
+- [x] Input validation (Joi + CSV middleware)
+- [x] Structured logging (Winston)
+- [x] Graceful shutdown handlers
+- [ ] HTTPS (configure at reverse proxy / hosting level)
+- [ ] MongoDB Atlas for production database
+
+---
+
+## License
+
+[MIT](LICENSE)

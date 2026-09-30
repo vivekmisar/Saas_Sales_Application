@@ -1,3 +1,35 @@
 
-understand.md
 walkthrough.md
+Phase1.md
+Phase2.md
+Phase3.md
+Phase4.md
+Phase5.md
+Phase6.md
+
+# Environment files
+.env
+.env.*
+
+# Python bytecode and caches
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Node dependencies and build noise
+node_modules/
+**/node_modules/
+
+# Generated runtime output
+*.log
+/server/logs/
+/server/uploads/
+
+# Repo-local generated artifacts
+/debug.js
+/Execute_project.md
+/implementation_plan.md
+/implementation_plan_charts
+/large_sales_data.csv
+/package.json
+/package-lock.json
