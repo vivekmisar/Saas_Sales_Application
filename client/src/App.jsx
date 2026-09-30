@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import AppRouter from './router/AppRouter';
 import './App.css';
+import './styles/app-theme.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

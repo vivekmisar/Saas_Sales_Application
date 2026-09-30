@@ -1,0 +1,54 @@
+/* Authenticated app design tokens. Every rule stays inside app/auth roots. */
+.app-root,
+.auth-root {
+  --app-bg: #f5f7f4;
+  --app-surface: #ffffff;
+  --app-surface-raised: #fbfcfa;
+  --app-text: #18211b;
+  --app-muted: #68756c;
+  --app-border: #e2e8e2;
+  --app-brand: #0f5132;
+  --app-brand-strong: #0a3f27;
+  --app-brand-soft: #e8f3ec;
+  --app-accent: #71c49a;
+  --app-shadow: 0 14px 40px rgba(28, 52, 36, .07);
+  min-height: 100vh;
+  color: var(--app-text);
+  background: var(--app-bg);
+  font-family: var(--font-body);
+}
+
+html.dark .app-root,
+html.dark .auth-root {
+  --app-bg: #111a14;
+  --app-surface: #18231b;
+  --app-surface-raised: #1d2a20;
+  --app-text: #edf4ee;
+  --app-muted: #9aa99d;
+  --app-border: #304035;
+  --app-brand: #73c795;
+  --app-brand-strong: #98d8b1;
+  --app-brand-soft: #21392a;
+  --app-accent: #8dd5aa;
+  --app-shadow: 0 18px 48px rgba(0, 0, 0, .2);
+}
+
+.app-root .ui-card {
+  border-color: var(--app-border);
+  border-radius: 18px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 2px rgba(20, 42, 27, .025);
+}
+
+.app-root .ui-card[data-card-hover="true"]:hover {
+  border-color: color-mix(in srgb, var(--app-brand) 36%, var(--app-border));
+  box-shadow: var(--app-shadow);
+}
+
+.app-root button:focus-visible,
+.app-root input:focus-visible,
+.app-root select:focus-visible,
+.auth-root button:focus-visible,
+.auth-root input:focus-visible {
+  outline-color: var(--app-brand);
+}

@@ -7,8 +7,9 @@ const Card = forwardRef(function Card({ children, className = '', hover = false,
     <Tag
       ref={ref}
       onClick={onClick}
+      data-card-hover={hover ? 'true' : 'false'}
       className={[
-        'relative block w-full text-left',
+        'ui-card relative block w-full text-left',
         'rounded-xl border border-slate-200 dark:border-slate-700',
         'bg-white dark:bg-slate-800',
         'p-5',
