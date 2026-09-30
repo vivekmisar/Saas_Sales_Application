@@ -23,10 +23,11 @@ export default function App() {
         <AuthProvider>
           <AppRouter />
           <Toaster
-            position="top-right"
+            position="bottom-right"
+            containerClassName="app-toaster"
             toastOptions={{
               duration: 3500,
-              className: 'toast-custom',
+              className: 'app-toast',
             }}
           />
         </AuthProvider>

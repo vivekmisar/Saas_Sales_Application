@@ -176,6 +176,25 @@ html.dark .auth-root {
   border-radius: 20px;
   box-shadow: 0 24px 80px rgba(8, 20, 12, .25);
 }
+.app-toaster { z-index: 120; }
+.app-toaster .app-toast {
+  min-height: 52px;
+  padding: 13px 16px;
+  color: #1d2a20;
+  background: #ffffff;
+  border: 1px solid #e2e9e3;
+  border-radius: 15px;
+  box-shadow: 0 14px 38px rgba(17, 39, 23, .14);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 550;
+}
+html.dark .app-toaster .app-toast {
+  color: #edf4ee;
+  background: #18231b;
+  border-color: #34443a;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
+}
 
 @media (max-width: 767px) {
   .app-root .app-main-shell { margin-left: 0; }
@@ -187,6 +206,7 @@ html.dark .auth-root {
   .app-root .app-chart-actions { opacity: 1; }
   .app-root .app-estimate-label { margin-left: 0; }
   .auth-root .auth-form-card { padding: 28px 22px; }
+  .app-toaster .app-toast { max-width: calc(100vw - 32px); }
 }
 
 .app-root button:focus-visible,
