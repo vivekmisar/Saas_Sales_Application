@@ -38,13 +38,13 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="auth-root min-h-screen flex">
       {/* Left branding */}
-      <div className="hidden lg:flex lg:w-[55%] bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 items-center justify-center p-12 relative overflow-hidden">
+      <div className="auth-brand-panel hidden lg:flex lg:w-[55%] items-center justify-center p-12 relative overflow-hidden">
         <div className="absolute top-32 right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 left-10 w-64 h-64 bg-indigo-400/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-md text-white">
-          <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center mb-8">
             <Zap size={28} />
           </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -57,10 +57,10 @@ export default function RegisterPage() {
       </div>
 
       {/* Right form */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-slate-50 dark:bg-slate-900">
-        <div ref={formRef} className="w-full max-w-sm">
+      <div className="auth-form-panel flex-1 flex items-center justify-center p-6">
+        <div ref={formRef} className="auth-form-card w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center">
               <Zap size={20} className="text-white" />
             </div>
             <span className="text-xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: 'var(--font-heading)' }}>SalesIntel</span>

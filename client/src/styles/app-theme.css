@@ -71,6 +71,35 @@ html.dark .auth-root {
   box-shadow: 0 7px 16px color-mix(in srgb, var(--app-brand) 18%, transparent);
 }
 .app-root .ui-button[class*="bg-indigo-500"]:hover { background: var(--app-brand-strong); }
+.auth-root .auth-brand-panel {
+  color: #f2f8f3;
+  background:
+    radial-gradient(ellipse at 18% 18%, rgba(113, 196, 154, .24), transparent 38%),
+    radial-gradient(ellipse at 85% 88%, rgba(87, 153, 108, .28), transparent 35%),
+    linear-gradient(145deg, #0b3924 0%, #0f5132 52%, #184d35 100%);
+}
+.auth-root .auth-brand-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .13;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: linear-gradient(115deg, black, transparent 74%);
+}
+.auth-root .auth-brand-panel > div:not(.absolute) { max-width: 470px; }
+.auth-root .auth-brand-panel h1 { font-size: clamp(2.7rem, 4.6vw, 4rem); letter-spacing: -.055em; line-height: 1.06; }
+.auth-root .auth-brand-panel p { color: rgba(235, 248, 239, .76); max-width: 410px; font-size: 16px; }
+.auth-root .auth-form-panel { background: var(--app-bg); }
+.auth-root .auth-form-card { padding: 38px 36px; border: 1px solid var(--app-border); border-radius: 22px; background: var(--app-surface); box-shadow: var(--app-shadow); }
+.auth-root .auth-form-card h2 { letter-spacing: -.04em; font-size: 28px; }
+.auth-root .auth-form-card .ui-input { background: var(--app-surface-raised); border-color: var(--app-border); border-radius: 12px; }
+.auth-root .auth-form-card .ui-input:focus { border-color: var(--app-brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-brand) 16%, transparent); }
+.auth-root .ui-button[class*="bg-indigo-500"] { color: #fff; background: var(--app-brand); box-shadow: 0 8px 20px color-mix(in srgb, var(--app-brand) 22%, transparent); }
+.auth-root .ui-button[class*="bg-indigo-500"]:hover { background: var(--app-brand-strong); }
+.auth-root a { color: var(--app-brand); }
+.auth-root a:hover { color: var(--app-brand-strong); }
 .app-root .ui-input {
   border-color: var(--app-border);
   border-radius: 11px;
@@ -157,6 +186,7 @@ html.dark .auth-root {
   .app-root .app-chart-card { padding: 17px; }
   .app-root .app-chart-actions { opacity: 1; }
   .app-root .app-estimate-label { margin-left: 0; }
+  .auth-root .auth-form-card { padding: 28px 22px; }
 }
 
 .app-root button:focus-visible,
