@@ -55,7 +55,7 @@ export default function ProjectsPage() {
   if (isLoading) return <Spinner size={32} className="mt-32" />;
 
   return (
-    <div className="w-full max-w-5xl">
+    <div className="app-project-page w-full max-w-6xl">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 mb-6">
         <div>
@@ -102,14 +102,14 @@ export default function ProjectsPage() {
       ) : (
         <div
           ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="app-project-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           {filtered.map((project) => (
             <div key={project._id} className="relative group">
               <Card
                 hover
                 onClick={() => navigate(`/projects/${project._id}`)}
-                className="h-full"
+                className="app-project-card h-full"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">

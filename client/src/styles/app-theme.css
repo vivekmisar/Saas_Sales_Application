@@ -95,6 +95,19 @@ html.dark .auth-root {
   border-color: color-mix(in srgb, var(--app-brand) 35%, var(--app-border));
   background: color-mix(in srgb, var(--app-brand-soft) 45%, var(--app-surface));
 }
+.app-root .app-project-grid { align-items: stretch; }
+.app-root .app-project-card {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 21px;
+}
+.app-root .app-project-card > div:last-child { margin-top: auto; }
+.app-root .app-project-card h3,
+.app-root .app-project-detail h1 { letter-spacing: -.025em; }
+.app-root .app-project-overview { padding: 24px; }
+.app-root .app-report-row { min-height: 78px; border-radius: 16px; }
+.app-root .app-report-row[data-card-hover="true"]:hover { transform: translateY(-1px); }
 .app-modal-overlay { background: rgba(12, 24, 16, .58); }
 .app-modal-panel {
   color: var(--app-text);

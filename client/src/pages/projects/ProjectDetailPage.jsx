@@ -87,7 +87,7 @@ export default function ProjectDetailPage() {
   const reports = reportData?.reports || [];
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="app-project-detail max-w-6xl mx-auto">
       {/* Back button */}
       <button
         onClick={() => navigate('/projects')}
@@ -97,7 +97,7 @@ export default function ProjectDetailPage() {
       </button>
 
       {/* Project header */}
-      <Card className="mb-6">
+      <Card className="app-project-overview mb-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">
@@ -159,7 +159,7 @@ export default function ProjectDetailPage() {
           {reports.map((report) => (
             <Card
               key={report._id}
-              className={`flex items-center justify-between ${report.status === 'completed' ? 'cursor-pointer' : ''}`}
+              className={`app-report-row flex items-center justify-between ${report.status === 'completed' ? 'cursor-pointer' : ''}`}
               hover={report.status === 'completed'}
               onClick={
                 report.status === 'completed'
