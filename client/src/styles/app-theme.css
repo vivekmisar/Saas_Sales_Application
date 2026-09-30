@@ -45,6 +45,59 @@ html.dark .auth-root {
   box-shadow: var(--app-shadow);
 }
 
+.app-root .app-main-shell { margin-left: var(--sidebar-width); }
+.app-root .app-sidebar {
+  background: #0f5132;
+  border-color: rgba(255, 255, 255, .14);
+  box-shadow: 12px 0 36px rgba(15, 55, 33, .12);
+}
+.app-root .app-sidebar > div:first-child { border-color: rgba(255, 255, 255, .14); }
+.app-root .app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  color: var(--app-text);
+  background: color-mix(in srgb, var(--app-surface) 92%, transparent);
+  border-color: var(--app-border);
+  box-shadow: 0 1px 0 rgba(25, 48, 32, .025);
+}
+.app-root .app-menu-button { display: none; }
+.app-root .ui-button { border-radius: 11px; font-weight: 600; }
+.app-root .ui-button:not(:disabled):active { transform: translateY(1px); }
+.app-root .ui-button.bg-indigo-500,
+.app-root .ui-button[class*="bg-indigo-500"] {
+  color: #fff;
+  background: var(--app-brand);
+  box-shadow: 0 7px 16px color-mix(in srgb, var(--app-brand) 18%, transparent);
+}
+.app-root .ui-button[class*="bg-indigo-500"]:hover { background: var(--app-brand-strong); }
+.app-root .ui-input {
+  border-color: var(--app-border);
+  border-radius: 11px;
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+.app-root .ui-input:focus {
+  border-color: var(--app-brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-brand) 16%, transparent);
+}
+.app-root .ui-badge { border-radius: 999px; letter-spacing: .01em; }
+.app-modal-overlay { background: rgba(12, 24, 16, .58); }
+.app-modal-panel {
+  color: var(--app-text);
+  background: var(--app-surface);
+  border-color: var(--app-border);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(8, 20, 12, .25);
+}
+
+@media (max-width: 767px) {
+  .app-root .app-main-shell { margin-left: 0; }
+  .app-root .app-sidebar[data-collapsed="true"] { transform: translateX(-100%); }
+  .app-root .app-sidebar { transition: transform .24s ease, width .24s ease; }
+  .app-root .app-menu-button { display: inline-flex; }
+}
+
 .app-root button:focus-visible,
 .app-root input:focus-visible,
 .app-root select:focus-visible,

@@ -10,15 +10,15 @@ export default function DashboardLayout() {
   const sidebarWidth = sidebarCollapsed ? 70 : 240;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="app-root min-h-screen">
       <Sidebar collapsed={sidebarCollapsed} onToggle={toggle} />
 
       {/* Content area — offset by sidebar width, clips horizontal overflow */}
       <div
-        className="flex flex-col min-h-screen overflow-x-hidden transition-all duration-300"
-        style={{ marginLeft: `${sidebarWidth}px` }}
+        className="app-main-shell flex flex-col min-h-screen overflow-x-hidden transition-all duration-300"
+        style={{ '--sidebar-width': `${sidebarWidth}px` }}
       >
-        <Navbar />
+        <Navbar onMenuClick={toggle} />
         <main className="flex-1 px-6 py-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>

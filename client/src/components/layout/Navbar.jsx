@@ -1,8 +1,8 @@
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
-import { Sun, Moon, LogOut, User } from 'lucide-react';
+import { Sun, Moon, LogOut, User, Menu } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ onMenuClick }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
@@ -14,9 +14,17 @@ export default function Navbar() {
     .slice(0, 2);
 
   return (
-    <header className="h-16 shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-5 lg:px-8">
-      {/* Left spacer — reserved for future breadcrumbs */}
-      <div />
+    <header className="app-navbar h-16 shrink-0 backdrop-blur-md border-b flex items-center justify-between px-5 lg:px-8">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onMenuClick}
+          className="app-menu-button p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          title="Toggle navigation"
+          aria-label="Toggle navigation"
+        >
+          <Menu size={18} />
+        </button>
+      </div>
 
       {/* Right controls */}
       <div className="flex items-center gap-1.5">

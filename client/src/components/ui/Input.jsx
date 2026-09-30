@@ -14,7 +14,7 @@ const Input = forwardRef(function Input({ label, error, icon: Icon, className = 
         )}
         <input
           ref={ref}
-          className={`
+          className={`ui-input
             w-full rounded-lg border bg-white dark:bg-slate-800
             border-slate-200 dark:border-slate-700
             px-3 py-2.5 text-sm

@@ -9,7 +9,7 @@ const statusMap = {
 
 export default function Badge({ status, className = '' }) {
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${statusMap[status] || 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'} ${className}`}>
+    <span className={`ui-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${statusMap[status] || 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'} ${className}`}>
       {status}
     </span>
   );

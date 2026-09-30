@@ -14,8 +14,9 @@ export default function Sidebar({ collapsed, onToggle }) {
       )}
 
       <aside
+        data-collapsed={collapsed}
         className={`
-          fixed top-0 left-0 z-40 h-screen
+          app-sidebar fixed top-0 left-0 z-40 h-screen
           bg-slate-950 flex flex-col transition-all duration-300
           border-r border-white/5
           ${collapsed ? 'w-[70px]' : 'w-[240px]'}
@@ -23,7 +24,7 @@ export default function Sidebar({ collapsed, onToggle }) {
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 h-16 border-b border-white/5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center shrink-0">
             <Zap size={18} className="text-white" />
           </div>
           {!collapsed && (

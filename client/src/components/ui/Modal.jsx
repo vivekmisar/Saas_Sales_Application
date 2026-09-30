@@ -23,12 +23,12 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="app-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={(e) => e.target === overlayRef.current && onClose()}
     >
       <div
         ref={panelRef}
-        className={`w-full ${sizeClasses[size]} rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xl p-6`}
+        className={`app-modal-panel w-full ${sizeClasses[size]} rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xl p-6`}
       >
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100" style={{ fontFamily: 'var(--font-heading)' }}>
