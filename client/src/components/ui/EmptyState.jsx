@@ -2,21 +2,24 @@ import { useEffect, useRef } from 'react';
 import { Inbox } from 'lucide-react';
 import Button from './Button';
 import gsap from 'gsap';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 export default function EmptyState({ icon: Icon = Inbox, title = 'Nothing here yet', description = '', actionLabel, onAction }) {
   const iconRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (iconRef.current) {
-      gsap.to(iconRef.current, {
+    if (iconRef.current && !reducedMotion) {
+      const tween = gsap.to(iconRef.current, {
         y: -6,
         duration: 1.5,
         repeat: -1,
         yoyo: true,
         ease: 'power1.inOut',
       });
+      return () => tween.kill();
     }
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">

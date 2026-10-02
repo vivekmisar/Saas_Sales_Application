@@ -10,7 +10,7 @@ import { formatCompactCurrency, formatNumber, formatPercent } from '../../lib/fo
  *   - Total Orders
  *   - Total Customers
  *   - Average Order Value
- *   - Total Profit
+ *   - Reported Profit
  *
  * All values come from the analytics JSON — nothing is hardcoded.
  */
@@ -21,41 +21,32 @@ const kpiConfig = [
     label: 'Total Revenue',
     icon: DollarSign,
     format: formatCompactCurrency,
-    bgLight: 'app-kpi-icon-wrap',
-    textColor: 'app-kpi-icon',
   },
   {
     key: 'total_orders',
     label: 'Total Orders',
     icon: ShoppingCart,
     format: formatNumber,
-    bgLight: 'app-kpi-icon-wrap',
-    textColor: 'app-kpi-icon',
   },
   {
     key: 'total_customers',
     label: 'Customers',
+    help: 'Uses unique customer IDs when available. When the file has no customer ID column, analytics falls back to the order count.',
     icon: Users,
     format: formatNumber,
-    bgLight: 'app-kpi-icon-wrap',
-    textColor: 'app-kpi-icon',
   },
   {
     key: 'average_order_value',
     label: 'Avg. Order Value',
     icon: TrendingUp,
     format: formatCompactCurrency,
-    bgLight: 'app-kpi-icon-wrap',
-    textColor: 'app-kpi-icon',
   },
   {
     key: 'total_profit',
-    label: 'Total Profit',
+    label: 'Reported Profit',
+    help: 'Read from the uploaded file’s profit column. If no profit column is detected, the analytics engine returns $0.',
     icon: PiggyBank,
     format: formatCompactCurrency,
-    prefix: '$',
-    bgLight: 'app-kpi-icon-wrap',
-    textColor: 'app-kpi-icon',
   },
 ];
 
@@ -64,7 +55,8 @@ export default function KpiCards({ analytics, compareAnalytics }) {
 
   // Calculate actual trend if compareAnalytics is provided
   const getTrendData = (key, value) => {
-    if (!compareAnalytics || compareAnalytics[key] === undefined) {
+    if (value === null || value === undefined || compareAnalytics?.[key] === null || compareAnalytics?.[key] === undefined
+      || !compareAnalytics || !Number.isFinite(Number(value)) || !Number.isFinite(Number(compareAnalytics[key]))) {
       return null;
     }
     
@@ -83,8 +75,8 @@ export default function KpiCards({ analytics, compareAnalytics }) {
 
   return (
     <div className="app-kpi-strip">
-      {kpiConfig.map(({ key, label, icon: Icon, format }, i) => {
-        const value = analytics[key] ?? 0;
+      {kpiConfig.map(({ key, label, icon: Icon, format, help }, i) => {
+        const value = analytics[key];
         const trendData = getTrendData(key, value);
         const TrendIcon = trendData?.isPositive ? ArrowUpRight : ArrowDownRight;
         const trendColor = trendData?.isPositive ? 'text-emerald-600' : 'text-rose-500';
@@ -97,7 +89,7 @@ export default function KpiCards({ analytics, compareAnalytics }) {
           >
             <div className="app-kpi-card-inner">
               <div className="app-kpi-label-row">
-                <p>{label}</p>
+                <p title={help || undefined}>{label}</p>
                 <Icon size={15} aria-hidden="true" />
               </div>
               <p className="app-kpi-value">

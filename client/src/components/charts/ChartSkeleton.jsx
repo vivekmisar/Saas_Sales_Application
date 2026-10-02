@@ -5,35 +5,46 @@ import Card from '../ui/Card';
  */
 export default function ChartSkeleton({ height = 300, className = '' }) {
   return (
-    <Card className={`animate-pulse ${className}`}>
+    <Card className={`app-chart-skeleton ${className}`}>
       <div className="mb-4 space-y-2">
         {/* Title skeleton */}
-        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+        <div className="app-skeleton-line h-4 w-1/3"></div>
         {/* Subtitle skeleton */}
-        <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/4 mt-1"></div>
+        <div className="app-skeleton-line h-3 w-1/4 mt-1"></div>
       </div>
       {/* Chart body skeleton */}
-      <div 
-        className="bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800"
-        style={{ height }}
-      ></div>
+      <div className="app-skeleton-block" style={{ height }} />
     </Card>
   );
 }
 
 export function KpiSkeleton() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+    <div className="app-kpi-strip app-kpi-skeleton">
       {[1, 2, 3, 4, 5].map((i) => (
         <div
           key={i}
-          className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 animate-pulse"
+          className="app-kpi-card"
         >
-          <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-700 mb-3"></div>
-          <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
-          <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-2/3"></div>
+          <div className="app-kpi-card-inner">
+            <div className="app-skeleton-line h-3 w-2/3" />
+            <div className="app-skeleton-line h-7 w-3/4" />
+          </div>
         </div>
       ))}
     </div>
+  );
+}
+
+export function TableSkeleton() {
+  return (
+    <Card className="app-table-skeleton">
+      <div className="mb-5 space-y-2">
+        <div className="app-skeleton-line h-4 w-1/4" />
+        <div className="app-skeleton-line h-3 w-1/3" />
+      </div>
+      <div className="app-skeleton-line app-skeleton-table-head h-9 w-full" />
+      {[0, 1, 2, 3].map((row) => <div className="app-skeleton-line app-skeleton-table-row h-12 w-full" key={row} />)}
+    </Card>
   );
 }

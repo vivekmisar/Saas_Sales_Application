@@ -21,6 +21,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { formatDate, formatFileSize, formatRelativeTime } from '../../utils/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 export default function ProjectDetailPage() {
   const { projectId } = useParams();
@@ -39,16 +40,18 @@ export default function ProjectDetailPage() {
   const [showDeleteProject, setShowDeleteProject] = useState(false);
   const [editForm, setEditForm] = useState({ name: '', description: '' });
   const listRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (listRef.current && reportData?.reports?.length) {
-      gsap.fromTo(
+    if (listRef.current && reportData?.reports?.length && !reducedMotion) {
+      const tween = gsap.fromTo(
         listRef.current.children,
-        { opacity: 0, x: -10 },
-        { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
       );
+      return () => tween.kill();
     }
-  }, [reportData?.reports]);
+  }, [reportData?.reports, reducedMotion]);
 
   const openEdit = () => {
     setEditForm({
@@ -105,7 +108,7 @@ export default function ProjectDetailPage() {
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h1 className="text-xl font-heading font-bold text-slate-900 dark:text-white">
+                <h1 className="app-page-title text-xl font-heading font-bold text-slate-900 dark:text-white">
                   {project.name}
                 </h1>
                 <Badge status={project.status} />
@@ -136,7 +139,7 @@ export default function ProjectDetailPage() {
 
       {/* Reports section */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">
+        <h2 className="app-section-title text-lg font-heading font-semibold text-slate-900 dark:text-white">
           Reports
         </h2>
         <Button size="sm" onClick={() => setShowUploadModal(true)}>

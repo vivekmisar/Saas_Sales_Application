@@ -6,6 +6,8 @@ import Card from '../../components/ui/Card';
 import Spinner from '../../components/ui/Spinner';
 import { FolderKanban, FileText, TrendingUp, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
+import useReducedMotion from '../../hooks/useReducedMotion';
+import { formatInteger } from '../../lib/formatters';
 
 function getGreeting() {
   const h = new Date().getHours();
@@ -18,16 +20,18 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const { data, isLoading } = useProjects();
   const cardsRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (cardsRef.current && !isLoading) {
-      gsap.fromTo(
+    if (cardsRef.current && !isLoading && !reducedMotion) {
+      const tween = gsap.fromTo(
         cardsRef.current.children,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' },
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' },
       );
+      return () => tween.kill();
     }
-  }, [isLoading]);
+  }, [isLoading, reducedMotion]);
 
   const firstName = user?.name?.split(' ')[0] || 'there';
   const projectCount = data?.total ?? 0;
@@ -100,7 +104,7 @@ export default function DashboardPage() {
                   className="text-2xl font-bold text-slate-900 dark:text-slate-50"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                  {value}
+                  {typeof value === 'number' ? formatInteger(value) : value}
                 </p>
               </div>
               <div className="app-stat-icon p-2.5 rounded-xl shrink-0">
@@ -114,7 +118,7 @@ export default function DashboardPage() {
       {/* Quick actions */}
       <Card>
         <h2
-          className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-4"
+          className="app-section-title text-base font-semibold text-slate-800 dark:text-slate-100 mb-4"
           style={{ fontFamily: 'var(--font-heading)' }}
         >
           Quick Actions

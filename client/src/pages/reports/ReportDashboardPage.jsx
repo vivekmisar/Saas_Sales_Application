@@ -7,7 +7,7 @@ import Badge from '../../components/ui/Badge';
 import GlobalFilterBar from '../../components/dashboard/GlobalFilterBar';
 import GlobalSearch from '../../components/dashboard/GlobalSearch';
 import ExportMenu from '../../components/dashboard/ExportMenu';
-import ChartSkeleton, { KpiSkeleton } from '../../components/charts/ChartSkeleton';
+import ChartSkeleton, { KpiSkeleton, TableSkeleton } from '../../components/charts/ChartSkeleton';
 import KpiCards from '../../components/charts/KpiCards';
 import RevenueTrendChart from '../../components/charts/RevenueTrendChart';
 import TopProductsChart from '../../components/charts/TopProductsChart';
@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { formatDate, formatFileSize } from '../../utils/formatters';
 import { formatCurrency, formatInteger } from '../../lib/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 /**
  * ReportDashboardPage — full analytics dashboard for a single report.
@@ -45,6 +46,7 @@ export default function ReportDashboardPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [compareReportId, setCompareReportId] = useState('');
   const dashboardRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   const { data: report, isLoading } = useReport(projectId, reportId);
   const { data: reportsData } = useReports(projectId);
@@ -85,14 +87,15 @@ export default function ReportDashboardPage() {
   }, [report, filters, searchQuery]);
 
   useEffect(() => {
-    if (report?.status === 'completed' && dashboardRef.current) {
-      gsap.fromTo(
+    if (report?.status === 'completed' && dashboardRef.current && !reducedMotion) {
+      const tween = gsap.fromTo(
         dashboardRef.current.children,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' }
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' }
       );
+      return () => tween.kill();
     }
-  }, [report?.status]);
+  }, [report?.status, reducedMotion]);
 
   const handleProductDrillDown = useCallback((productName) => setSearchQuery(productName), []);
   const handleCategoryDrillDown = useCallback((categoryName) => setFilters(prev => ({ ...prev, category: categoryName })), []);
@@ -113,6 +116,17 @@ export default function ReportDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ChartSkeleton height={300} />
           <ChartSkeleton height={300} />
+        </div>
+        <ChartSkeleton height={320} />
+        <ChartSkeleton height={320} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TableSkeleton />
+          <TableSkeleton />
+        </div>
+        <TableSkeleton />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartSkeleton height={320} />
+          <ChartSkeleton height={320} />
         </div>
       </div>
     );
@@ -209,21 +223,21 @@ export default function ReportDashboardPage() {
         <div className="flex items-center gap-3 flex-wrap">
           <button
             onClick={() => navigate(`/projects/${projectId}`)}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors cursor-pointer"
+            className="app-report-back flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors cursor-pointer"
           >
             <ArrowLeft size={16} /> Back
           </button>
           <div className="w-px h-5 bg-slate-200 dark:bg-slate-700" />
           <div className="flex items-center gap-2">
             <FileSpreadsheet size={18} className="text-emerald-500" />
-            <h1 className="text-lg font-heading font-bold text-slate-900 dark:text-white">
+            <h1 className="app-report-file-name text-lg font-heading font-bold text-slate-900 dark:text-white">
               {report.originalName}
             </h1>
           </div>
           <Badge status={report.status} />
         </div>
         <div className="flex items-center gap-4">
-          <div className="text-xs text-slate-500 dark:text-slate-400 hidden md:block">
+          <div className="app-report-meta text-xs text-slate-500 dark:text-slate-400">
             {formatFileSize(report.fileSize)} · Uploaded {formatDate(report.uploadedAt)}
             {report.processedAt && ` · Processed ${formatDate(report.processedAt)}`}
           </div>

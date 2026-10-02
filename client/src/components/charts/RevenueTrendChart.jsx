@@ -5,6 +5,7 @@ import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 import { formatCompactCurrency, formatCurrency } from '../../lib/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 function median(values) {
   if (!values.length) return 0;
@@ -15,6 +16,7 @@ function median(values) {
 
 const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   const safeData = Array.isArray(data) ? data.filter((item) => item && item.month != null && Number.isFinite(Number(item.revenue))) : [];
 
@@ -28,6 +30,7 @@ const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
   const isLatestPartial = revenues.length > 1 && previousMedian > 0 && revenues.at(-1) < previousMedian * .4;
   const lastIndex = safeData.length - 1;
   const option = {
+    animation: !reducedMotion,
     tooltip: {
       trigger: 'axis',
       ...getChartTooltip(isDark),
@@ -43,7 +46,7 @@ const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
       type: 'category',
       data: months,
       axisLine: { lineStyle: { color: theme.axis } },
-      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11 },
+      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11, hideOverlap: true },
     },
     yAxis: {
       type: 'value',
@@ -77,7 +80,7 @@ const RevenueTrendChart = React.memo(function RevenueTrendChart({ data }) {
         label: { show: true, formatter: 'Partial', color: theme.muted, fontFamily: theme.fontMono, fontSize: 9 },
         data: [{ coord: [months[lastIndex], revenues[lastIndex]] }],
       } : undefined,
-      animationDuration: 600,
+      animationDuration: reducedMotion ? 0 : 600,
       animationEasing: 'cubicOut',
     }],
   };

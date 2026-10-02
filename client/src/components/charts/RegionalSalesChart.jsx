@@ -5,9 +5,11 @@ import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 import { formatCompactCurrency, formatCurrency, formatPercent } from '../../lib/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 const RegionalSalesChart = React.memo(function RegionalSalesChart({ data, onDrillDown }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   const sorted = (Array.isArray(data) ? data : [])
     .filter((item) => item && item.region != null && Number.isFinite(Number(item.revenue)))
@@ -20,6 +22,7 @@ const RegionalSalesChart = React.memo(function RegionalSalesChart({ data, onDril
 
   const total = sorted.reduce((sum, item) => sum + item.revenue, 0);
   const option = {
+    animation: !reducedMotion,
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
@@ -36,7 +39,7 @@ const RegionalSalesChart = React.memo(function RegionalSalesChart({ data, onDril
       type: 'category',
       data: sorted.map((item) => item.region),
       axisLine: { lineStyle: { color: theme.axis } },
-      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11, interval: 0 },
+      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11, interval: 0, hideOverlap: true, rotate: sorted.length > 5 ? 25 : 0 },
     },
     yAxis: {
       type: 'value',
@@ -53,7 +56,7 @@ const RegionalSalesChart = React.memo(function RegionalSalesChart({ data, onDril
       })),
       barWidth: '48%',
       label: { show: true, position: 'top', color: theme.muted, fontFamily: theme.fontMono, fontSize: 10, formatter: ({ value }) => formatCompactCurrency(value) },
-      animationDuration: 600,
+      animationDuration: reducedMotion ? 0 : 600,
       animationEasing: 'cubicOut',
     }],
   };

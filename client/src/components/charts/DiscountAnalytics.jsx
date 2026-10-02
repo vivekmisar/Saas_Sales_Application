@@ -4,8 +4,9 @@ import { useTheme } from '../../hooks/useTheme';
 import { Percent, Tag, Activity } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
-import { formatCompactCurrency, formatCurrency } from '../../lib/formatters';
+import { formatCompactCurrency, formatCurrency, formatPercent } from '../../lib/formatters';
 import EmptyState from '../ui/EmptyState';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${name.slice(0, maxLength - 1)}…` : name);
 
@@ -15,6 +16,7 @@ const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${na
  */
 export default function DiscountAnalytics({ analytics }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   
   if (!analytics) return null;
@@ -34,6 +36,7 @@ export default function DiscountAnalytics({ analytics }) {
 
   // ── Top Discounted Products Chart ─────────────────────────────────
   const productOption = {
+    animation: !reducedMotion,
     backgroundColor: 'transparent',
     tooltip: { ...getChartTooltip(isDark), trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: (params) => {
       const point = params?.[0];
@@ -80,14 +83,14 @@ export default function DiscountAnalytics({ analytics }) {
       {/* Mini KPIs */}
       <div className="app-analytics-kpi-group">
         {[
-          { label: 'Avg Discount', value: discountImpact, prefix: '', suffix: '%', icon: Tag },
-          { label: 'Revenue Lost (Est)', value: revenueLost, prefix: '$', suffix: '', icon: Activity },
-          { label: 'Discount Impact', value: discountImpact * 1.2, prefix: '', suffix: '%', icon: Percent },
+          { label: 'Avg Discount', value: discountImpact, format: formatPercent, icon: Tag },
+          { label: 'Revenue Lost (Est)', value: revenueLost, format: formatCompactCurrency, icon: Activity },
+          { label: 'Discount Impact', value: discountImpact * 1.2, format: formatPercent, icon: Percent },
         ].map(kpi => (
           <div key={kpi.label} className="app-analytics-kpi-cell">
               <p className="app-analytics-kpi-label"><kpi.icon size={15} aria-hidden="true" />{kpi.label}</p>
               <p className="app-analytics-kpi-value">
-                <AnimatedNumber value={kpi.value} decimals={1} prefix={kpi.prefix} suffix={kpi.suffix} />
+                <AnimatedNumber value={kpi.value} format={kpi.format} />
               </p>
           </div>
         ))}

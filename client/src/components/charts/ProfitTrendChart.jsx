@@ -5,6 +5,7 @@ import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 import { formatCompactCurrency, formatCurrency } from '../../lib/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 function median(values) {
   if (!values.length) return 0;
@@ -15,6 +16,7 @@ function median(values) {
 
 const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfit = 0 }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   const safeData = Array.isArray(data) ? data.filter((item) => item && item.month != null && Number.isFinite(Number(item.revenue))) : [];
 
@@ -28,6 +30,7 @@ const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfi
   const isLatestPartial = revenues.length > 1 && previousMedian > 0 && revenues.at(-1) < previousMedian * .4;
   const lastIndex = safeData.length - 1;
   const option = {
+    animation: !reducedMotion,
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
@@ -44,7 +47,7 @@ const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfi
       type: 'category',
       data: months,
       axisLine: { lineStyle: { color: theme.axis } },
-      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11 },
+      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11, hideOverlap: true },
     },
     yAxis: {
       type: 'value',
@@ -61,13 +64,13 @@ const ProfitTrendChart = React.memo(function ProfitTrendChart({ data, totalProfi
       })),
       barWidth: '50%',
       itemStyle: { borderRadius: [5, 5, 0, 0] },
-      animationDuration: 600,
+      animationDuration: reducedMotion ? 0 : 600,
       animationEasing: 'cubicOut',
     }],
   };
 
   const subtitle = Number(totalProfit) > 0
-    ? `Total profit estimate: ${formatCurrency(totalProfit)}`
+    ? `Reported profit: ${formatCurrency(totalProfit)}`
     : 'Monthly revenue breakdown';
 
   return (

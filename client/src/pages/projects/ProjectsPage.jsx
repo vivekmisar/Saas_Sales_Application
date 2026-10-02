@@ -12,6 +12,7 @@ import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import { Plus, FolderKanban, FileText, Trash2, Search } from 'lucide-react';
 import { formatRelativeTime } from '../../utils/formatters';
 import gsap from 'gsap';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 export default function ProjectsPage() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function ProjectsPage() {
   const createProject = useCreateProject();
   const deleteProject = useDeleteProject();
   const gridRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   const [showCreate, setShowCreate] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -26,14 +28,15 @@ export default function ProjectsPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (gridRef.current && data?.projects?.length) {
-      gsap.fromTo(
+    if (gridRef.current && data?.projects?.length && !reducedMotion) {
+      const tween = gsap.fromTo(
         gridRef.current.children,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: 'power2.out' },
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out' },
       );
+      return () => tween.kill();
     }
-  }, [data]);
+  }, [data, reducedMotion]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -60,7 +63,7 @@ export default function ProjectsPage() {
       <div className="flex items-center justify-between gap-4 mb-6">
         <div>
           <h1
-            className="text-2xl font-bold text-slate-900 dark:text-slate-50"
+            className="app-page-title text-2xl font-bold text-slate-900 dark:text-slate-50"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Projects

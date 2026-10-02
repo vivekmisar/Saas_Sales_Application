@@ -4,9 +4,10 @@ import { useTheme } from '../../hooks/useTheme';
 import { BarChart2 } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
-import { formatCompactCurrency, formatCurrency } from '../../lib/formatters';
+import { formatCompactCurrency, formatCurrency, formatPercent } from '../../lib/formatters';
 import DonutChart from './DonutChart';
 import EmptyState from '../ui/EmptyState';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${name.slice(0, maxLength - 1)}…` : name);
 
@@ -16,6 +17,7 @@ const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${na
  */
 export default function ProfitAnalytics({ analytics, onDrillDown }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   
   if (!analytics) return null;
@@ -42,6 +44,7 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
 
   // ── Profit by Product Chart ───────────────────────────────────────
   const productOption = {
+    animation: !reducedMotion,
     backgroundColor: 'transparent',
     tooltip: { ...getChartTooltip(isDark), trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: (params) => {
       const point = params?.[0];
@@ -88,14 +91,14 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
       {/* Mini KPIs */}
       <div className="app-analytics-kpi-group">
         {[
-          { label: 'Gross Profit', value: grossProfit, prefix: '$' },
-          { label: 'Net Profit', value: netProfit, prefix: '$' },
-          { label: 'Avg Profit Margin', value: NET_MARGIN * 100, prefix: '', suffix: '%' },
+          { label: 'Gross Profit', value: grossProfit, format: formatCompactCurrency },
+          { label: 'Net Profit', value: netProfit, format: formatCompactCurrency },
+          { label: 'Avg Profit Margin', value: NET_MARGIN * 100, format: formatPercent },
         ].map(kpi => (
           <div key={kpi.label} className="app-analytics-kpi-cell">
               <p className="app-analytics-kpi-label"><BarChart2 size={15} aria-hidden="true" />{kpi.label}</p>
               <p className="app-analytics-kpi-value">
-                <AnimatedNumber value={kpi.value} decimals={1} prefix={kpi.prefix} suffix={kpi.suffix} />
+                <AnimatedNumber value={kpi.value} format={kpi.format} />
               </p>
           </div>
         ))}

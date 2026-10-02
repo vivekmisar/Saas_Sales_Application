@@ -15,6 +15,10 @@
   --app-accent: #0f5132;
   --app-accent-soft: #edf4ef;
   --app-negative: #bc6e58;
+  --space-section: 64px;
+  --space-grid: 32px;
+  --card-pad: 28px;
+  --card-pad-sm: 24px;
   --font-heading: 'Geist', system-ui, sans-serif;
   --font-body: 'Geist', system-ui, sans-serif;
   --font-mono: 'Geist Mono', monospace;
@@ -194,6 +198,12 @@ html.dark .auth-root .ui-button-primary { color: #0a0a0a; background: #fff; }
 .app-root .app-report-dashboard { padding-bottom: 34px; }
 .app-root .app-report-header { padding-bottom: 19px; border-bottom: 1px solid var(--app-border); }
 .app-root .app-report-header h1 { max-width: min(44vw, 620px); overflow-wrap: anywhere; letter-spacing: -.025em; }
+.app-root .app-report-file-name { font-size: 24px; font-weight: 600; font-family: var(--font-body); line-height: 1.2; }
+.app-root .app-report-back { min-height: 36px; padding: 0 10px; border: 1px solid var(--app-border); border-radius: 10px; }
+.app-root .app-report-back:hover { color: var(--app-text); background: var(--app-surface-raised); }
+.app-root .app-report-meta { max-width: min(40vw, 480px); color: var(--app-muted); font-family: var(--font-mono); font-size: 11px; line-height: 1.5; }
+.app-root .app-report-header > div:last-child { min-width: 0; flex-wrap: wrap; }
+.app-root .app-report-meta { min-width: 0; overflow-wrap: anywhere; }
 .app-root .app-filter-bar { padding: 14px 17px; border-radius: 15px; }
 .app-root .app-filter-bar input,
 .app-root .app-filter-bar select,
@@ -221,6 +231,8 @@ html.dark .app-root .app-month-native { color-scheme: dark; }
 .app-root .app-month-value { position: absolute; top: 50%; left: 34px; right: 28px; z-index: 2; overflow: hidden; color: var(--app-text); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; transform: translateY(-50%); }
 .app-root .app-select-chevron { position: absolute; top: 50%; right: 10px; color: var(--app-muted); pointer-events: none; transform: translateY(-50%); }
 .app-root .app-filter-bar select { min-width: 154px; padding-right: 30px; }
+.app-root .app-filter-select { min-width: 154px; }
+.app-root .app-filter-select select { width: 100%; }
 .app-root .app-reset-filters { min-height: 40px; border: 1px solid var(--app-border); border-radius: 10px; }
 .app-root .app-search-control:focus-visible,
 .app-root .app-filter-control:focus-visible,
@@ -232,9 +244,9 @@ html.dark .app-root .app-month-native { color-scheme: dark; }
 .app-root .app-kpi-card > div > p:first-of-type { font-size: 23px; letter-spacing: -.04em; }
 .app-root .app-kpi-card > div > p:last-of-type { text-transform: uppercase; letter-spacing: .055em; font-size: 10px; font-weight: 650; }
 .app-root .app-kpi-trend { background: var(--app-brand-soft); }
-.app-root .app-chart-card { padding: 21px; border-radius: 18px; }
+.app-root .app-chart-card { padding: 21px; border-radius: 15px; }
 .app-root .app-chart-title { font-size: 15px; letter-spacing: -.015em; }
-.app-root .app-chart-actions { opacity: .35; }
+.app-root .app-chart-actions { opacity: 1; }
 .app-root .app-chart-card:hover .app-chart-actions,
 .app-root .app-chart-actions:focus-within { opacity: 1; }
 .app-root .app-chart-tool { width: 36px; height: 36px; display: inline-grid; place-items: center; color: var(--app-muted); background: transparent; }
@@ -291,7 +303,7 @@ html.dark .app-root .app-export-button { color: #0a0a0a; background: #fff; }
 .app-root .app-kpi-label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--app-muted); }
 .app-root .app-kpi-label-row p { margin: 0; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .055em; text-transform: uppercase; }
 .app-root .app-kpi-label-row svg { flex: 0 0 auto; color: var(--app-muted); }
-.app-root .app-kpi-card > .app-kpi-card-inner > .app-kpi-value { margin: auto 0 0; color: var(--app-text); font-family: var(--font-body); font-size: clamp(20px, 2vw, 29px); font-variant-numeric: tabular-nums; font-weight: 650; letter-spacing: -.035em; line-height: 1.15; overflow-wrap: anywhere; }
+.app-root .app-kpi-card > .app-kpi-card-inner > .app-kpi-value { margin: auto 0 0; color: var(--app-text); font-family: var(--font-body); font-size: clamp(20px, 2vw, 29px); font-variant-numeric: tabular-nums; font-weight: 650; letter-spacing: -.035em; line-height: 1.15; overflow-wrap: anywhere; text-transform: none; }
 .app-root .app-kpi-card .app-kpi-trend { display: flex; align-items: center; gap: 4px; margin-top: 2px; padding: 0; color: var(--app-muted); background: transparent; font-family: var(--font-mono); font-size: 10px; }
 .app-root .app-analytics-section { margin-top: var(--space-section, 64px); padding-top: 24px; border-top: 1px solid var(--app-border); }
 .app-root .app-analytics-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
@@ -317,6 +329,17 @@ html.dark .app-root .app-export-button { color: #0a0a0a; background: #fff; }
 .app-root .app-report-dashboard .app-kpi-strip { margin-bottom: 32px; }
 .app-root .app-report-dashboard .app-report-header { margin-bottom: 24px; }
 .app-root .app-report-dashboard .app-filter-row { margin-bottom: 32px; }
+.app-root .app-chart-skeleton,
+.app-root .app-table-skeleton { padding: 24px; border-radius: 15px; background: var(--app-surface); }
+.app-root .app-skeleton-line,
+.app-root .app-skeleton-block { position: relative; overflow: hidden; border-radius: 7px; background: color-mix(in srgb, var(--app-surface-raised) 78%, var(--app-border)); }
+.app-root .app-skeleton-block { border: 1px solid var(--app-border); border-radius: 12px; }
+.app-root .app-skeleton-line::after,
+.app-root .app-skeleton-block::after { position: absolute; inset: 0; content: ''; background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--app-surface) 70%, transparent) 50%, transparent 80%); transform: translateX(-100%); animation: app-skeleton-shimmer 1.6s ease-in-out infinite; }
+.app-root .app-skeleton-table-head { margin-bottom: 1px; border-radius: 8px 8px 0 0; }
+.app-root .app-skeleton-table-row { border-bottom: 1px solid var(--app-border); border-radius: 0; background: transparent; }
+.app-root .app-skeleton-table-row::after { inset: 30% 16px; height: 40%; border-radius: 4px; }
+@keyframes app-skeleton-shimmer { to { transform: translateX(100%); } }
 .app-modal-overlay { background: rgba(12, 24, 16, .58); }
 .app-modal-panel {
   color: var(--app-text);
@@ -346,6 +369,11 @@ html.dark .app-toaster .app-toast {
 }
 
 @media (max-width: 899px) {
+  .app-root .app-kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-root .app-kpi-card { min-height: 112px; padding: 16px; }
+  .app-root .app-kpi-card:nth-child(odd) { border-left: 0; }
+  .app-root .app-kpi-card:nth-child(n + 3) { border-top: 1px solid var(--app-border); }
+  .app-root .app-kpi-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .app-root .app-report-section.app-report-two-col,
   .app-root .app-analytics-chart-grid { grid-template-columns: 1fr; gap: 24px; }
   .app-root .app-analytics-section { margin-top: 48px; }
@@ -360,6 +388,7 @@ html.dark .app-toaster .app-toast {
   .app-root .app-sidebar { transition: transform .24s ease, width .24s ease; }
   .app-root .app-menu-button { display: inline-flex; }
   .app-root .app-report-header h1 { max-width: 100%; }
+  .app-root .app-report-meta { max-width: 100%; }
   .app-root .app-chart-card { padding: 17px; }
   .app-root .app-chart-actions { opacity: 1; }
   .app-root .app-donut-layout { grid-template-columns: 1fr; gap: 12px; }
@@ -385,13 +414,23 @@ html.dark .app-toaster .app-toast {
   .app-root .app-kpi-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .app-root .app-report-dashboard .app-kpi-strip { margin-bottom: 24px; }
   .app-root .app-report-dashboard .app-filter-row { margin-bottom: 24px; }
+  .app-root .app-filter-select { width: 100%; }
   .auth-root .auth-form-card { padding: 28px 22px; }
   .app-toaster .app-toast { max-width: calc(100vw - 32px); }
+}
+
+@media (max-width: 420px) {
+  .app-root .app-month-range { display: grid; width: 100%; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .app-root .app-month-field { width: 100%; min-width: 0; }
+  .app-root .app-month-native { padding-right: 18px; }
+  .app-root .app-month-value { right: 20px; font-size: 11px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .app-root .app-donut-center,
   .app-root .app-donut-legend-row { animation: none; transition: none; }
+  .app-root *,
+  .auth-root * { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
 }
 
 .app-root button:focus-visible,

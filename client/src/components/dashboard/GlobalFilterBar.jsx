@@ -54,7 +54,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
           <div className="w-px h-5 bg-slate-200 dark:bg-slate-700 hidden sm:block" />
 
           {/* Region */}
-          <div className="relative">
+          <div className="app-filter-select relative">
             <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
               <MapPin size={14} className="text-slate-400" />
             </div>
@@ -70,7 +70,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
           </div>
 
           {/* Category */}
-          <div className="relative">
+          <div className="app-filter-select relative">
             <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
               <Tag size={14} className="text-slate-400" />
             </div>

@@ -5,11 +5,13 @@ import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 import { formatCompactCurrency, formatCurrency, formatInteger } from '../../lib/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${name.slice(0, maxLength - 1)}…` : name);
 
 const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDown }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   const sortedDescending = (Array.isArray(data) ? data : [])
     .filter((item) => item && item.product != null && Number.isFinite(Number(item.revenue)))
@@ -23,6 +25,7 @@ const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDow
 
   const displayItems = [...sortedDescending].reverse();
   const option = {
+    animation: !reducedMotion,
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
@@ -69,7 +72,7 @@ const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDow
       })),
       barWidth: 13,
       label: { show: true, position: 'right', color: theme.muted, fontFamily: theme.fontMono, fontSize: 10, formatter: ({ value }) => formatCompactCurrency(value) },
-      animationDuration: 600,
+      animationDuration: reducedMotion ? 0 : 600,
       animationEasing: 'cubicOut',
     }],
   };

@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { getChartPalette, getChartTheme } from '../../lib/chartTheme';
 import { formatCompactCurrency, formatCurrency, formatPercent } from '../../lib/formatters';
+import useReducedMotion from '../../hooks/useReducedMotion';
 
 const compactValue = (value) => formatCompactCurrency(value);
 const fullValue = (value) => formatCurrency(value);
@@ -19,10 +20,11 @@ export default function DonutChart({
   emptyDescription = 'There is no category data to display for this report.',
 }) {
   const { isDark } = useTheme();
+  const reducedMotion = useReducedMotion();
   const theme = getChartTheme(isDark);
   const palette = getChartPalette(isDark);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [activeSource, setActiveSource] = useState(null);
+  const activeSourceRef = useRef(null);
   const safeData = useMemo(() => (Array.isArray(data) ? data : [])
     .map((item) => ({
       name: item?.[nameKey] == null ? '' : String(item[nameKey]),
@@ -33,7 +35,8 @@ export default function DonutChart({
   const activeItem = activeIndex == null ? null : safeData[activeIndex];
 
   const option = useMemo(() => ({
-    animationDuration: 250,
+    animation: !reducedMotion,
+    animationDuration: reducedMotion ? 0 : 250,
     tooltip: {
       show: false,
       trigger: 'item',
@@ -64,16 +67,16 @@ export default function DonutChart({
         itemStyle: { color: palette[index % palette.length] },
       })),
     }],
-  }), [safeData, theme, palette]);
+  }), [safeData, theme, palette, reducedMotion]);
 
   const activate = (index, source) => {
+    activeSourceRef.current = source;
     setActiveIndex(index);
-    setActiveSource(source);
   };
   const clearSource = (source) => {
-    if (activeSource === source) {
+    if (activeSourceRef.current === source) {
+      activeSourceRef.current = null;
       setActiveIndex(null);
-      setActiveSource(null);
     }
   };
 
@@ -133,7 +136,7 @@ export default function DonutChart({
                     onTouchStart={() => activate(index, 'legend')}
                     title={`${item.name}: ${fullValue(item.value)} (${formatPercent(percentage)})`}
                   >
-                    <span className="app-donut-legend-dot" style={{ '--donut-color': chartColors.palette[index % chartColors.palette.length] }} />
+                    <span className="app-donut-legend-dot" style={{ '--donut-color': palette[index % palette.length] }} />
                     <span className="app-donut-legend-name">{item.name}</span>
                     <span className="app-donut-legend-value">{compactValue(item.value)}</span>
                     <span className="app-donut-legend-share">{formatPercent(percentage)}</span>
