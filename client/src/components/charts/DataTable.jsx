@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import ChartWrapper from './ChartWrapper';
+import EmptyState from '../ui/EmptyState';
 
 /**
  * DataTable — Sortable, filterable data table for analytics data.
@@ -31,7 +32,7 @@ export default function DataTable({ title, subtitle, columns, data }) {
   };
 
   const processed = useMemo(() => {
-    let rows = [...(data || [])];
+    let rows = Array.isArray(data) ? data.filter(Boolean).slice() : [];
 
     // Filter
     if (filter) {
@@ -56,7 +57,9 @@ export default function DataTable({ title, subtitle, columns, data }) {
     return rows;
   }, [data, filter, sortKey, sortDir, columns]);
 
-  if (!data || data.length === 0) return null;
+  if (!Array.isArray(data) || data.length === 0) {
+    return <ChartWrapper title={title} subtitle={subtitle}><EmptyState title="No rows to display" description="This table will fill in when the report contains matching data." /></ChartWrapper>;
+  }
 
   const SortIcon = ({ colKey }) => {
     if (sortKey !== colKey) return <ArrowUpDown size={12} className="text-slate-400" />;
@@ -66,7 +69,7 @@ export default function DataTable({ title, subtitle, columns, data }) {
   };
 
   return (
-    <ChartWrapper title={title} subtitle={subtitle}>
+    <ChartWrapper title={title} subtitle={subtitle} className={columns.length === 2 ? 'app-two-column-table-card' : ''}>
       {/* Filter */}
       <div className="mb-3">
         <input
@@ -87,6 +90,7 @@ export default function DataTable({ title, subtitle, columns, data }) {
                 <th
                   key={key}
                   onClick={() => handleSort(key)}
+                  aria-sort={sortKey === key ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
                   className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors select-none"
                 >
                   <span className="inline-flex items-center gap-1.5">
@@ -103,10 +107,10 @@ export default function DataTable({ title, subtitle, columns, data }) {
                 key={i}
                 className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
               >
-                {columns.map(({ key, format }) => (
+                {columns.map(({ key, format, numeric }) => (
                   <td
                     key={key}
-                    className="px-4 py-2.5 text-slate-700 dark:text-slate-300 whitespace-nowrap"
+                    className={`px-4 py-2.5 text-slate-700 dark:text-slate-300 whitespace-nowrap${numeric ? ' app-table-numeric' : ''}`}
                   >
                     {format ? format(row[key]) : row[key]}
                   </td>

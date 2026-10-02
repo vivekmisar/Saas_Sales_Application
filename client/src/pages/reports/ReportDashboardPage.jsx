@@ -25,6 +25,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { formatDate, formatFileSize } from '../../utils/formatters';
+import { formatCurrency, formatInteger } from '../../lib/formatters';
 
 /**
  * ReportDashboardPage — full analytics dashboard for a single report.
@@ -54,21 +55,21 @@ export default function ReportDashboardPage() {
     const base = report.analytics;
     const q = searchQuery.toLowerCase();
 
-    let mRev = base.monthly_revenue || [];
+    let mRev = Array.isArray(base.monthly_revenue) ? base.monthly_revenue.filter(Boolean) : [];
     if (filters.startMonth) mRev = mRev.filter(d => d.month >= filters.startMonth);
     if (filters.endMonth) mRev = mRev.filter(d => d.month <= filters.endMonth);
 
-    let rRev = base.region_revenue || [];
+    let rRev = Array.isArray(base.region_revenue) ? base.region_revenue.filter(Boolean) : [];
     if (filters.region) rRev = rRev.filter(d => d.region === filters.region);
     
-    let cRev = base.category_revenue || [];
+    let cRev = Array.isArray(base.category_revenue) ? base.category_revenue.filter(Boolean) : [];
     if (filters.category) cRev = cRev.filter(d => d.category === filters.category);
 
-    let pRev = base.top_products || [];
+    let pRev = Array.isArray(base.top_products) ? base.top_products.filter(Boolean) : [];
     if (q) {
-      pRev = pRev.filter(d => d.product.toLowerCase().includes(q));
-      rRev = rRev.filter(d => d.region.toLowerCase().includes(q));
-      cRev = cRev.filter(d => d.category.toLowerCase().includes(q));
+      pRev = pRev.filter(d => String(d.product ?? '').toLowerCase().includes(q));
+      rRev = rRev.filter(d => String(d.region ?? '').toLowerCase().includes(q));
+      cRev = cRev.filter(d => String(d.category ?? '').toLowerCase().includes(q));
     }
 
     const dynamicRevenue = mRev.reduce((sum, d) => sum + d.revenue, 0);
@@ -175,9 +176,10 @@ export default function ReportDashboardPage() {
     {
       key: 'revenue',
       label: 'Revenue',
-      format: (v) => `$${Number(v).toLocaleString()}`,
+      format: formatCurrency,
+      numeric: true,
     },
-    { key: 'orders', label: 'Orders' },
+    { key: 'orders', label: 'Orders', format: formatInteger, numeric: true },
   ];
 
   const regionTableCols = [
@@ -185,7 +187,8 @@ export default function ReportDashboardPage() {
     {
       key: 'revenue',
       label: 'Revenue',
-      format: (v) => `$${Number(v).toLocaleString()}`,
+      format: formatCurrency,
+      numeric: true,
     },
   ];
 
@@ -194,7 +197,8 @@ export default function ReportDashboardPage() {
     {
       key: 'revenue',
       label: 'Revenue',
-      format: (v) => `$${Number(v).toLocaleString()}`,
+      format: formatCurrency,
+      numeric: true,
     },
   ];
 

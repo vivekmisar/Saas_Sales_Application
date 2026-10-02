@@ -233,6 +233,7 @@ html.dark .auth-root .ui-button-primary { color: #0a0a0a; background: #fff; }
 .app-root .app-donut-legend-share { color: var(--app-text); font-family: var(--font-mono); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .app-root .app-donut-legend-share { min-width: 39px; color: var(--app-muted); text-align: right; }
 .app-root .app-chart-empty { display: grid; min-height: 280px; place-items: center; color: var(--app-muted); font-size: 13px; }
+.app-root .app-chart-error { display: grid; min-height: 280px; place-items: center; padding: 24px; color: var(--app-muted); font-size: 13px; text-align: center; }
 @keyframes app-donut-fade-in { from { opacity: .55; } to { opacity: 1; } }
 .app-root .app-export-button { min-height: 40px; color: #fff; background: #0a0a0a; border-radius: 999px; }
 html.dark .app-root .app-export-button { color: #0a0a0a; background: #fff; }
@@ -240,6 +241,13 @@ html.dark .app-root .app-export-button { color: #0a0a0a; background: #fff; }
 .app-root .app-report-dashboard table thead tr { background: var(--app-surface-raised); }
 .app-root .app-report-dashboard table th { color: var(--app-muted); letter-spacing: .07em; }
 .app-root .app-report-dashboard table tbody tr:hover { background: var(--app-brand-soft); }
+.app-root .app-report-dashboard table thead { position: sticky; top: 64px; z-index: 2; }
+.app-root .app-report-dashboard table th { height: 44px; padding: 10px 16px; }
+.app-root .app-report-dashboard table td { height: 52px; padding: 12px 16px; }
+.app-root .app-report-dashboard table th[aria-sort="ascending"],
+.app-root .app-report-dashboard table th[aria-sort="descending"] { color: var(--app-text); }
+.app-root .app-report-dashboard .app-table-numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.app-root .app-two-column-table-card > div:last-child > div:last-child { max-width: 720px; }
 .app-root .app-estimate-label {
   margin-left: auto;
   padding: 5px 9px;

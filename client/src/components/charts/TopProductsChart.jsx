@@ -1,92 +1,87 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
+import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
+import { formatCompactCurrency, formatCurrency, formatInteger } from '../../lib/formatters';
 
-/**
- * TopProductsChart — Horizontal bar chart of top products by revenue.
- *
- * Data source: analytics.top_products[]
- * Each entry: { product: "CRM Pro", revenue: 41499.17, orders: 8 }
- */
+const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${name.slice(0, maxLength - 1)}…` : name);
+
 const TopProductsChart = React.memo(function TopProductsChart({ data, onDrillDown }) {
   const { isDark } = useTheme();
   const theme = getChartTheme(isDark);
+  const sortedDescending = (Array.isArray(data) ? data : [])
+    .filter((item) => item && item.product != null && Number.isFinite(Number(item.revenue)))
+    .map((item) => ({ ...item, revenue: Number(item.revenue) }))
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
 
-  if (!data || data.length === 0) return null;
+  if (!sortedDescending.length) {
+    return <ChartWrapper title="Top Products" subtitle="Highest revenue generating products"><EmptyState title="No product data" description="Product revenue will appear here when the report contains product totals." /></ChartWrapper>;
+  }
 
-  // Reverse for horizontal bar (bottom to top, highest at top)
-  const sorted = [...data].reverse();
-  const products = sorted.map((d) => d.product);
-  const revenues = sorted.map((d) => d.revenue);
-
+  const displayItems = [...sortedDescending].reverse();
   const option = {
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       ...getChartTooltip(isDark),
       formatter: (params) => {
-        const p = params[0];
-        const item = sorted[p.dataIndex];
-        return `<strong>${p.name}</strong><br/>Revenue: $${p.value.toLocaleString()}<br/>Orders: ${item.orders}`;
+        const point = params?.[0];
+        if (!point) return '';
+        const item = displayItems[point.dataIndex];
+        return `<strong>${point.name}</strong><br/>Revenue: ${formatCurrency(point.value)}<br/>Orders: ${formatInteger(item?.orders)}`;
       },
     },
-    grid: { top: 10, right: 30, bottom: 20, left: 10, containLabel: true },
+    grid: { top: 12, right: 92, bottom: 16, left: 148, containLabel: false },
     xAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: theme.grid } },
-      axisLabel: {
-        color: theme.muted,
-        fontSize: 11,
-        formatter: (v) => `$${(v / 1000).toFixed(0)}k`,
-      },
+      min: 0,
+      splitNumber: 4,
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { show: false },
+      splitLine: { show: false },
     },
     yAxis: {
       type: 'category',
-      data: products,
+      data: displayItems.map((item) => item.product),
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
         color: theme.text,
+        fontFamily: theme.fontBody,
         fontSize: 12,
-        fontWeight: 500,
+        interval: 0,
+        width: 138,
+        overflow: 'truncate',
+        formatter: (value) => truncateLabel(String(value)),
+        tooltip: { show: true },
       },
+      splitLine: { show: true, lineStyle: { color: theme.grid, type: 'dotted', width: 1 } },
     },
-    series: [
-      {
-        type: 'bar',
-        data: revenues,
-        barWidth: 20,
-        itemStyle: {
-          borderRadius: [0, 6, 6, 0],
-          color: {
-            type: 'linear',
-            x: 0, y: 0, x2: 1, y2: 0,
-            colorStops: [
-              { offset: 0, color: chartColors.primary },
-              { offset: 1, color: chartColors.primarySoft },
-            ],
-          },
-        },
-        animationDuration: 1000,
-        animationEasing: 'cubicOut',
-      },
-    ],
+    series: [{
+      type: 'bar',
+      data: displayItems.map((item, index) => ({
+        value: item.revenue,
+        itemStyle: { color: index === displayItems.length - 1 ? chartColors.primary : chartColors.primarySoft, borderRadius: [0, 4, 4, 0] },
+      })),
+      barWidth: 13,
+      label: { show: true, position: 'right', color: theme.muted, fontFamily: theme.fontMono, fontSize: 10, formatter: ({ value }) => formatCompactCurrency(value) },
+      animationDuration: 600,
+      animationEasing: 'cubicOut',
+    }],
   };
 
   return (
     <ChartWrapper title="Top Products" subtitle="Highest revenue generating products">
       <ReactECharts
         option={option}
-        style={{ height: 300 }}
+        style={{ height: Math.max(280, displayItems.length * 48) }}
         notMerge
         lazyUpdate
-        onEvents={{
-          click: (params) => {
-            if (onDrillDown) onDrillDown(params.name);
-          }
-        }}
+        onEvents={{ click: (params) => onDrillDown && onDrillDown(params.name) }}
       />
     </ChartWrapper>
   );

@@ -1,85 +1,71 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
+import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
-
-/**
- * RegionalSalesChart — Bar chart showing revenue by region.
- *
- * Data source: analytics.region_revenue[]
- * Each entry: { region: "North America", revenue: 39382.87 }
- */
-
-const REGION_COLORS = chartColors.palette;
+import { formatCompactCurrency, formatCurrency, formatPercent } from '../../lib/formatters';
 
 const RegionalSalesChart = React.memo(function RegionalSalesChart({ data, onDrillDown }) {
   const { isDark } = useTheme();
   const theme = getChartTheme(isDark);
+  const sorted = (Array.isArray(data) ? data : [])
+    .filter((item) => item && item.region != null && Number.isFinite(Number(item.revenue)))
+    .map((item) => ({ ...item, revenue: Number(item.revenue) }))
+    .sort((a, b) => b.revenue - a.revenue);
 
-  if (!data || data.length === 0) return null;
+  if (!sorted.length) {
+    return <ChartWrapper title="Regional Performance" subtitle="Revenue across different regions"><EmptyState title="No regional data" description="Regional revenue will appear here when the report includes region totals." /></ChartWrapper>;
+  }
 
-  const regions = data.map((d) => d.region);
-  const revenues = data.map((d) => d.revenue);
-  const colors = data.map((_, i) => REGION_COLORS[i % REGION_COLORS.length]);
-
+  const total = sorted.reduce((sum, item) => sum + item.revenue, 0);
   const option = {
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       ...getChartTooltip(isDark),
       formatter: (params) => {
-        const p = params[0];
-        const total = revenues.reduce((a, b) => a + b, 0);
-        const pct = ((p.value / total) * 100).toFixed(1);
-        return `<strong>${p.name}</strong><br/>$${p.value.toLocaleString()} (${pct}%)`;
+        const point = params?.[0];
+        if (!point) return '';
+        const share = total > 0 ? formatPercent((point.value / total) * 100) : '—';
+        return `<strong>${point.name}</strong><br/>${formatCurrency(point.value)} (${share})`;
       },
     },
-    grid: { top: 20, right: 20, bottom: 30, left: 60, containLabel: false },
+    grid: { top: 34, right: 24, bottom: 34, left: 56, containLabel: false },
     xAxis: {
       type: 'category',
-      data: regions,
+      data: sorted.map((item) => item.region),
       axisLine: { lineStyle: { color: theme.axis } },
-      axisLabel: { color: theme.muted, fontSize: 11 },
+      axisLabel: { color: theme.muted, fontFamily: theme.fontBody, fontSize: 11, interval: 0 },
     },
     yAxis: {
       type: 'value',
-      splitLine: { lineStyle: { color: theme.grid } },
-      axisLabel: {
-        color: theme.muted,
-        fontSize: 11,
-        formatter: (v) => `$${(v / 1000).toFixed(0)}k`,
-      },
+      min: 0,
+      splitNumber: 4,
+      splitLine: { lineStyle: { color: theme.grid, type: 'dotted', width: 1 } },
+      axisLabel: { color: theme.muted, fontFamily: theme.fontMono, fontSize: 10, formatter: formatCompactCurrency },
     },
-    series: [
-      {
-        type: 'bar',
-        data: revenues.map((val, i) => ({
-          value: val,
-          itemStyle: {
-            color: colors[i],
-            borderRadius: [6, 6, 0, 0],
-          },
-        })),
-        barWidth: '50%',
-        animationDuration: 1000,
-        animationEasing: 'cubicOut',
-      },
-    ],
+    series: [{
+      type: 'bar',
+      data: sorted.map((item, index) => ({
+        value: item.revenue,
+        itemStyle: { color: index === 0 ? chartColors.primary : chartColors.primarySoft, borderRadius: [5, 5, 0, 0] },
+      })),
+      barWidth: '48%',
+      label: { show: true, position: 'top', color: theme.muted, fontFamily: theme.fontMono, fontSize: 10, formatter: ({ value }) => formatCompactCurrency(value) },
+      animationDuration: 600,
+      animationEasing: 'cubicOut',
+    }],
   };
 
   return (
-    <ChartWrapper title="Regional Performance" subtitle="Revenue across different regions">
+    <ChartWrapper title="Regional Performance" subtitle="Revenue by region, highest first">
       <ReactECharts
         option={option}
-        style={{ height: 300 }}
+        style={{ height: 320 }}
         notMerge
         lazyUpdate
-        onEvents={{
-          click: (params) => {
-            if (onDrillDown) onDrillDown(params.name);
-          }
-        }}
+        onEvents={{ click: (params) => onDrillDown && onDrillDown(params.name) }}
       />
     </ChartWrapper>
   );

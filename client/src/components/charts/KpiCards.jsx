@@ -1,6 +1,6 @@
 import { DollarSign, ShoppingCart, Users, TrendingUp, PiggyBank, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
-import { formatCurrency, formatNumber } from '../../lib/formatters';
+import { formatCompactCurrency, formatNumber, formatPercent } from '../../lib/formatters';
 
 /**
  * KpiCards — top-level KPI stat cards.
@@ -20,7 +20,7 @@ const kpiConfig = [
     key: 'total_revenue',
     label: 'Total Revenue',
     icon: DollarSign,
-    format: formatCurrency,
+    format: formatCompactCurrency,
     bgLight: 'app-kpi-icon-wrap',
     textColor: 'app-kpi-icon',
   },
@@ -44,7 +44,7 @@ const kpiConfig = [
     key: 'average_order_value',
     label: 'Avg. Order Value',
     icon: TrendingUp,
-    format: formatCurrency,
+    format: formatCompactCurrency,
     bgLight: 'app-kpi-icon-wrap',
     textColor: 'app-kpi-icon',
   },
@@ -52,7 +52,7 @@ const kpiConfig = [
     key: 'total_profit',
     label: 'Total Profit',
     icon: PiggyBank,
-    format: formatCurrency,
+    format: formatCompactCurrency,
     prefix: '$',
     bgLight: 'app-kpi-icon-wrap',
     textColor: 'app-kpi-icon',
@@ -76,7 +76,7 @@ export default function KpiCards({ analytics, compareAnalytics }) {
     const isPositive = growth >= 0;
     
     return {
-      trend: `${isPositive ? '+' : ''}${growth.toFixed(1)}%`,
+      trend: `${isPositive ? '+' : ''}${formatPercent(growth)}`,
       isPositive,
     };
   };

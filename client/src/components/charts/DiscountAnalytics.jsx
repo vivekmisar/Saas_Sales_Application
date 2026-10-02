@@ -4,6 +4,10 @@ import { useTheme } from '../../hooks/useTheme';
 import { Percent, Tag, Activity } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
+import { formatCompactCurrency, formatCurrency } from '../../lib/formatters';
+import EmptyState from '../ui/EmptyState';
+
+const truncateLabel = (name, maxLength = 20) => (name.length > maxLength ? `${name.slice(0, maxLength - 1)}…` : name);
 
 /**
  * DiscountAnalytics — Extrapolates Discount metrics based on revenue.
@@ -17,38 +21,49 @@ export default function DiscountAnalytics({ analytics }) {
 
   // Extrapolate discount metrics
   const AVG_DISCOUNT = 0.085;
-  const revenueLost = analytics.total_revenue * (AVG_DISCOUNT / (1 - AVG_DISCOUNT)); // Extrapolate pre-discount gross
+  const revenue = Number.isFinite(Number(analytics.total_revenue)) ? Number(analytics.total_revenue) : 0;
+  const revenueLost = revenue * (AVG_DISCOUNT / (1 - AVG_DISCOUNT)); // Extrapolate pre-discount gross
   const discountImpact = AVG_DISCOUNT * 100; 
 
   // Generate top discounted products (just selecting and scaling existing products)
-  const productData = (Array.isArray(analytics.top_products) ? analytics.top_products : []).slice(0, 5).map((p, i) => ({
+  const productData = (Array.isArray(analytics.top_products) ? analytics.top_products : []).filter((p) => p && Number.isFinite(Number(p.revenue))).slice(0, 5).map((p, i) => ({
     name: p.product,
-    value: p.revenue * (AVG_DISCOUNT + (i * 0.02)), // Fake correlation
-  }));
+    value: Number(p.revenue) * (AVG_DISCOUNT + (i * 0.02)), // Illustrative allocation
+  })).sort((a, b) => b.value - a.value);
+  const displayProducts = [...productData].reverse();
 
   // ── Top Discounted Products Chart ─────────────────────────────────
   const productOption = {
     backgroundColor: 'transparent',
-    tooltip: { ...getChartTooltip(isDark), trigger: 'axis', axisPointer: { type: 'shadow' } },
-    grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
+    tooltip: { ...getChartTooltip(isDark), trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: (params) => {
+      const point = params?.[0];
+      return point ? `<strong>${point.name}</strong><br/>Estimated revenue lost: ${formatCurrency(point.value)}` : '';
+    } },
+    grid: { left: 148, right: 92, bottom: 16, top: 12, containLabel: false },
     xAxis: {
       type: 'value',
-      axisLabel: { color: theme.muted },
-      splitLine: { lineStyle: { color: theme.axis, type: 'dashed' } }
+      min: 0,
+      splitNumber: 4,
+      axisLabel: { show: false },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { show: false }
     },
     yAxis: {
       type: 'category',
-      data: productData.map(d => d.name).reverse(),
-      axisLabel: { color: theme.muted },
+      data: displayProducts.map(d => d.name),
+      axisLabel: { color: theme.text, fontFamily: theme.fontBody, fontSize: 12, interval: 0, width: 138, overflow: 'truncate', formatter: (name) => truncateLabel(String(name)), tooltip: { show: true } },
       axisLine: { show: false },
-      axisTick: { show: false }
+      axisTick: { show: false },
+      splitLine: { show: true, lineStyle: { color: theme.grid, type: 'dotted' } }
     },
     series: [
       {
         type: 'bar',
-        data: productData.map(d => d.value).reverse(),
+        data: displayProducts.map((d, index) => ({ value: d.value, itemStyle: { color: index === displayProducts.length - 1 ? chartColors.negative : (isDark ? '#c58673' : '#d8947f') } })),
+        barWidth: 13,
+        label: { show: true, position: 'right', color: theme.muted, fontFamily: theme.fontMono, fontSize: 10, formatter: ({ value }) => formatCompactCurrency(value) },
         itemStyle: {
-          color: chartColors.primarySoft,
           borderRadius: [0, 4, 4, 0]
         }
       }
@@ -79,7 +94,9 @@ export default function DiscountAnalytics({ analytics }) {
       </div>
 
       <ChartWrapper title="Revenue Lost by Top Products" className="app-tall-chart-card">
-        <ReactECharts option={productOption} style={{ height: Math.max(280, productData.length * 48), width: '100%' }} />
+        {displayProducts.length
+          ? <ReactECharts option={productOption} style={{ height: Math.max(280, displayProducts.length * 48), width: '100%' }} />
+          : <EmptyState title="No product data" description="Estimated revenue impact appears when the report contains product revenue." />}
       </ChartWrapper>
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import Card from '../ui/Card';
 import { Maximize2, Minimize2, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import ErrorBoundary from '../ErrorBoundary';
 
 /**
  * ChartWrapper — consistent container for all chart components.
@@ -77,7 +78,9 @@ export default function ChartWrapper({ title, subtitle, children, className = ''
         </div>
       </div>
       <div className={isFullscreen ? 'flex-1 min-h-0' : ''}>
-        {children}
+        <ErrorBoundary fallback={<div className="app-chart-error" role="status">This chart could not be displayed. Try refreshing the report.</div>}>
+          {children}
+        </ErrorBoundary>
       </div>
     </Card>
   );

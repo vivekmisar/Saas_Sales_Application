@@ -1,26 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import EmptyState from '../ui/EmptyState';
 import { useTheme } from '../../hooks/useTheme';
-import { chartColors, getChartTheme } from '../../lib/chartTheme';
-import { formatCompactCurrency, formatCurrency } from '../../lib/formatters';
+import { getChartPalette, getChartTheme } from '../../lib/chartTheme';
+import { formatCompactCurrency, formatCurrency, formatPercent } from '../../lib/formatters';
 
 const compactValue = (value) => formatCompactCurrency(value);
 const fullValue = (value) => formatCurrency(value);
-
-function ChartFallback() {
-  return <div className="app-chart-empty" role="status">This chart could not be displayed.</div>;
-}
-
-class DonutErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  render() { return this.state.hasError ? <ChartFallback /> : this.props.children; }
-}
 
 export default function DonutChart({
   title,
@@ -33,6 +20,7 @@ export default function DonutChart({
 }) {
   const { isDark } = useTheme();
   const theme = getChartTheme(isDark);
+  const palette = getChartPalette(isDark);
   const [activeIndex, setActiveIndex] = useState(null);
   const [activeSource, setActiveSource] = useState(null);
   const safeData = useMemo(() => (Array.isArray(data) ? data : [])
@@ -47,14 +35,8 @@ export default function DonutChart({
   const option = useMemo(() => ({
     animationDuration: 250,
     tooltip: {
-      show: true,
+      show: false,
       trigger: 'item',
-      confine: true,
-      backgroundColor: theme.surface,
-      borderColor: theme.border,
-      borderWidth: 1,
-      textStyle: { color: theme.text, fontFamily: 'var(--font-mono)', fontSize: 11 },
-      formatter: (params) => `${params.name}<br/>${fullValue(params.value)} (${params.percent}%)`,
     },
     series: [{
       type: 'pie',
@@ -73,15 +55,16 @@ export default function DonutChart({
       emphasis: {
         scale: true,
         scaleSize: 4,
+        focus: 'self',
         itemStyle: { opacity: 1 },
       },
       blur: { itemStyle: { opacity: 0.55 } },
       data: safeData.map((item, index) => ({
         ...item,
-        itemStyle: { color: chartColors.palette[index % chartColors.palette.length] },
+        itemStyle: { color: palette[index % palette.length] },
       })),
     }],
-  }), [safeData, theme]);
+  }), [safeData, theme, palette]);
 
   const activate = (index, source) => {
     setActiveIndex(index);
@@ -101,8 +84,7 @@ export default function DonutChart({
       ) : (
         <div className="app-donut-layout">
           <div className="app-donut-visual" onMouseLeave={() => clearSource('chart')}>
-            <DonutErrorBoundary>
-              <ReactECharts
+            <ReactECharts
                 option={option}
                 style={{ height: 300, width: '100%' }}
                 notMerge
@@ -117,14 +99,13 @@ export default function DonutChart({
                   },
                 }}
               />
-            </DonutErrorBoundary>
             <div className="app-donut-center" aria-live="polite">
               {activeItem ? (
                 <>
                   <span className="app-donut-center-title">{activeItem.name}</span>
                   <strong>{compactValue(activeItem.value)}</strong>
                   <span className="app-donut-center-meta">
-                    {total > 0 ? `${((activeItem.value / total) * 100).toFixed(1)}% share` : '0.0% share'}
+                    {total > 0 ? `${formatPercent((activeItem.value / total) * 100)} share` : '0.0% share'}
                   </span>
                 </>
               ) : (
@@ -150,12 +131,12 @@ export default function DonutChart({
                       if (!event.relatedTarget?.closest?.('.app-donut-legend')) clearSource('legend');
                     }}
                     onTouchStart={() => activate(index, 'legend')}
-                    title={`${item.name}: ${fullValue(item.value)} (${percentage.toFixed(1)}%)`}
+                    title={`${item.name}: ${fullValue(item.value)} (${formatPercent(percentage)})`}
                   >
                     <span className="app-donut-legend-dot" style={{ '--donut-color': chartColors.palette[index % chartColors.palette.length] }} />
                     <span className="app-donut-legend-name">{item.name}</span>
                     <span className="app-donut-legend-value">{compactValue(item.value)}</span>
-                    <span className="app-donut-legend-share">{percentage.toFixed(1)}%</span>
+                    <span className="app-donut-legend-share">{formatPercent(percentage)}</span>
                   </button>
                 </div>
               );

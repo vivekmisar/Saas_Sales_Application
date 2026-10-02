@@ -5,8 +5,8 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
   if (!analytics) return null;
 
   // Extract unique options from pre-aggregated analytics data
-  const regions = [...new Set(analytics.region_revenue.map(r => r.region))].sort();
-  const categories = [...new Set(analytics.category_revenue.map(c => c.category))].sort();
+  const regions = [...new Set((Array.isArray(analytics.region_revenue) ? analytics.region_revenue : []).filter(Boolean).map(r => r.region).filter(Boolean))].sort();
+  const categories = [...new Set((Array.isArray(analytics.category_revenue) ? analytics.category_revenue : []).filter(Boolean).map(c => c.category).filter(Boolean))].sort();
 
   return (
     <Card className="app-filter-bar p-4">
