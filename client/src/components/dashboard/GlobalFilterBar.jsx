@@ -1,5 +1,11 @@
-import { Calendar, MapPin, Tag, RefreshCw } from 'lucide-react';
+import { Calendar, ChevronDown, MapPin, Tag, RefreshCw } from 'lucide-react';
 import Card from '../ui/Card';
+
+const monthLabel = (value, placeholder) => {
+  if (!value) return placeholder;
+  const date = new Date(`${value}-01T00:00:00`);
+  return Number.isNaN(date.getTime()) ? placeholder : new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(date);
+};
 
 export default function GlobalFilterBar({ analytics, filters, onChange, onReset }) {
   if (!analytics) return null;
@@ -17,25 +23,32 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
           
           {/* Date Range Placeholder (Since we don't have a complex datepicker library installed, 
               we'll use native month inputs matching the "YYYY-MM" format in monthly_revenue) */}
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
-                <Calendar size={14} className="text-slate-400" />
-              </div>
+          <div className="app-month-range flex items-center gap-2">
+            <div className="app-month-field relative">
+              <Calendar className="app-month-icon" size={14} aria-hidden="true" />
               <input
                 type="month"
                 value={filters.startMonth || ''}
                 onChange={(e) => onChange({ ...filters, startMonth: e.target.value })}
-                className="app-filter-control pl-8 pr-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300"
+                aria-label="Start date"
+                title="Start date"
+                className="app-filter-control app-month-native"
               />
+              <span className="app-month-value" aria-hidden="true">{monthLabel(filters.startMonth, 'Start date')}</span>
             </div>
             <span className="text-slate-400 text-sm">to</span>
-            <input
-              type="month"
-              value={filters.endMonth || ''}
-              onChange={(e) => onChange({ ...filters, endMonth: e.target.value })}
-              className="app-filter-control px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300"
-            />
+            <div className="app-month-field relative">
+              <Calendar className="app-month-icon" size={14} aria-hidden="true" />
+              <input
+                type="month"
+                value={filters.endMonth || ''}
+                onChange={(e) => onChange({ ...filters, endMonth: e.target.value })}
+                aria-label="End date"
+                title="End date"
+                className="app-filter-control app-month-native"
+              />
+              <span className="app-month-value" aria-hidden="true">{monthLabel(filters.endMonth, 'End date')}</span>
+            </div>
           </div>
 
           <div className="w-px h-5 bg-slate-200 dark:bg-slate-700 hidden sm:block" />
@@ -53,6 +66,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
               <option value="">All Regions</option>
               {regions.map(r => <option key={r} value={r}>{r}</option>)}
             </select>
+            <ChevronDown className="app-select-chevron" size={14} aria-hidden="true" />
           </div>
 
           {/* Category */}
@@ -68,6 +82,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
               <option value="">All Categories</option>
               {categories.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
+            <ChevronDown className="app-select-chevron" size={14} aria-hidden="true" />
           </div>
 
         </div>
@@ -75,6 +90,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
         {/* Actions */}
         <div>
           <button
+            type="button"
             onClick={onReset}
             className="app-reset-filters flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors cursor-pointer"
           >

@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import ChartWrapper from './ChartWrapper';
 import EmptyState from '../ui/EmptyState';
+import SearchInput from '../ui/SearchInput';
 
 /**
  * DataTable — Sortable, filterable data table for analytics data.
@@ -72,12 +73,12 @@ export default function DataTable({ title, subtitle, columns, data }) {
     <ChartWrapper title={title} subtitle={subtitle} className={columns.length === 2 ? 'app-two-column-table-card' : ''}>
       {/* Filter */}
       <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Search..."
+        <SearchInput
+          placeholder="Search table…"
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="app-table-search w-full sm:w-64 px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none"
+          onChange={setFilter}
+          className="w-full sm:w-64"
+          ariaLabel={`Search ${title.toLowerCase()}`}
         />
       </div>
 
