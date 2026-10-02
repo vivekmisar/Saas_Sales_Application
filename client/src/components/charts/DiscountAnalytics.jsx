@@ -21,7 +21,7 @@ export default function DiscountAnalytics({ analytics }) {
   const discountImpact = AVG_DISCOUNT * 100; 
 
   // Generate top discounted products (just selecting and scaling existing products)
-  const productData = analytics.top_products.slice(0, 5).map((p, i) => ({
+  const productData = (Array.isArray(analytics.top_products) ? analytics.top_products : []).slice(0, 5).map((p, i) => ({
     name: p.product,
     value: p.revenue * (AVG_DISCOUNT + (i * 0.02)), // Fake correlation
   }));
@@ -56,36 +56,30 @@ export default function DiscountAnalytics({ analytics }) {
   };
 
   return (
-    <div className="mt-6 mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
-      <div className="flex items-center gap-2 mb-4">
-        <Percent className="text-rose-500" size={20} />
-        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">Discount Analytics</h2>
-        <span className="app-estimate-label">Illustrative estimate · assumed 8.5% rate</span>
+    <div className="app-analytics-section app-discount-section animate-fade-in" style={{ animationDelay: '200ms' }}>
+      <div className="app-analytics-heading">
+        <div><span className="app-section-kicker">Estimated performance</span><h2>Discount Analytics</h2></div>
+        <span className="app-estimate-label" title="Revenue impact is estimated using an assumed average 8.5% discount rate.">Illustrative estimate · assumed 8.5% rate</span>
       </div>
 
       {/* Mini KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+      <div className="app-analytics-kpi-group">
         {[
-          { label: 'Avg Discount', value: discountImpact, prefix: '', suffix: '%', color: 'app-metric-icon', bg: 'app-metric-icon-bg', icon: Tag },
-          { label: 'Revenue Lost (Est)', value: revenueLost, prefix: '$', suffix: '', color: 'app-metric-icon', bg: 'app-metric-icon-bg', icon: Activity },
-          { label: 'Discount Impact', value: discountImpact * 1.2, prefix: '', suffix: '%', color: 'app-metric-icon', bg: 'app-metric-icon-bg', icon: Percent },
+          { label: 'Avg Discount', value: discountImpact, prefix: '', suffix: '%', icon: Tag },
+          { label: 'Revenue Lost (Est)', value: revenueLost, prefix: '$', suffix: '', icon: Activity },
+          { label: 'Discount Impact', value: discountImpact * 1.2, prefix: '', suffix: '%', icon: Percent },
         ].map(kpi => (
-          <div key={kpi.label} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-lg ${kpi.bg} flex items-center justify-center shrink-0`}>
-              <kpi.icon className={kpi.color} size={20} />
-            </div>
-            <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">{kpi.label}</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+          <div key={kpi.label} className="app-analytics-kpi-cell">
+              <p className="app-analytics-kpi-label"><kpi.icon size={15} aria-hidden="true" />{kpi.label}</p>
+              <p className="app-analytics-kpi-value">
                 <AnimatedNumber value={kpi.value} decimals={1} prefix={kpi.prefix} suffix={kpi.suffix} />
               </p>
-            </div>
           </div>
         ))}
       </div>
 
-      <ChartWrapper title="Revenue Lost by Top Products" height={320}>
-        <ReactECharts option={productOption} style={{ height: '100%', width: '100%' }} />
+      <ChartWrapper title="Revenue Lost by Top Products" className="app-tall-chart-card">
+        <ReactECharts option={productOption} style={{ height: Math.max(280, productData.length * 48), width: '100%' }} />
       </ChartWrapper>
     </div>
   );

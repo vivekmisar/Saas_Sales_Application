@@ -82,8 +82,8 @@ export default function KpiCards({ analytics, compareAnalytics }) {
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-      {kpiConfig.map(({ key, label, icon: Icon, format, bgLight, textColor }, i) => {
+    <div className="app-kpi-strip">
+      {kpiConfig.map(({ key, label, icon: Icon, format }, i) => {
         const value = analytics[key] ?? 0;
         const trendData = getTrendData(key, value);
         const TrendIcon = trendData?.isPositive ? ArrowUpRight : ArrowDownRight;
@@ -92,27 +92,24 @@ export default function KpiCards({ analytics, compareAnalytics }) {
         return (
           <div
             key={key}
-            className="app-kpi-card relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition-all duration-300 hover:-translate-y-0.5 animate-fade-in flex flex-col justify-between"
+            className="app-kpi-card animate-fade-in"
             style={{ animationDelay: `${i * 80}ms` }}
           >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className={`w-9 h-9 rounded-lg ${bgLight} flex items-center justify-center relative z-10`}>
-                  <Icon size={18} className={textColor} />
-                </div>
-                {trendData && <div className={`app-kpi-trend flex items-center gap-1 text-xs font-medium ${trendColor} bg-slate-50 dark:bg-slate-900/50 px-2 py-1 rounded-full relative z-10`} title="Change from the selected comparison report">
-                  <TrendIcon size={12} />{trendData.trend}
-                </div>}
+            <div className="app-kpi-card-inner">
+              <div className="app-kpi-label-row">
+                <p>{label}</p>
+                <Icon size={15} aria-hidden="true" />
               </div>
-              <p className="text-xl font-heading font-bold text-slate-900 dark:text-white relative z-10">
+              <p className="app-kpi-value">
                 <AnimatedNumber
                   value={value}
                   format={format}
                 />
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 relative z-10">{label}</p>
+              {trendData && <div className={`app-kpi-trend ${trendColor}`} title="Change from the selected comparison report">
+                <TrendIcon size={12} />{trendData.trend} from comparison
+              </div>}
             </div>
-            
           </div>
         );
       })}

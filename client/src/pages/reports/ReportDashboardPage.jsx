@@ -228,7 +228,7 @@ export default function ReportDashboardPage() {
       </div>
 
       {/* ── Global Search & Filters ────────────────────────────────── */}
-      <div className="flex flex-col xl:flex-row gap-4 mb-6">
+      <div className="app-filter-row flex flex-col xl:flex-row gap-4 mb-6">
         <GlobalSearch value={searchQuery} onChange={setSearchQuery} />
         
         <div className="flex-1 flex flex-col sm:flex-row gap-4">
@@ -267,17 +267,17 @@ export default function ReportDashboardPage() {
       </div>
 
       {/* ── KPI Cards ──────────────────────────────────────────────── */}
-      <div className="app-report-kpis mb-6">
+      <div className="app-report-section app-report-kpis">
         <KpiCards analytics={a} compareAnalytics={compareReport?.analytics} />
       </div>
 
       {/* ── Revenue Trend (full width) ─────────────────────────────── */}
-      <div className="mb-6">
+      <div className="app-report-section">
         <RevenueTrendChart data={a.monthly_revenue} />
       </div>
 
       {/* ── Top Products + Category Distribution (2-col) ───────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="app-report-section app-report-two-col grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div>
           <TopProductsChart 
             data={a.top_products} 
@@ -293,12 +293,12 @@ export default function ReportDashboardPage() {
       </div>
 
       {/* ── Revenue by Month (full width) ──────────────────────────── */}
-      <div className="mb-6">
+      <div className="app-report-section">
         <ProfitTrendChart data={a.monthly_revenue} totalProfit={a.total_profit} />
       </div>
 
       {/* ── Regional Sales (full width) ────────────────────────────── */}
-      <div className="mb-6">
+      <div className="app-report-section">
         <RegionalSalesChart 
           data={a.region_revenue}
           onDrillDown={handleRegionDrillDown}
@@ -306,7 +306,7 @@ export default function ReportDashboardPage() {
       </div>
 
       {/* ── Data Tables ────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="app-report-section app-report-two-col grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div>
           <DataTable
             title="Products Table"
@@ -325,7 +325,7 @@ export default function ReportDashboardPage() {
         </div>
       </div>
 
-      <div className="mb-6">
+      <div className="app-report-section">
         <DataTable
           title="Categories Table"
           subtitle="Revenue by category"

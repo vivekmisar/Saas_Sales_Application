@@ -1,7 +1,7 @@
 import ReactECharts from 'echarts-for-react';
 import ChartWrapper from './ChartWrapper';
 import { useTheme } from '../../hooks/useTheme';
-import { TrendingUp, BarChart2 } from 'lucide-react';
+import { BarChart2 } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
 import DonutChart from './DonutChart';
@@ -64,45 +64,39 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
   };
 
   return (
-    <div className="mt-8 mb-6 animate-fade-in" style={{ animationDelay: '100ms' }}>
-      <div className="flex items-center gap-2 mb-4">
-        <TrendingUp className="text-emerald-500" size={20} />
-        <h2 className="text-lg font-heading font-semibold text-slate-900 dark:text-white">Profit Analytics</h2>
-        <span className="app-estimate-label">Illustrative estimate · assumed margins</span>
+    <div className="app-analytics-section app-profit-section animate-fade-in" style={{ animationDelay: '100ms' }}>
+      <div className="app-analytics-heading">
+        <div><span className="app-section-kicker">Estimated performance</span><h2>Profit Analytics</h2></div>
+        <span className="app-estimate-label" title="Profit is estimated from revenue using assumed gross and net margins.">Illustrative estimate · assumed margins</span>
       </div>
 
       {/* Mini KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+      <div className="app-analytics-kpi-group">
         {[
-          { label: 'Gross Profit', value: grossProfit, prefix: '$', color: 'app-metric-icon', bg: 'app-metric-icon-bg' },
-          { label: 'Net Profit', value: netProfit, prefix: '$', color: 'app-metric-icon', bg: 'app-metric-icon-bg' },
-          { label: 'Avg Profit Margin', value: NET_MARGIN * 100, prefix: '', suffix: '%', color: 'app-metric-icon', bg: 'app-metric-icon-bg' },
+          { label: 'Gross Profit', value: grossProfit, prefix: '$' },
+          { label: 'Net Profit', value: netProfit, prefix: '$' },
+          { label: 'Avg Profit Margin', value: NET_MARGIN * 100, prefix: '', suffix: '%' },
         ].map(kpi => (
-          <div key={kpi.label} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-lg ${kpi.bg} flex items-center justify-center shrink-0`}>
-              <BarChart2 className={kpi.color} size={20} />
-            </div>
-            <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">{kpi.label}</p>
-              <p className="text-xl font-bold text-slate-900 dark:text-white">
+          <div key={kpi.label} className="app-analytics-kpi-cell">
+              <p className="app-analytics-kpi-label"><BarChart2 size={15} aria-hidden="true" />{kpi.label}</p>
+              <p className="app-analytics-kpi-value">
                 <AnimatedNumber value={kpi.value} decimals={1} prefix={kpi.prefix} suffix={kpi.suffix} />
               </p>
-            </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="app-analytics-chart-grid">
         <DonutChart
           title="Profit by Category"
           subtitle="Illustrative estimate from assumed margins"
           data={categoryData}
           onDrillDown={(category) => onDrillDown && onDrillDown('category', category)}
         />
-        <ChartWrapper title="Profit by Top Products" height={320}>
+        <ChartWrapper title="Profit by Top Products" className="app-tall-chart-card">
           <ReactECharts
             option={productOption}
-            style={{ height: '100%', width: '100%' }}
+            style={{ height: Math.max(280, productData.length * 48), width: '100%' }}
             onEvents={{ click: (params) => onDrillDown && onDrillDown('product', params.name) }}
           />
         </ChartWrapper>

@@ -251,6 +251,39 @@ html.dark .app-root .app-export-button { color: #0a0a0a; background: #fff; }
   font-weight: 600;
   line-height: 1.3;
 }
+.app-root .app-kpi-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--app-border); border-radius: 16px; background: var(--app-surface); }
+.app-root .app-kpi-card { min-width: 0; min-height: 124px; padding: 20px 22px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.app-root .app-kpi-card + .app-kpi-card { border-left: 1px solid var(--app-border); }
+.app-root .app-kpi-card-inner { display: flex; height: 100%; flex-direction: column; justify-content: space-between; gap: 12px; }
+.app-root .app-kpi-label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--app-muted); }
+.app-root .app-kpi-label-row p { margin: 0; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .055em; text-transform: uppercase; }
+.app-root .app-kpi-label-row svg { flex: 0 0 auto; color: var(--app-muted); }
+.app-root .app-kpi-card > .app-kpi-card-inner > .app-kpi-value { margin: auto 0 0; color: var(--app-text); font-family: var(--font-body); font-size: clamp(20px, 2vw, 29px); font-variant-numeric: tabular-nums; font-weight: 650; letter-spacing: -.035em; line-height: 1.15; overflow-wrap: anywhere; }
+.app-root .app-kpi-card .app-kpi-trend { display: flex; align-items: center; gap: 4px; margin-top: 2px; padding: 0; color: var(--app-muted); background: transparent; font-family: var(--font-mono); font-size: 10px; }
+.app-root .app-analytics-section { margin-top: var(--space-section, 64px); padding-top: 24px; border-top: 1px solid var(--app-border); }
+.app-root .app-analytics-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+.app-root .app-section-kicker { display: block; margin-bottom: 5px; color: var(--app-muted); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.app-root .app-analytics-heading h2 { margin: 0; color: var(--app-text); font-family: var(--font-serif); font-size: 30px; font-weight: 400; letter-spacing: -.025em; line-height: 1.15; }
+.app-root .app-analytics-heading .app-estimate-label { margin: 0 0 2px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; }
+.app-root .app-analytics-kpi-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; margin-bottom: 32px; border: 1px solid var(--app-border); border-radius: 16px; background: var(--app-surface); }
+.app-root .app-analytics-kpi-cell { min-width: 0; padding: 22px 25px; }
+.app-root .app-analytics-kpi-cell + .app-analytics-kpi-cell { border-left: 1px solid var(--app-border); }
+.app-root .app-analytics-kpi-label { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; color: var(--app-muted); font-size: 12px; }
+.app-root .app-analytics-kpi-label svg { color: var(--app-muted); }
+.app-root .app-analytics-kpi-value { margin: 0; color: var(--app-text); font-size: clamp(21px, 2vw, 28px); font-variant-numeric: tabular-nums; font-weight: 650; letter-spacing: -.035em; line-height: 1.15; overflow-wrap: anywhere; }
+.app-root .app-analytics-chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 32px; }
+.app-root .app-analytics-chart-grid > * { min-width: 0; }
+.app-root .app-analytics-chart-grid .app-chart-card { min-height: 400px; padding: 28px; }
+.app-root .app-analytics-chart-grid .app-chart-card > div:last-child { min-height: 320px; }
+.app-root .app-report-section { margin-bottom: 32px; }
+.app-root .app-report-section.app-report-two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.app-root .app-report-section.app-report-two-col > * { min-width: 0; }
+.app-root .app-report-section.app-report-two-col .app-chart-card { min-height: 400px; padding: 28px; }
+.app-root .app-report-section .app-chart-card { border-radius: 15px; }
+.app-root .app-report-dashboard { --space-section: 64px; --space-grid: 32px; --card-pad: 28px; --card-pad-sm: 24px; }
+.app-root .app-report-dashboard .app-kpi-strip { margin-bottom: 32px; }
+.app-root .app-report-dashboard .app-report-header { margin-bottom: 24px; }
+.app-root .app-report-dashboard .app-filter-row { margin-bottom: 32px; }
 .app-modal-overlay { background: rgba(12, 24, 16, .58); }
 .app-modal-panel {
   color: var(--app-text);
@@ -279,6 +312,15 @@ html.dark .app-toaster .app-toast {
   box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
 }
 
+@media (max-width: 899px) {
+  .app-root .app-report-section.app-report-two-col,
+  .app-root .app-analytics-chart-grid { grid-template-columns: 1fr; gap: 24px; }
+  .app-root .app-analytics-section { margin-top: 48px; }
+  .app-root .app-analytics-kpi-group { grid-template-columns: 1fr; }
+  .app-root .app-analytics-kpi-cell + .app-analytics-kpi-cell { border-top: 1px solid var(--app-border); border-left: 0; }
+  .app-root .app-report-dashboard { --space-section: 48px; --space-grid: 24px; --card-pad: 24px; --card-pad-sm: 20px; }
+}
+
 @media (max-width: 767px) {
   .app-root .app-main-shell { margin-left: 0; }
   .app-root .app-sidebar[data-collapsed="true"] { transform: translateX(-100%); }
@@ -292,6 +334,24 @@ html.dark .app-toaster .app-toast {
   .app-root .app-donut-visual { max-width: 320px; }
   .app-root .app-donut-legend { width: 100%; }
   .app-root .app-estimate-label { margin-left: 0; }
+  .app-root .app-report-section.app-report-two-col,
+  .app-root .app-analytics-chart-grid { grid-template-columns: 1fr; gap: 24px; }
+  .app-root .app-analytics-section { margin-top: 48px; padding-top: 20px; }
+  .app-root .app-report-section { margin-bottom: 24px; }
+  .app-root .app-analytics-kpi-group { grid-template-columns: 1fr; margin-bottom: 24px; }
+  .app-root .app-analytics-kpi-cell + .app-analytics-kpi-cell { border-top: 1px solid var(--app-border); border-left: 0; }
+  .app-root .app-analytics-kpi-cell { padding: 18px 20px; }
+  .app-root .app-analytics-heading { align-items: start; flex-direction: column; margin-bottom: 20px; }
+  .app-root .app-analytics-heading h2 { font-size: 26px; }
+  .app-root .app-analytics-chart-grid .app-chart-card,
+  .app-root .app-report-section.app-report-two-col .app-chart-card { padding: 20px; }
+  .app-root .app-kpi-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app-root .app-kpi-card { min-height: 112px; padding: 16px; }
+  .app-root .app-kpi-card:nth-child(odd) { border-left: 0; }
+  .app-root .app-kpi-card:nth-child(n + 3) { border-top: 1px solid var(--app-border); }
+  .app-root .app-kpi-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .app-root .app-report-dashboard .app-kpi-strip { margin-bottom: 24px; }
+  .app-root .app-report-dashboard .app-filter-row { margin-bottom: 24px; }
   .auth-root .auth-form-card { padding: 28px 22px; }
   .app-toaster .app-toast { max-width: calc(100vw - 32px); }
 }
