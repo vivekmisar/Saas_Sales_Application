@@ -4,6 +4,7 @@ import { useTheme } from '../../hooks/useTheme';
 import { TrendingUp, BarChart2 } from 'lucide-react';
 import AnimatedNumber from '../ui/AnimatedNumber';
 import { chartColors, getChartTheme, getChartTooltip } from '../../lib/chartTheme';
+import DonutChart from './DonutChart';
 
 /**
  * ProfitAnalytics — Extrapolates Profit metrics based on revenue.
@@ -22,41 +23,16 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
   const netProfit = analytics.total_revenue * NET_MARGIN;
 
   // Generate extrapolated profit by category (just scaled revenue + noise)
-  const categoryData = analytics.category_revenue.map((c, i) => ({
+  const categoryData = (Array.isArray(analytics.category_revenue) ? analytics.category_revenue : []).map((c, i) => ({
     name: c.category,
     value: c.revenue * (NET_MARGIN + (i * 0.02 - 0.02))
   }));
 
   // Generate extrapolated profit by top products
-  const productData = analytics.top_products.slice(0, 5).map((p, i) => ({
+  const productData = (Array.isArray(analytics.top_products) ? analytics.top_products : []).slice(0, 5).map((p, i) => ({
     name: p.product,
     value: p.revenue * (GROSS_MARGIN + (i * 0.03 - 0.05))
   }));
-
-  // ── Profit by Category Chart ──────────────────────────────────────
-  const categoryOption = {
-    backgroundColor: 'transparent',
-    tooltip: { ...getChartTooltip(isDark), trigger: 'item', formatter: '{b}: ${c} ({d}%)' },
-    legend: {
-      orient: 'horizontal',
-      bottom: 0,
-      textStyle: { color: theme.muted }
-    },
-    series: [
-      {
-        type: 'pie',
-        radius: ['40%', '70%'],
-        itemStyle: {
-          borderRadius: 8,
-          borderColor: theme.surface,
-          borderWidth: 2
-        },
-        label: { show: false },
-        data: categoryData,
-        color: chartColors.palette
-      }
-    ]
-  };
 
   // ── Profit by Product Chart ───────────────────────────────────────
   const productOption = {
@@ -117,13 +93,12 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ChartWrapper title="Profit by Category" height={320}>
-          <ReactECharts
-            option={categoryOption}
-            style={{ height: '100%', width: '100%' }}
-            onEvents={{ click: (params) => onDrillDown && onDrillDown('category', params.name) }}
-          />
-        </ChartWrapper>
+        <DonutChart
+          title="Profit by Category"
+          subtitle="Illustrative estimate from assumed margins"
+          data={categoryData}
+          onDrillDown={(category) => onDrillDown && onDrillDown('category', category)}
+        />
         <ChartWrapper title="Profit by Top Products" height={320}>
           <ReactECharts
             option={productOption}

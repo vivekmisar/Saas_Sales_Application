@@ -216,6 +216,24 @@ html.dark .auth-root .ui-button-primary { color: #0a0a0a; background: #fff; }
 .app-root .app-chart-tool { width: 36px; height: 36px; display: inline-grid; place-items: center; color: var(--app-muted); background: transparent; }
 .app-root .app-chart-tool:hover,
 .app-root .app-chart-tool:focus-visible { color: var(--app-text); background: var(--app-surface-raised); }
+.app-root .app-donut-card { min-height: 400px; }
+.app-root .app-donut-layout { display: grid; grid-template-columns: minmax(250px, 1.05fr) minmax(210px, .95fr); align-items: center; gap: 22px; min-height: 340px; }
+.app-root .app-donut-visual { position: relative; width: 100%; max-width: 320px; min-height: 300px; margin-inline: auto; }
+.app-root .app-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 28%; text-align: center; pointer-events: none; animation: app-donut-fade-in 150ms ease both; }
+.app-root .app-donut-center-title { max-width: 100%; overflow: hidden; color: var(--app-muted); font-family: var(--font-mono); font-size: 10px; font-weight: 600; line-height: 1.35; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.app-root .app-donut-center strong { color: var(--app-text); font-size: clamp(16px, 1.6vw, 21px); font-variant-numeric: tabular-nums; font-weight: 650; line-height: 1.2; white-space: nowrap; }
+.app-root .app-donut-center-meta { color: var(--app-muted); font-family: var(--font-mono); font-size: 10px; font-variant-numeric: tabular-nums; }
+.app-root .app-donut-legend { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.app-root .app-donut-legend-row { display: grid; grid-template-columns: 9px minmax(0, 1fr) auto auto; align-items: center; gap: 9px; width: 100%; min-height: 37px; padding: 6px 8px; border: 1px solid transparent; border-radius: 9px; color: var(--app-text); background: transparent; text-align: left; transition: background-color 150ms ease, border-color 150ms ease; }
+.app-root .app-donut-legend-row:hover,
+.app-root .app-donut-legend-row.is-active { background: var(--app-surface-raised); border-color: var(--app-border); }
+.app-root .app-donut-legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--donut-color); }
+.app-root .app-donut-legend-name { overflow: hidden; color: var(--app-muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.app-root .app-donut-legend-value,
+.app-root .app-donut-legend-share { color: var(--app-text); font-family: var(--font-mono); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.app-root .app-donut-legend-share { min-width: 39px; color: var(--app-muted); text-align: right; }
+.app-root .app-chart-empty { display: grid; min-height: 280px; place-items: center; color: var(--app-muted); font-size: 13px; }
+@keyframes app-donut-fade-in { from { opacity: .55; } to { opacity: 1; } }
 .app-root .app-export-button { min-height: 40px; color: #fff; background: #0a0a0a; border-radius: 999px; }
 html.dark .app-root .app-export-button { color: #0a0a0a; background: #fff; }
 .app-root .app-export-button:hover { filter: brightness(.88); }
@@ -269,9 +287,18 @@ html.dark .app-toaster .app-toast {
   .app-root .app-report-header h1 { max-width: 100%; }
   .app-root .app-chart-card { padding: 17px; }
   .app-root .app-chart-actions { opacity: 1; }
+  .app-root .app-donut-layout { grid-template-columns: 1fr; gap: 12px; }
+  .app-root .app-donut-card { min-height: 0; }
+  .app-root .app-donut-visual { max-width: 320px; }
+  .app-root .app-donut-legend { width: 100%; }
   .app-root .app-estimate-label { margin-left: 0; }
   .auth-root .auth-form-card { padding: 28px 22px; }
   .app-toaster .app-toast { max-width: calc(100vw - 32px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-root .app-donut-center,
+  .app-root .app-donut-legend-row { animation: none; transition: none; }
 }
 
 .app-root button:focus-visible,
