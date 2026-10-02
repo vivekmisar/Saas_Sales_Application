@@ -61,8 +61,8 @@ export default function DataTable({ title, subtitle, columns, data }) {
   const SortIcon = ({ colKey }) => {
     if (sortKey !== colKey) return <ArrowUpDown size={12} className="text-slate-400" />;
     return sortDir === 'asc'
-      ? <ArrowUp size={12} className="text-indigo-500" />
-      : <ArrowDown size={12} className="text-indigo-500" />;
+      ? <ArrowUp size={12} className="app-accent-icon" />
+      : <ArrowDown size={12} className="app-accent-icon" />;
   };
 
   return (
@@ -74,7 +74,7 @@ export default function DataTable({ title, subtitle, columns, data }) {
           placeholder="Search..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="w-full sm:w-64 px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          className="app-table-search w-full sm:w-64 px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none"
         />
       </div>
 
@@ -87,7 +87,7 @@ export default function DataTable({ title, subtitle, columns, data }) {
                 <th
                   key={key}
                   onClick={() => handleSort(key)}
-                  className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors select-none"
+                  className="px-4 py-2.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors select-none"
                 >
                   <span className="inline-flex items-center gap-1.5">
                     {label}

@@ -42,15 +42,15 @@ export default function RegisterPage() {
       {/* Left branding */}
       <div className="auth-brand-panel hidden lg:flex lg:w-[55%] items-center justify-center p-12 relative overflow-hidden">
         <div className="absolute top-32 right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 left-10 w-64 h-64 bg-indigo-400/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="auth-glow absolute bottom-10 left-10 w-64 h-64 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-md text-white">
-          <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center mb-8">
+          <div className="auth-logo-mark w-14 h-14 mb-8">
             <Zap size={28} />
           </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
             Start making smarter sales decisions today
           </h1>
-          <p className="text-lg text-violet-200 leading-relaxed">
+          <p className="text-lg leading-relaxed">
             Join teams using AI-powered analytics to understand their sales data and drive growth.
           </p>
         </div>
@@ -60,8 +60,8 @@ export default function RegisterPage() {
       <div className="auth-form-panel flex-1 flex items-center justify-center p-6">
         <div ref={formRef} className="auth-form-card w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center">
-              <Zap size={20} className="text-white" />
+            <div className="auth-logo-mark w-10 h-10">
+              <Zap size={20} />
             </div>
             <span className="text-xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: 'var(--font-heading)' }}>SalesIntel</span>
           </div>
@@ -78,7 +78,7 @@ export default function RegisterPage() {
 
           <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-6">
             Already have an account?{' '}
-            <Link to="/login" className="text-indigo-500 font-medium hover:underline">Sign in</Link>
+            <Link to="/login" className="auth-link font-medium hover:underline">Sign in</Link>
           </p>
         </div>
       </div>

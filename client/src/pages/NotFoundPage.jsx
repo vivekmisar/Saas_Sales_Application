@@ -6,7 +6,7 @@ export default function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-6">
       <div className="text-center max-w-md">
-        <p className="text-8xl font-bold bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
+        <p className="text-8xl font-bold text-slate-900 dark:text-white mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
           404
         </p>
         <h1 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" style={{ fontFamily: 'var(--font-heading)' }}>

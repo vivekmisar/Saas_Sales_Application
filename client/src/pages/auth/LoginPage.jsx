@@ -42,15 +42,15 @@ export default function LoginPage() {
       {/* Left branding */}
       <div className="auth-brand-panel hidden lg:flex lg:w-[55%] items-center justify-center p-12 relative overflow-hidden">
         <div className="absolute top-20 left-20 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="auth-glow absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-md text-white">
-          <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center mb-8">
+          <div className="auth-logo-mark w-14 h-14 mb-8">
             <Zap size={28} />
           </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
             Turn your sales data into actionable insights
           </h1>
-          <p className="text-lg text-indigo-200 leading-relaxed">
+          <p className="text-lg leading-relaxed">
             Upload CSV files, get instant analytics powered by AI, and make data-driven decisions that accelerate revenue.
           </p>
         </div>
@@ -61,8 +61,8 @@ export default function LoginPage() {
         <div ref={formRef} className="auth-form-card w-full max-w-sm">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center">
-              <Zap size={20} className="text-white" />
+            <div className="auth-logo-mark w-10 h-10">
+              <Zap size={20} />
             </div>
             <span className="text-xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: 'var(--font-heading)' }}>SalesIntel</span>
           </div>
@@ -78,7 +78,7 @@ export default function LoginPage() {
 
           <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-6">
             Don't have an account?{' '}
-            <Link to="/register" className="text-indigo-500 font-medium hover:underline">Create one</Link>
+            <Link to="/register" className="auth-link font-medium hover:underline">Create one</Link>
           </p>
         </div>
       </div>

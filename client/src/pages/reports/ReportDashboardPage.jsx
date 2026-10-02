@@ -161,7 +161,7 @@ export default function ReportDashboardPage() {
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">{info.desc}</p>
         <button
           onClick={() => navigate(`/projects/${projectId}`)}
-          className="mt-6 text-sm text-indigo-500 hover:text-indigo-400 transition-colors cursor-pointer"
+          className="app-accent-link mt-6 text-sm transition-colors cursor-pointer"
         >
           ← Back to project
         </button>

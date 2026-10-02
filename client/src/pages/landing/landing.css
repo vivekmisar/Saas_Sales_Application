@@ -64,7 +64,7 @@
 .landing-root .l-preview-app { display: grid; grid-template-columns: 166px 1fr; min-height: 394px; }
 .landing-root .l-preview-sidebar { position: relative; padding: 18px 12px; border-right: 1px solid #eee; color: #77756e; font-size: 10px; }
 .landing-root .l-preview-sidebar>strong { display: flex; align-items: center; gap: 7px; margin: 0 0 25px 3px; color: #262623; font-size: 11px; }
-.landing-root .l-preview-logo { display: grid; place-items: center; width: 21px; height: 21px; color: white; background: var(--accent); border-radius: 6px; }
+.landing-root .l-preview-logo { display: grid; place-items: center; width: 21px; height: 21px; color: white; background: #0a0a0a; border-radius: 6px; }
 .landing-root .l-preview-workspace { display: flex; align-items: center; gap: 3px; padding: 0 8px 8px; color: #9a9890; font: 9px 'Geist Mono', monospace; }
 .landing-root .l-preview-sidebar>div:not(.l-preview-side-bottom) { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px; }
 .landing-root .l-preview-sidebar>div.active { color: #30302d; background: #f1f0ec; }
@@ -93,8 +93,6 @@
 .landing-root .l-preview-row small { display: block; color: #a09e97; font-size: 8px; }
 .landing-root .l-preview-row>strong { white-space: nowrap; font-size: 9px; font-weight: 500; }
 .landing-root .l-preview-disclaimer { padding-top: 8px; text-align: right; color: #aaa89f; font-size: 8px; }
-.landing-root .l-stack-note { margin-top: 17px; color: #929089; font: 10px 'Geist Mono', monospace; letter-spacing: .02em; }
-.landing-root .l-stack-note span { margin: 0 5px; color: #c3c1ba; }
 .landing-root .l-section { padding: 125px 0; border-top: 1px solid var(--border); }
 .landing-root .l-section-heading { max-width: 750px; margin-bottom: 55px; }
 .landing-root .l-section-heading h2 { margin-top: 17px; max-width: 19ch; }
@@ -262,7 +260,6 @@
   .landing-root .l-preview-window { width: 690px; transform: scale(.67); transform-origin: top left; }
   .landing-root .l-preview-frame { height: 305px; }
   .landing-root .l-preview-app { min-height: 394px; }
-  .landing-root .l-stack-note { font-size: 8px; }
   .landing-root .l-section { padding: 78px 0; }
   .landing-root .l-section-heading { margin-bottom: 36px; }
   .landing-root .l-section-heading h2 { margin-top: 14px; }

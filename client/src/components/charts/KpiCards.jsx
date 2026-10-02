@@ -21,36 +21,32 @@ const kpiConfig = [
     label: 'Total Revenue',
     icon: DollarSign,
     format: formatCurrency,
-    gradient: 'from-indigo-500 to-violet-600',
-    bgLight: 'bg-indigo-50 dark:bg-indigo-950/30',
-    textColor: 'text-indigo-600 dark:text-indigo-400',
+    bgLight: 'app-kpi-icon-wrap',
+    textColor: 'app-kpi-icon',
   },
   {
     key: 'total_orders',
     label: 'Total Orders',
     icon: ShoppingCart,
     format: formatNumber,
-    gradient: 'from-emerald-500 to-teal-600',
-    bgLight: 'bg-emerald-50 dark:bg-emerald-950/30',
-    textColor: 'text-emerald-600 dark:text-emerald-400',
+    bgLight: 'app-kpi-icon-wrap',
+    textColor: 'app-kpi-icon',
   },
   {
     key: 'total_customers',
     label: 'Customers',
     icon: Users,
     format: formatNumber,
-    gradient: 'from-amber-500 to-orange-600',
-    bgLight: 'bg-amber-50 dark:bg-amber-950/30',
-    textColor: 'text-amber-600 dark:text-amber-400',
+    bgLight: 'app-kpi-icon-wrap',
+    textColor: 'app-kpi-icon',
   },
   {
     key: 'average_order_value',
     label: 'Avg. Order Value',
     icon: TrendingUp,
     format: formatCurrency,
-    gradient: 'from-cyan-500 to-blue-600',
-    bgLight: 'bg-cyan-50 dark:bg-cyan-950/30',
-    textColor: 'text-cyan-600 dark:text-cyan-400',
+    bgLight: 'app-kpi-icon-wrap',
+    textColor: 'app-kpi-icon',
   },
   {
     key: 'total_profit',
@@ -58,9 +54,8 @@ const kpiConfig = [
     icon: PiggyBank,
     format: formatCurrency,
     prefix: '$',
-    gradient: 'from-rose-500 to-pink-600',
-    bgLight: 'bg-rose-50 dark:bg-rose-950/30',
-    textColor: 'text-rose-600 dark:text-rose-400',
+    bgLight: 'app-kpi-icon-wrap',
+    textColor: 'app-kpi-icon',
   },
 ];
 
@@ -97,7 +92,7 @@ export default function KpiCards({ analytics, compareAnalytics }) {
         return (
           <div
             key={key}
-            className="app-kpi-card relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/5 hover:-translate-y-0.5 animate-fade-in flex flex-col justify-between"
+            className="app-kpi-card relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition-all duration-300 hover:-translate-y-0.5 animate-fade-in flex flex-col justify-between"
             style={{ animationDelay: `${i * 80}ms` }}
           >
             <div>

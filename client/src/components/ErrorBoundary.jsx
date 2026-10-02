@@ -76,7 +76,7 @@ export default class ErrorBoundary extends React.Component {
               </button>
               <button
                 onClick={this.handleReload}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-full bg-black hover:bg-neutral-800 text-white transition-colors"
               >
                 <RotateCcw size={16} />
                 Reload Page

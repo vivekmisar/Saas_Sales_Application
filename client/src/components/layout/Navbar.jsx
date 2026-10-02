@@ -39,7 +39,7 @@ export default function Navbar({ onMenuClick }) {
         <div className="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-1" />
 
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+          <div className="app-avatar w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0">
             {initials || <User size={14} />}
           </div>
           <div className="hidden sm:block leading-tight">

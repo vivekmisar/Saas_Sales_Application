@@ -27,7 +27,7 @@ export default function GlobalSearch({ value, onChange, placeholder = 'Search...
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
         placeholder={placeholder}
-        className="block w-full pl-10 pr-10 py-2 sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-colors shadow-sm"
+        className="app-search-input block w-full pl-10 pr-10 py-2 sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none transition-colors shadow-sm"
       />
       {localValue && (
         <button

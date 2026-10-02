@@ -60,15 +60,17 @@ export default function ChartWrapper({ title, subtitle, children, className = ''
         <div className="app-chart-actions flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={downloadChart}
-            className="p-1.5 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-md transition-colors"
+            className="app-chart-tool rounded-full transition-colors"
             title="Download Chart Image"
+            aria-label="Download chart image"
           >
             <Download size={16} />
           </button>
           <button
             onClick={toggleFullscreen}
-            className="p-1.5 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-md transition-colors"
+            className="app-chart-tool rounded-full transition-colors"
             title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+            aria-label={isFullscreen ? 'Exit fullscreen chart' : 'Expand chart'}
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>

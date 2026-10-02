@@ -105,23 +105,23 @@ export default function FileUploadZone({ onUpload, isUploading = false, onCancel
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onClick={handleBrowse}
-          className={`
+          className={`app-file-dropzone
             relative flex flex-col items-center justify-center gap-4 p-10 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300
             ${isDragOver
-              ? 'border-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 scale-[1.01]'
-              : 'border-slate-300 dark:border-slate-600 hover:border-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+              ? 'is-drag-over scale-[1.01]'
+              : ''
             }
           `}
         >
-          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${isDragOver ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-slate-100 dark:bg-slate-800'}`}>
-            <Upload size={24} className={isDragOver ? 'text-indigo-500' : 'text-slate-400'} />
+          <div className={`app-file-drop-icon w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${isDragOver ? 'is-drag-over' : ''}`}>
+            <Upload size={24} />
           </div>
           <div className="text-center">
             <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
               {isDragOver ? 'Drop your CSV file here' : 'Drag and drop your CSV file here'}
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
-              or <span className="text-indigo-500 font-medium">browse files</span> · Max 10MB
+              or <span className="app-accent-link font-medium">browse files</span> · Max 10MB
             </p>
           </div>
         </div>
@@ -143,8 +143,8 @@ export default function FileUploadZone({ onUpload, isUploading = false, onCancel
             </button>
           )}
           {isUploading && (
-            <div className="flex items-center gap-2 text-xs text-indigo-600 dark:text-indigo-400 font-medium shrink-0">
-              <div className="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+            <div className="app-uploading flex items-center gap-2 text-xs font-medium shrink-0">
+              <div className="app-upload-spinner w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
               Uploading…
             </div>
           )}

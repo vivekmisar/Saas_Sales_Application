@@ -13,10 +13,10 @@
   --font-mono:    'JetBrains Mono', monospace;
 
   /* Brand */
-  --color-brand:          #6366f1;
-  --color-brand-hover:    #4f46e5;
-  --color-brand-light:    #e0e7ff;
-  --color-accent:         #8b5cf6;
+  --color-brand:          #0f5132;
+  --color-brand-hover:    #0a3d26;
+  --color-brand-light:    #e8f2ec;
+  --color-accent:         #27a36a;
 }
 
 @layer base {
@@ -59,7 +59,7 @@ html.dark ::-webkit-scrollbar-thumb { background: #334155; }
 
 /* ── Focus ring ───────────────────────────────────────────────── */
 *:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid #0f5132;
   outline-offset: 2px;
   border-radius: 4px;
 }

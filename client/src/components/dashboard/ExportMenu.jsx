@@ -117,7 +117,7 @@ export default function ExportMenu({ analytics, dashboardId = 'dashboard-content
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isExporting}
-        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50"
+        className="app-export-button flex items-center gap-2 px-4 py-2 text-white text-sm font-medium rounded-full transition-colors disabled:opacity-50"
       >
         {isExporting ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
         Export

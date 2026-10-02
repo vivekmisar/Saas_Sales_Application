@@ -112,8 +112,8 @@ export default function ProjectsPage() {
                 className="app-project-card h-full"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">
-                    <FolderKanban size={20} className="text-indigo-500" />
+                  <div className="app-entity-icon w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+                    <FolderKanban size={20} />
                   </div>
                   <Badge status={project.status} />
                 </div>

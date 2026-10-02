@@ -98,9 +98,9 @@ export default function ProfitAnalytics({ analytics, onDrillDown }) {
       {/* Mini KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
         {[
-          { label: 'Gross Profit', value: grossProfit, prefix: '$', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
-          { label: 'Net Profit', value: netProfit, prefix: '$', color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-950/30' },
-          { label: 'Avg Profit Margin', value: NET_MARGIN * 100, prefix: '', suffix: '%', color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-950/30' },
+          { label: 'Gross Profit', value: grossProfit, prefix: '$', color: 'app-metric-icon', bg: 'app-metric-icon-bg' },
+          { label: 'Net Profit', value: netProfit, prefix: '$', color: 'app-metric-icon', bg: 'app-metric-icon-bg' },
+          { label: 'Avg Profit Margin', value: NET_MARGIN * 100, prefix: '', suffix: '%', color: 'app-metric-icon', bg: 'app-metric-icon-bg' },
         ].map(kpi => (
           <div key={kpi.label} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-lg ${kpi.bg} flex items-center justify-center shrink-0`}>

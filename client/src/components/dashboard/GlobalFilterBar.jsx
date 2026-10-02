@@ -26,7 +26,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
                 type="month"
                 value={filters.startMonth || ''}
                 onChange={(e) => onChange({ ...filters, startMonth: e.target.value })}
-                className="pl-8 pr-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500/50"
+                className="app-filter-control pl-8 pr-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300"
               />
             </div>
             <span className="text-slate-400 text-sm">to</span>
@@ -34,7 +34,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
               type="month"
               value={filters.endMonth || ''}
               onChange={(e) => onChange({ ...filters, endMonth: e.target.value })}
-              className="px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500/50"
+              className="app-filter-control px-3 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300"
             />
           </div>
 
@@ -48,7 +48,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
             <select
               value={filters.region || ''}
               onChange={(e) => onChange({ ...filters, region: e.target.value })}
-              className="pl-8 pr-8 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer"
+              className="app-filter-control pl-8 pr-8 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 appearance-none cursor-pointer"
             >
               <option value="">All Regions</option>
               {regions.map(r => <option key={r} value={r}>{r}</option>)}
@@ -63,7 +63,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
             <select
               value={filters.category || ''}
               onChange={(e) => onChange({ ...filters, category: e.target.value })}
-              className="pl-8 pr-8 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer"
+              className="app-filter-control pl-8 pr-8 py-1.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 appearance-none cursor-pointer"
             >
               <option value="">All Categories</option>
               {categories.map(c => <option key={c} value={c}>{c}</option>)}
@@ -76,7 +76,7 @@ export default function GlobalFilterBar({ analytics, filters, onChange, onReset 
         <div>
           <button
             onClick={onReset}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+            className="app-reset-filters flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors cursor-pointer"
           >
             <RefreshCw size={14} /> Reset Filters
           </button>

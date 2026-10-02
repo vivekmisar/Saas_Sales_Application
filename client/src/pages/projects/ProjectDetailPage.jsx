@@ -100,8 +100,8 @@ export default function ProjectDetailPage() {
       <Card className="app-project-overview mb-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center shrink-0">
-              <FileText size={24} className="text-indigo-500" />
+            <div className="app-entity-icon w-12 h-12 rounded-xl flex items-center justify-center shrink-0">
+              <FileText size={24} />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
@@ -179,7 +179,7 @@ export default function ProjectDetailPage() {
                     <span className="font-mono">{formatFileSize(report.fileSize)}</span>
                     <span>{formatRelativeTime(report.uploadedAt)}</span>
                     {report.status === 'completed' && (
-                      <span className="text-indigo-500 font-medium">View Dashboard →</span>
+                      <span className="app-accent-link font-medium">View Dashboard →</span>
                     )}
                   </div>
                 </div>

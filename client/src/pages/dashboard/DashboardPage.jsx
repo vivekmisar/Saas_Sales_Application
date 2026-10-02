@@ -39,22 +39,16 @@ export default function DashboardPage() {
       label: 'Total Projects',
       value: projectCount,
       icon: FolderKanban,
-      bg: 'bg-indigo-50 dark:bg-indigo-950',
-      iconCls: 'text-indigo-500',
     },
     {
       label: 'Total Reports',
       value: totalReports,
       icon: FileText,
-      bg: 'bg-violet-50 dark:bg-violet-950',
-      iconCls: 'text-violet-500',
     },
     {
       label: 'Analytics Ready',
       value: 'Coming Soon',
       icon: TrendingUp,
-      bg: 'bg-emerald-50 dark:bg-emerald-950',
-      iconCls: 'text-emerald-500',
     },
   ];
 
@@ -62,14 +56,12 @@ export default function DashboardPage() {
     {
       to: '/projects',
       icon: FolderKanban,
-      color: 'text-indigo-500',
       label: 'View Projects',
       sub: 'Manage your analytics projects',
     },
     {
       to: '/projects',
       icon: FileText,
-      color: 'text-violet-500',
       label: 'Upload Data',
       sub: 'Add a CSV to start analyzing',
     },
@@ -97,7 +89,7 @@ export default function DashboardPage() {
         ref={cardsRef}
         className="app-stat-grid grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
       >
-        {stats.map(({ label, value, icon: Icon, bg, iconCls }) => (
+        {stats.map(({ label, value, icon: Icon }) => (
           <Card key={label}>
             <div className="flex items-start justify-between">
               <div>
@@ -111,8 +103,8 @@ export default function DashboardPage() {
                   {value}
                 </p>
               </div>
-              <div className={`app-stat-icon ${bg} p-2.5 rounded-xl shrink-0`}>
-                <Icon size={22} className={iconCls} />
+              <div className="app-stat-icon p-2.5 rounded-xl shrink-0">
+                <Icon size={22} />
               </div>
             </div>
           </Card>
@@ -128,14 +120,14 @@ export default function DashboardPage() {
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {quickActions.map(({ to, icon: Icon, color, label, sub }) => (
+        {quickActions.map(({ to, icon: Icon, label, sub }) => (
             <Link
               key={label}
               to={to}
-              className="app-quick-action flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition-all duration-200 group"
+              className="app-quick-action flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-700 transition-all duration-200 group"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <Icon size={20} className={`${color} shrink-0`} />
+                <Icon size={20} className="app-accent-icon shrink-0" />
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-slate-800 dark:text-slate-100 truncate">
                     {label}

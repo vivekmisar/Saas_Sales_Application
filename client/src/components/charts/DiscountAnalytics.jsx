@@ -66,9 +66,9 @@ export default function DiscountAnalytics({ analytics }) {
       {/* Mini KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
         {[
-          { label: 'Avg Discount', value: discountImpact, prefix: '', suffix: '%', color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-950/30', icon: Tag },
-          { label: 'Revenue Lost (Est)', value: revenueLost, prefix: '$', suffix: '', color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-950/30', icon: Activity },
-          { label: 'Discount Impact', value: discountImpact * 1.2, prefix: '', suffix: '%', color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/30', icon: Percent },
+          { label: 'Avg Discount', value: discountImpact, prefix: '', suffix: '%', color: 'app-metric-icon', bg: 'app-metric-icon-bg', icon: Tag },
+          { label: 'Revenue Lost (Est)', value: revenueLost, prefix: '$', suffix: '', color: 'app-metric-icon', bg: 'app-metric-icon-bg', icon: Activity },
+          { label: 'Discount Impact', value: discountImpact * 1.2, prefix: '', suffix: '%', color: 'app-metric-icon', bg: 'app-metric-icon-bg', icon: Percent },
         ].map(kpi => (
           <div key={kpi.label} className="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center gap-4">
             <div className={`w-10 h-10 rounded-lg ${kpi.bg} flex items-center justify-center shrink-0`}>
