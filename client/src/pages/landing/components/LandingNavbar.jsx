@@ -39,7 +39,7 @@ export default function LandingNavbar() {
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
     { label: 'FAQ', href: '#faq' },
-    { label: 'Github', href: 'https://github.com', external: true },
+    { label: 'Github', href: 'https://github.com/vivekmisar/Dashboard-', external: true },
   ];
 
   return (

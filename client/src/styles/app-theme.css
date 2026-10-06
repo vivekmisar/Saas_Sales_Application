@@ -204,35 +204,56 @@ html.dark .auth-root .ui-button-primary { color: #0a0a0a; background: #fff; }
 .app-root .app-report-meta { max-width: min(40vw, 480px); color: var(--app-muted); font-family: var(--font-mono); font-size: 11px; line-height: 1.5; }
 .app-root .app-report-header > div:last-child { min-width: 0; flex-wrap: wrap; }
 .app-root .app-report-meta { min-width: 0; overflow-wrap: anywhere; }
+.app-root .app-report-dashboard .app-filter-row { position: relative; z-index: 20; }
 .app-root .app-filter-bar { padding: 14px 17px; border-radius: 15px; }
 .app-root .app-filter-bar input,
-.app-root .app-filter-bar select,
 .app-root .app-compare-control select { border-color: var(--app-border); background-color: var(--app-surface); color: var(--app-text); border-radius: 10px; }
 .app-root .app-compare-control { border-color: var(--app-border); border-radius: 14px; background: var(--app-surface); }
 .app-root .app-filter-control,
 .app-root .app-search-input,
 .app-root .app-table-search { border-color: var(--app-border); border-radius: 10px; background: var(--app-surface); color: var(--app-text); }
-.app-root .app-search-field { position: relative; min-width: 0; }
-.app-root .app-search-control { display: block; width: 100%; height: 40px; padding: 0 40px; border: 1px solid var(--app-border); border-radius: 10px; color: var(--app-text); background: var(--app-surface); font: 13px var(--font-body); transition: border-color 150ms ease, box-shadow 150ms ease; }
+.app-root .app-search-field { position: relative; display: grid; min-width: 0; min-height: 40px; grid-template-columns: 40px minmax(0, 1fr) 40px; align-items: center; }
+.app-root .app-search-control { display: block; grid-column: 1 / -1; grid-row: 1; width: 100%; height: 40px; padding: 0 40px; border: 1px solid var(--app-border); border-radius: 10px; color: var(--app-text); background: var(--app-surface); font: 13px var(--font-body); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .app-root .app-search-control::placeholder { color: var(--app-muted); opacity: .8; }
 .app-root .app-search-control::-webkit-search-cancel-button { display: none; }
-.app-root .app-search-icon { position: absolute; top: 50%; left: 12px; z-index: 1; color: var(--app-muted); pointer-events: none; transform: translateY(-50%); }
-.app-root .app-search-clear { position: absolute; top: 50%; right: 7px; display: grid; width: 26px; height: 26px; place-items: center; border: 0; border-radius: 50%; color: var(--app-muted); background: transparent; cursor: pointer; transform: translateY(-50%); }
+.app-root .app-search-icon { z-index: 1; grid-column: 1; grid-row: 1; justify-self: center; color: var(--app-muted); pointer-events: none; }
+.app-root .app-search-clear { z-index: 1; display: grid; grid-column: 3; grid-row: 1; justify-self: center; width: 26px; height: 26px; place-items: center; border: 0; border-radius: 50%; color: var(--app-muted); background: transparent; cursor: pointer; }
 .app-root .app-search-clear:hover { color: var(--app-text); background: var(--app-surface-raised); }
 .app-root .app-filter-bar { border: 1px solid var(--app-border); box-shadow: none; }
 .app-root .app-filter-bar > div { gap: 12px; }
 .app-root .app-filter-control { height: 40px; font: 13px var(--font-body); }
-.app-root .app-month-field { width: 154px; height: 40px; }
-.app-root .app-month-native { position: relative; z-index: 1; width: 100%; padding: 0 28px 0 34px; color: transparent !important; caret-color: transparent; color-scheme: light; }
-.app-root .app-month-native::-webkit-datetime-edit { color: transparent; }
-.app-root .app-month-native::-webkit-calendar-picker-indicator { opacity: .5; }
-html.dark .app-root .app-month-native { color-scheme: dark; }
-.app-root .app-month-icon { position: absolute; top: 50%; left: 11px; z-index: 2; color: var(--app-muted); pointer-events: none; transform: translateY(-50%); }
-.app-root .app-month-value { position: absolute; top: 50%; left: 34px; right: 28px; z-index: 2; overflow: hidden; color: var(--app-text); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; transform: translateY(-50%); }
-.app-root .app-select-chevron { position: absolute; top: 50%; right: 10px; color: var(--app-muted); pointer-events: none; transform: translateY(-50%); }
-.app-root .app-filter-bar select { min-width: 154px; padding-right: 30px; }
-.app-root .app-filter-select { min-width: 154px; }
-.app-root .app-filter-select select { width: 100%; }
+.app-root .app-month-picker { position: relative; width: 154px; height: 40px; }
+.app-root .app-month-trigger { display: flex; width: 100%; height: 40px; align-items: center; gap: 9px; padding: 0 10px; border: 1px solid var(--app-border); border-radius: 10px; color: var(--app-text); background: var(--app-surface); font: 13px var(--font-body); text-align: left; cursor: pointer; transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease; }
+.app-root .app-month-trigger:hover { border-color: color-mix(in srgb, var(--app-accent) 42%, var(--app-border)); background: var(--app-surface-raised); }
+.app-root .app-month-trigger:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.app-root .app-month-trigger > svg:first-child { flex: 0 0 auto; color: var(--app-muted); }
+.app-root .app-month-trigger > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-root .app-month-trigger > span.is-placeholder { color: var(--app-muted); }
+.app-root .app-month-trigger-chevron { flex: 0 0 auto; margin-left: auto; color: var(--app-muted); }
+.app-root .app-month-popover { position: absolute; z-index: 60; top: calc(100% + 8px); left: 0; width: 250px; padding: 12px; border: 1px solid var(--app-border); border-radius: 13px; background: var(--app-surface); box-shadow: 0 14px 35px rgba(15, 23, 42, .14); }
+.app-root .app-month-popover-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; padding-bottom: 9px; border-bottom: 1px solid var(--app-border); color: var(--app-text); font-size: 13px; font-weight: 600; }
+.app-root .app-month-popover-header button { display: grid; width: 28px; height: 28px; place-items: center; border: 0; border-radius: 7px; color: var(--app-muted); background: transparent; cursor: pointer; }
+.app-root .app-month-popover-header button:hover { color: var(--app-text); background: var(--app-surface-raised); }
+.app-root .app-month-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.app-root .app-month-grid button { min-height: 35px; border: 1px solid transparent; border-radius: 8px; color: var(--app-text); background: transparent; font: 12px var(--font-body); cursor: pointer; }
+.app-root .app-month-grid button:hover { background: var(--app-surface-raised); }
+.app-root .app-month-grid button.is-current { border-color: var(--app-border); }
+.app-root .app-month-grid button.is-selected { border-color: var(--app-accent); color: var(--app-accent); background: var(--app-accent-soft); font-weight: 600; }
+.app-root .app-month-popover-footer { display: flex; justify-content: space-between; margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--app-border); }
+.app-root .app-month-popover-footer button { padding: 4px 2px; border: 0; color: var(--app-accent); background: transparent; font: 12px var(--font-body); cursor: pointer; }
+.app-root .app-filter-select { position: relative; z-index: 1; width: 154px; min-width: 154px; }
+.app-root .app-filter-dropdown:focus-within { z-index: 70; }
+.app-root .app-filter-dropdown-trigger { display: flex; width: 100%; height: 40px; align-items: center; gap: 9px; padding: 0 10px; border: 1px solid var(--app-border); border-radius: 10px; color: var(--app-text); background: var(--app-surface); font: 13px var(--font-body); text-align: left; cursor: pointer; transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease; }
+.app-root .app-filter-dropdown-trigger:hover { border-color: color-mix(in srgb, var(--app-accent) 42%, var(--app-border)); background: var(--app-surface-raised); }
+.app-root .app-filter-dropdown-trigger:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 2px; }
+.app-root .app-filter-dropdown-trigger > svg:first-child { flex: 0 0 auto; color: var(--app-muted); }
+.app-root .app-filter-dropdown-trigger > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-root .app-filter-dropdown-chevron { flex: 0 0 auto; margin-left: auto; color: var(--app-muted); }
+.app-root .app-filter-dropdown-menu { position: absolute; z-index: 80; top: calc(100% + 7px); left: 0; width: max-content; min-width: 100%; max-width: min(280px, calc(100vw - 40px)); max-height: 280px; overflow-y: auto; padding: 5px; border: 1px solid var(--app-border); border-radius: 12px; background: var(--app-surface); box-shadow: 0 14px 35px rgba(15, 23, 42, .14); }
+.app-root .app-filter-dropdown-menu button { display: block; width: 100%; min-height: 35px; padding: 8px 10px; border: 0; border-radius: 7px; color: var(--app-text); background: transparent; font: 13px var(--font-body); text-align: left; white-space: nowrap; cursor: pointer; }
+.app-root .app-filter-dropdown-menu button:hover,
+.app-root .app-filter-dropdown-menu button:focus-visible { outline: none; background: var(--app-surface-raised); }
+.app-root .app-filter-dropdown-menu button.is-selected { color: var(--app-accent); background: var(--app-accent-soft); font-weight: 600; }
 .app-root .app-reset-filters { min-height: 40px; border: 1px solid var(--app-border); border-radius: 10px; }
 .app-root .app-search-control:focus-visible,
 .app-root .app-filter-control:focus-visible,
@@ -421,9 +442,8 @@ html.dark .app-toaster .app-toast {
 
 @media (max-width: 420px) {
   .app-root .app-month-range { display: grid; width: 100%; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
-  .app-root .app-month-field { width: 100%; min-width: 0; }
-  .app-root .app-month-native { padding-right: 18px; }
-  .app-root .app-month-value { right: 20px; font-size: 11px; }
+  .app-root .app-month-picker { width: 100%; min-width: 0; }
+  .app-root .app-month-popover { width: min(250px, calc(100vw - 48px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

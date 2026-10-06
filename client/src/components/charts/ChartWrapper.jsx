@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import Card from '../ui/Card';
 import { Maximize2, Minimize2, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import { getInstanceByDom } from 'echarts';
 import ErrorBoundary from '../ErrorBoundary';
+import toast from 'react-hot-toast';
 
 /**
  * ChartWrapper — consistent container for all chart components.
@@ -31,16 +33,30 @@ export default function ChartWrapper({ title, subtitle, children, className = ''
   const downloadChart = async () => {
     if (!wrapperRef.current) return;
     try {
-      const canvas = await html2canvas(wrapperRef.current, {
-        scale: 2,
-        backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'
-      });
+      const dark = document.documentElement.classList.contains('dark');
+      const backgroundColor = dark ? '#181a18' : '#ffffff';
+      const chartElement = wrapperRef.current.querySelector('[_echarts_instance_]');
+      const chart = chartElement ? getInstanceByDom(chartElement) : null;
+      let imageUrl;
+
+      if (chart && !chart.isDisposed()) {
+        imageUrl = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor });
+      } else {
+        const canvas = await html2canvas(wrapperRef.current, { scale: 2, useCORS: true, backgroundColor });
+        imageUrl = canvas.toDataURL('image/png');
+      }
+
       const link = document.createElement('a');
       link.download = `${title.replace(/\s+/g, '-').toLowerCase()}-chart.png`;
-      link.href = canvas.toDataURL('image/png');
+      link.href = imageUrl;
+      link.style.display = 'none';
+      document.body.appendChild(link);
       link.click();
+      link.remove();
+      toast.success('Chart image downloaded');
     } catch (error) {
       console.error('Failed to download chart image', error);
+      toast.error('Could not download this chart image');
     }
   };
 

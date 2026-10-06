@@ -22,35 +22,46 @@ export default function ExportMenu({ analytics, dashboardId = 'dashboard-content
   }, []);
 
   const exportPDF = async () => {
+    let element;
     try {
       setIsExporting(true);
-      const element = document.getElementById(dashboardId);
+      element = document.getElementById(dashboardId);
       if (!element) throw new Error('Dashboard element not found');
 
-      // Add a temporary class to fix any potential layout issues during capture
       element.classList.add('exporting-pdf');
-      
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         logging: false,
-        backgroundColor: document.documentElement.classList.contains('dark') ? '#0f172a' : '#f8fafc'
+        backgroundColor: document.documentElement.classList.contains('dark') ? '#101110' : '#fafaf7',
+        windowWidth: Math.max(element.scrollWidth, document.documentElement.clientWidth),
+        windowHeight: element.scrollHeight,
       });
-      
-      element.classList.remove('exporting-pdf');
-
-      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      const pageHeightMm = pdf.internal.pageSize.getHeight();
+      const pageHeightPx = Math.floor((canvas.width * pageHeightMm) / pdfWidth);
+      const pageCanvas = document.createElement('canvas');
+      const pageContext = pageCanvas.getContext('2d');
+      if (!pageContext) throw new Error('Could not prepare the PDF pages');
+      pageCanvas.width = canvas.width;
+
+      for (let pageIndex = 0, y = 0; y < canvas.height; pageIndex += 1, y += pageHeightPx) {
+        const sliceHeight = Math.min(pageHeightPx, canvas.height - y);
+        pageCanvas.height = sliceHeight;
+        pageContext.clearRect(0, 0, pageCanvas.width, pageCanvas.height);
+        pageContext.drawImage(canvas, 0, y, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
+        if (pageIndex > 0) pdf.addPage();
+        pdf.addImage(pageCanvas.toDataURL('image/png'), 'PNG', 0, 0, pdfWidth, (sliceHeight * pdfWidth) / canvas.width);
+      }
+
       pdf.save('dashboard-export.pdf');
       toast.success('PDF exported successfully');
     } catch (error) {
       console.error(error);
       toast.error('Failed to export PDF');
     } finally {
+      element?.classList.remove('exporting-pdf');
       setIsExporting(false);
       setIsOpen(false);
     }
@@ -102,6 +113,7 @@ export default function ExportMenu({ analytics, dashboardId = 'dashboard-content
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
       
       toast.success('CSV exported successfully');
     } catch (error) {
